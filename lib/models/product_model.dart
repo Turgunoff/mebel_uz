@@ -5,7 +5,7 @@ class ProductModel {
   final int productPrice;
   final int productRating;
   final String productCategory;
-  final List<dynamic> productImages;
+  final List<dynamic>? productImages;
 
   ProductModel({
     required this.productId,
@@ -17,13 +17,15 @@ class ProductModel {
     required this.productImages,
   });
 
-  factory ProductModel.fromJson(json) => ProductModel(
-        productId: json['productId'],
-        productName: json['productName'],
-        productDescription: json['productDescription'],
-        productPrice: json['productPrice'],
-        productRating: json['productRating'],
-        productCategory: json['productCategory'],
-        productImages: json['productImages'],
-      );
+  factory ProductModel.fromJson(json) {
+    return ProductModel(
+      productId: json['productId'],
+      productName: json['productName'],
+      productDescription: json['productDescription'],
+      productPrice: json['productPrice'],
+      productRating: json['productRating'],
+      productCategory: json['productCategory'],
+      productImages: json['productImages'],
+    );
+  }
 }

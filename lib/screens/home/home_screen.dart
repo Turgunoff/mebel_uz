@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:mebel_uz/models/product_model.dart';
 import 'package:mebel_uz/screens/home/models/category_model.dart';
 
 import 'controller/home_controller.dart';
@@ -77,7 +78,7 @@ class HomeScreen extends StatelessWidget {
               height: 130,
               child: Obx(() {
                 if (controller.categoryList.isEmpty) {
-                  return const CircularProgressIndicator();
+                  return Center(child: const CircularProgressIndicator());
                 } else {
                   return ListView.separated(
                     scrollDirection: Axis.horizontal,
@@ -103,76 +104,21 @@ class HomeScreen extends StatelessWidget {
                 )
               ],
             ),
-            GridView.builder(
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 200,
-                childAspectRatio: 1 / 1.2,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-              ),
-              shrinkWrap: true,
-              padding: const EdgeInsets.only(left: 8, right: 8),
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 100,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.grey.shade200, width: 1),
-                    ),
-                    child: Column(
-                      children: [
-                        ClipRRect(
-                          borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(6),
-                              topRight: Radius.circular(6)),
-                          child: Image.network(
-                              height: 160,
-                              width: double.infinity,
-                              'https://mebel-complect.ru/wp-content/uploads/a/c/6/ac634abe8a2dd4841ad6c0a5f78935fb.jpeg',
-                              fit: BoxFit.cover),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 8.0, top: 8.0, right: 8.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Mebel',
-                                      maxLines: 2,
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    Text(
-                                      '1 200 000 so\'m',
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Icon(Icons.favorite,
-                                  color: Theme.of(context).primaryColor),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+            Obx(() => GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 200,
+                    childAspectRatio: 1 / 1.2,
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
                   ),
-                );
-              },
-            ),
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: controller.productList.length,
+                  itemBuilder: (context, index) {
+                    return productCard(controller.productList[index], context);
+                  },
+                )),
           ],
         ),
       ),
@@ -214,6 +160,58 @@ class HomeScreen extends StatelessWidget {
               ),
             )
           ],
+        ),
+      );
+  Widget productCard(ProductModel productModel, context) => GestureDetector(
+        onTap: () {},
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Colors.grey.shade200, width: 1),
+          ),
+          child: Column(
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(6), topRight: Radius.circular(6)),
+                child: Image.network(
+                    height: 140,
+                    width: double.infinity,
+                    'https://mebel-complect.ru/wp-content/uploads/a/c/6/ac634abe8a2dd4841ad6c0a5f78935fb.jpeg',
+                    fit: BoxFit.cover),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0, top: 4.0, right: 8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            productModel.productName,
+                            maxLines: 2,
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                          Text(
+                            '${productModel.productPrice} so\'m',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Icon(Icons.favorite, color: Theme.of(context).primaryColor),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       );
 }
