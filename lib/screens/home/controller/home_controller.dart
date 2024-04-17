@@ -1,27 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
-import '../../../models/product_model.dart';
 import '../models/category_model.dart';
 
 class HomeController extends GetxController {
-  List<ProductModel> productList = [];
-  Rx<List<CategoryModel>> categoryList = Rx<List<CategoryModel>>([]);
+  RxList<CategoryModel> categoryList =
+      RxList<CategoryModel>([]); // Use an RxList
 
   @override
   void onInit() {
     super.onInit();
-    categoryList.bindStream(getCategories());
-    // getCategories();
+    getCategories(); // Fetch categories on initialization
   }
 
-  Stream<List<CategoryModel>> getCategories() {
-    return FirebaseFirestore.instance
-        .collection('Categories')
-        .snapshots()
-        .map((query) => query.docs
-            .map((item) => CategoryModel.fromJson(item.data()))
-            .toList())
-        .handleError((error) => print('Error: ${error}'));
+  Future<void> getCategories() async {
+    CollectionReference categoriesRef =
+        FirebaseFirestore.instance.collection('Categories');
+
+    QuerySnapshot querySnapshot = await categoriesRef.get();
+    List<CategoryModel> newList = querySnapshot.docs
+        .map((doc) => CategoryModel.fromJson(doc.data()))
+        .toList();
+
+    categoryList.value = newList; // Update the observable list
   }
 }

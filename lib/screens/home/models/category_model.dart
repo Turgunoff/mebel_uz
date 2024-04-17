@@ -9,7 +9,7 @@ class CategoryModel {
     required this.categoryImage,
   });
 
-  factory CategoryModel.fromJson(Map<String, dynamic> json) {
+  factory CategoryModel.fromJson(json) {
     return CategoryModel(
       categoryId: json['categoryId'],
       categoryName: json['categoryName'],

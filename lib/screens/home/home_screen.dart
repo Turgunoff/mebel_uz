@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:mebel_uz/screens/home/models/category_model.dart';
 
@@ -54,48 +56,123 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           children: [
             //text categories
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: SizedBox(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Categories',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.keyboard_double_arrow_right),
-                    ),
-                  ],
-                ),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Категории',
+                    style:
+                        TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'Показать все',
+                    style: TextStyle(fontSize: 16.0, color: Colors.blue),
+                  ),
+                ],
               ),
             ),
-            Obx(() {
-              if (controller.categoryList.value.isEmpty) {
-                return const CircularProgressIndicator();
-              } else {
-                return SizedBox(
-                  height: 150,
-                  child: ListView.separated(
+            SizedBox(
+              height: 130,
+              child: Obx(() {
+                if (controller.categoryList.isEmpty) {
+                  return const CircularProgressIndicator();
+                } else {
+                  return ListView.separated(
                     scrollDirection: Axis.horizontal,
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     itemBuilder: (context, index) =>
-                        buildCard(controller.categoryList.value[index]),
+                        buildCard(controller.categoryList[index]),
                     separatorBuilder: (context, _) =>
                         const SizedBox(width: 10.0),
-                    itemCount: controller.categoryList.value.length,
+                    itemCount: controller.categoryList.length,
+                  );
+                }
+              }),
+            ),
+            const Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'Рекомендации для вас',
+                    style:
+                        TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+                  ),
+                )
+              ],
+            ),
+            GridView.builder(
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 200,
+                childAspectRatio: 1 / 1.2,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+              ),
+              shrinkWrap: true,
+              padding: const EdgeInsets.only(left: 8, right: 8),
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: 100,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Colors.grey.shade200, width: 1),
+                    ),
+                    child: Column(
+                      children: [
+                        ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(6),
+                              topRight: Radius.circular(6)),
+                          child: Image.network(
+                              height: 160,
+                              width: double.infinity,
+                              'https://mebel-complect.ru/wp-content/uploads/a/c/6/ac634abe8a2dd4841ad6c0a5f78935fb.jpeg',
+                              fit: BoxFit.cover),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 8.0, top: 8.0, right: 8.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Mebel',
+                                      maxLines: 2,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    Text(
+                                      '1 200 000 so\'m',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Icon(Icons.favorite,
+                                  color: Theme.of(context).primaryColor),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
-              }
-            }),
-            Container(
-              height: 1111,
-              color: Colors.red,
-            )
+              },
+            ),
           ],
         ),
       ),
@@ -119,19 +196,18 @@ class HomeScreen extends StatelessWidget {
                     color: Colors.black.withOpacity(0.2),
                     spreadRadius: 0,
                     blurRadius: 2,
-
                     offset: const Offset(0, 1), // changes position of shadow
                   ),
                 ],
               ),
               child: Image.network(
                 category.categoryImage,
-                color: Colors.green,
+                // color: Colors.green,
               ),
             ),
             const SizedBox(height: 4.0),
             Text(
-              category.categoryImage,
+              category.categoryName,
               maxLines: 1,
               style: const TextStyle(
                 fontSize: 16.0,
