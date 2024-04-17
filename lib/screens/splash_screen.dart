@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mebel_uz/constants/assets.dart';
-import 'package:mebel_uz/main.dart';
+import 'package:mebel_uz/screens/home/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(
         const Duration(seconds: 5),
         () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context) => const MyHomePage())));
+            builder: (BuildContext context) => HomeScreen())));
   }
 
   @override
