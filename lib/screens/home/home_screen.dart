@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:mebel_uz/models/product_model.dart';
 import 'package:mebel_uz/screens/home/models/category_model.dart';
 
+import '../ProductDetails/product_detail_screen.dart';
 import 'controller/home_controller.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -78,7 +79,7 @@ class HomeScreen extends StatelessWidget {
               height: 130,
               child: Obx(() {
                 if (controller.categoryList.isEmpty) {
-                  return Center(child: const CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else {
                   return ListView.separated(
                     scrollDirection: Axis.horizontal,
@@ -163,7 +164,15 @@ class HomeScreen extends StatelessWidget {
         ),
       );
   Widget productCard(ProductModel productModel, context) => GestureDetector(
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  ProductDetailScreen(productModel: productModel),
+            ),
+          );
+        },
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -178,7 +187,10 @@ class HomeScreen extends StatelessWidget {
                 child: Image.network(
                     height: 140,
                     width: double.infinity,
-                    'https://mebel-complect.ru/wp-content/uploads/a/c/6/ac634abe8a2dd4841ad6c0a5f78935fb.jpeg',
+                    productModel.productImages != null &&
+                            productModel.productImages!.isNotEmpty
+                        ? productModel.productImages![0]
+                        : 'https://example.com/default-image.png',
                     fit: BoxFit.cover),
               ),
               Padding(
@@ -194,19 +206,23 @@ class HomeScreen extends StatelessWidget {
                           Text(
                             productModel.productName,
                             maxLines: 2,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16,
                             ),
                           ),
                           Text(
-                            '${productModel.productPrice} so\'m',
-                            style: TextStyle(
+                            '${productModel.productPrice.toString()} so\'m',
+                            style: const TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
                     ),
-                    Icon(Icons.favorite, color: Theme.of(context).primaryColor),
+                    Icon(
+                      Icons.favorite_border,
+                      size: 24.0,
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ],
                 ),
               ),

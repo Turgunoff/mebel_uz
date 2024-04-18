@@ -5,7 +5,7 @@ class ProductModel {
   final int productPrice;
   final int productRating;
   final String productCategory;
-  final List<dynamic>? productImages;
+  final List<String>? productImages;
 
   ProductModel({
     required this.productId,
@@ -25,7 +25,9 @@ class ProductModel {
       productPrice: json['productPrice'],
       productRating: json['productRating'],
       productCategory: json['productCategory'],
-      productImages: json['productImages'],
+      productImages: json['productImages'] != null
+          ? List<String>.from(json['productImages'])
+          : null,
     );
   }
 }
