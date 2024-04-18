@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
@@ -5,10 +6,24 @@ import 'package:iconsax/iconsax.dart';
 
 import '../../models/product_model.dart';
 
-class ProductDetailScreen extends StatelessWidget {
+class ProductDetailScreen extends StatefulWidget {
   final ProductModel productModel;
 
-  const ProductDetailScreen({super.key, required this.productModel});
+  ProductDetailScreen({super.key, required this.productModel});
+
+  @override
+  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
+}
+
+class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  final PageController _pageViewController = PageController(initialPage: 0);
+  int _activePage = 0;
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _pageViewController.dispose(); // dispose the PageController
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,45 +58,81 @@ class ProductDetailScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 10),
-                  Container(
+                  SizedBox(
                     width: double.infinity,
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    child: PageView.builder(
+                      pageSnapping: true,
+                      controller: _pageViewController,
+                      onPageChanged: (int index) {
+                        setState(() {
+                          _activePage = index;
+                        });
+                      },
+                      reverse: false,
+                      itemCount: widget.productModel.productImages!.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.network(
+                              widget.productModel.productImages![index],
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  Container(
                     color: Colors.white,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.network(
-                          fit: BoxFit.fitWidth,
-                          productModel.productImages![0],
-                          height: MediaQuery.sizeOf(context).height * 0.3,
-                        ),
-                      ],
+                      children: List<Widget>.generate(
+                          widget.productModel.productImages!.length,
+                          (index) => Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 4),
+                                child: InkWell(
+                                  onTap: () {
+                                    _pageViewController.animateToPage(index,
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        curve: Curves.easeIn);
+                                  },
+                                  child: CircleAvatar(
+                                    radius: 4,
+                                    // check if a dot is connected to the current page
+                                    // if true, give it a different color
+                                    backgroundColor: _activePage == index
+                                        ? Theme.of(context).primaryColor
+                                        : Colors.grey.shade400,
+                                  ),
+                                ),
+                              )),
                     ),
                   ),
                   const SizedBox(height: 10),
                   Row(
                     children: [
-                      RatingBar.builder(
-                        initialRating: 0,
-                        minRating: 0,
+                      RatingBarIndicator(
+                        rating: widget.productModel.productRating.toDouble(),
                         direction: Axis.horizontal,
-                        allowHalfRating: true,
                         itemCount: 5,
                         itemSize: 16,
                         itemBuilder: (context, _) => const Icon(
                           Icons.star,
-                          color: Color.fromARGB(255, 122, 109, 70),
+                          color: Colors.amber,
                         ),
-                        onRatingUpdate: (rating) {
-                          print(rating);
-                        },
                       ),
                       const SizedBox(width: 5),
                       //text uneventful
                       Text(
                         // productModel.productRating==0 ? 'Baxolanmagan' : productModel.productRating!.toString(),
-                        productModel.productRating == 0
+                        widget.productModel.productRating == 0
                             ? 'Baxolanmagan'
-                            : productModel.productRating.toString(),
+                            : widget.productModel.productRating.toString(),
                         style: const TextStyle(
                           fontSize: 12,
                         ),
@@ -91,7 +142,7 @@ class ProductDetailScreen extends StatelessWidget {
                   const SizedBox(height: 10),
                   //text bold
                   Text(
-                    productModel.productName,
+                    widget.productModel.productName,
                     maxLines: 2,
                     style: const TextStyle(
                       fontSize: 20,
@@ -104,7 +155,7 @@ class ProductDetailScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        '${productModel.productPrice} so\'m',
+                        '${widget.productModel.productPrice} so\'m',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -125,7 +176,7 @@ class ProductDetailScreen extends StatelessWidget {
                   ),
                   //text description
                   Text(
-                    productModel.productDescription,
+                    widget.productModel.productDescription,
                     style: const TextStyle(
                       fontSize: 16,
                       color: Colors.black54,

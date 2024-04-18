@@ -3,7 +3,7 @@ class ProductModel {
   final String productName;
   final String productDescription;
   final int productPrice;
-  final int productRating;
+  final double productRating;
   final String productCategory;
   final List<String>? productImages;
 
@@ -23,7 +23,7 @@ class ProductModel {
       productName: json['productName'],
       productDescription: json['productDescription'],
       productPrice: json['productPrice'],
-      productRating: json['productRating'],
+      productRating: json['productRating'].toDouble(),
       productCategory: json['productCategory'],
       productImages: json['productImages'] != null
           ? List<String>.from(json['productImages'])
