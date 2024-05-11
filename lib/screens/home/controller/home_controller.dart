@@ -7,6 +7,7 @@ import '../models/category_model.dart';
 class HomeController extends GetxController {
   RxList<CategoryModel> categoryList = RxList<CategoryModel>([]);
   RxList<ProductModel> productList = RxList<ProductModel>([]);
+  RxBool isLoading = true.obs;
 
   @override
   void onInit() {
@@ -16,6 +17,7 @@ class HomeController extends GetxController {
   }
 
   Future<void> getCategories() async {
+    isLoading.value = true;
     CollectionReference categoriesRef =
         FirebaseFirestore.instance.collection('Categories');
 
@@ -25,10 +27,12 @@ class HomeController extends GetxController {
         .toList();
 
     categoryList.value = newList; // Update the observable list
+    isLoading.value = false; // Set loading to false when data is fetched
   }
 
   //get products
   Future<void> getProducts() async {
+    isLoading.value = true;
     CollectionReference productsRef =
         FirebaseFirestore.instance.collection('Products');
 
@@ -38,5 +42,6 @@ class HomeController extends GetxController {
         .toList();
 
     productList.value = productModel; // Update the observable list
+    isLoading.value = false;
   }
 }

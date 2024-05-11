@@ -1,4 +1,3 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
@@ -9,7 +8,7 @@ import '../../models/product_model.dart';
 class ProductDetailScreen extends StatefulWidget {
   final ProductModel productModel;
 
-  ProductDetailScreen({super.key, required this.productModel});
+  const ProductDetailScreen({super.key, required this.productModel});
 
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
@@ -20,7 +19,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   int _activePage = 0;
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _pageViewController.dispose(); // dispose the PageController
   }

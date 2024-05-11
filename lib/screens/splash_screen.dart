@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:mebel_uz/constants/assets.dart';
-import 'package:mebel_uz/screens/home/home_screen.dart';
+import 'package:mebel_uz/navigation_menu.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -16,10 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(
-        const Duration(seconds: 5),
-        () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context) => HomeScreen())));
+    Timer(const Duration(seconds: 3), () => Get.offAll(() => NavigationMenu()));
   }
 
   @override
@@ -34,8 +32,6 @@ class _SplashScreenState extends State<SplashScreen> {
               Assets.assetsLogoSplashLogo,
               width: MediaQuery.sizeOf(context).width * 0.7,
             ),
-            const SizedBox(height: 10),
-            const CircularProgressIndicator(),
           ],
         ),
       ),

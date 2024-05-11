@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:mebel_uz/models/product_model.dart';
 import 'package:mebel_uz/screens/home/models/category_model.dart';
 
@@ -20,32 +19,44 @@ class HomeScreen extends StatelessWidget {
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: 12.0),
-            child: Icon(Icons.notifications),
+            child: Icon(
+              Iconsax.notification,
+              size: 25,
+              color: Colors.grey,
+            ),
           ),
         ],
-        title: Padding(
-          padding: const EdgeInsets.only(left: 0.0),
+        title: const Padding(
+          padding: EdgeInsets.only(left: 0.0),
           child: Column(
             children: [
               SizedBox(
-                height: 40.0,
+                height: 50.0,
                 child: TextField(
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 0),
                     filled: true,
-                    enabledBorder: const OutlineInputBorder(
+                    enabledBorder: OutlineInputBorder(
                       borderSide:
                           BorderSide(color: Colors.transparent, width: 0),
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
                     ),
-                    focusedBorder: const OutlineInputBorder(
+                    focusedBorder: OutlineInputBorder(
                       borderSide:
                           BorderSide(color: Colors.transparent, width: 0),
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
                     ),
-                    fillColor: Colors.grey.shade200,
-                    prefixIcon: const Icon(Icons.search),
-                    hintText: 'Search',
+                    fillColor: Color(0xFFF3F2F7),
+                    prefixIcon: Icon(
+                      Iconsax.search_normal,
+                      color: Colors.grey,
+                      size: 25,
+                    ),
+                    hintText: 'Поиск товаров',
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 18,
+                    ),
                   ),
                 ),
               ),
@@ -53,76 +64,107 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        physics: const ClampingScrollPhysics(),
-        child: Column(
-          children: [
-            //text categories
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Категории',
-                    style:
-                        TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    'Показать все',
-                    style: TextStyle(fontSize: 16.0, color: Colors.blue),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 130,
-              child: Obx(() {
-                if (controller.categoryList.isEmpty) {
-                  return const Center(child: CircularProgressIndicator());
-                } else {
-                  return ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    itemBuilder: (context, index) =>
-                        buildCard(controller.categoryList[index]),
-                    separatorBuilder: (context, _) =>
-                        const SizedBox(width: 10.0),
-                    itemCount: controller.categoryList.length,
-                  );
-                }
-              }),
-            ),
-            const Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'Рекомендации для вас',
-                    style:
-                        TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
-                  ),
-                )
-              ],
-            ),
-            Obx(() => GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 200,
-                    childAspectRatio: 1 / 1.2,
-                    crossAxisSpacing: 8,
-                    mainAxisSpacing: 8,
-                  ),
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.only(left: 8, right: 8),
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: controller.productList.length,
-                  itemBuilder: (context, index) {
-                    return productCard(controller.productList[index], context);
-                  },
-                )),
-          ],
-        ),
+      body: const Center(
+        child: Text('data'),
       ),
+      // body: Obx(() {
+      //   if (controller.isLoading.value) {
+      //     return Container(
+      //       height: double.infinity,
+      //       width: double.infinity,
+      //       color: Colors.grey,
+      //       child: Column(
+      //         mainAxisAlignment: MainAxisAlignment.center,
+      //         children: [
+      //           Container(
+      //             width: MediaQuery.sizeOf(context).width * 0.7,
+      //             decoration: BoxDecoration(
+      //               color: Colors.white,
+      //               borderRadius: BorderRadius.circular(10),
+      //             ),
+      //             padding: const EdgeInsets.symmetric(vertical: 20),
+      //             child: const Column(
+      //               children: [
+      //                 CircularProgressIndicator(),
+      //                 SizedBox(height: 10),
+      //                 Text('Loading...'),
+      //               ],
+      //             ),
+      //           ),
+      //         ],
+      //       ),
+      //     );
+      //   } else {
+      //     return SingleChildScrollView(
+      //       physics: const ClampingScrollPhysics(),
+      //       child: Column(
+      //         children: [
+      //           //text categories
+      //           const Padding(
+      //             padding: EdgeInsets.all(8.0),
+      //             child: Row(
+      //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //               children: [
+      //                 Text(
+      //                   'Категории',
+      //                   style: TextStyle(
+      //                       fontSize: 22.0, fontWeight: FontWeight.bold),
+      //                 ),
+      //                 Text(
+      //                   'Показать все',
+      //                   style: TextStyle(fontSize: 16.0, color: Colors.blue),
+      //                 ),
+      //               ],
+      //             ),
+      //           ),
+      //           SizedBox(
+      //             height: 130,
+      //             child: Obx(
+      //               () => ListView.separated(
+      //                 scrollDirection: Axis.horizontal,
+      //                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      //                 itemBuilder: (context, index) =>
+      //                     buildCard(controller.categoryList[index]),
+      //                 separatorBuilder: (context, _) =>
+      //                     const SizedBox(width: 10.0),
+      //                 itemCount: controller.categoryList.length,
+      //               ),
+      //             ),
+      //           ),
+      //           const Row(
+      //             children: [
+      //               Padding(
+      //                 padding: EdgeInsets.all(8.0),
+      //                 child: Text(
+      //                   'Рекомендации для вас',
+      //                   style: TextStyle(
+      //                       fontSize: 22.0, fontWeight: FontWeight.bold),
+      //                 ),
+      //               )
+      //             ],
+      //           ),
+      //           Obx(() => GridView.builder(
+      //                 gridDelegate:
+      //                     const SliverGridDelegateWithMaxCrossAxisExtent(
+      //                   maxCrossAxisExtent: 200,
+      //                   childAspectRatio: 1 / 1.2,
+      //                   crossAxisSpacing: 8,
+      //                   mainAxisSpacing: 8,
+      //                 ),
+      //                 shrinkWrap: true,
+      //                 padding: const EdgeInsets.only(left: 8, right: 8),
+      //                 physics: const NeverScrollableScrollPhysics(),
+      //                 itemCount: controller.productList.length,
+      //                 itemBuilder: (context, index) {
+      //                   return productCard(
+      //                       controller.productList[index], context);
+      //                 },
+      //               )),
+      //         ],
+      //       ),
+      //     );
+      //   }
+      // }),
     );
   }
 
