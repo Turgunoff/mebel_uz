@@ -46,6 +46,8 @@ dependencies:
   iconsax: ^0.0.8
   flutter_rating_bar: ^4.0.1
   carousel_slider: ^4.2.1
+  cached_network_image: ^3.3.1
+  firebase_app_check: ^0.2.2+5
 
 dev_dependencies:
   flutter_test:
