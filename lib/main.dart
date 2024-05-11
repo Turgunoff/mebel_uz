@@ -1,14 +1,20 @@
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:mebel_uz/firebase_options.dart';
-import 'package:mebel_uz/screens/splash_screen.dart';
+import 'package:mebel_uz/screens/splash/splash_screen.dart';
 
 void main() async {
   runApp(const MyApp());
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await FirebaseAppCheck.instance.activate(
+    webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
+    androidProvider: AndroidProvider.debug,
+    appleProvider: AppleProvider.appAttest,
   );
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
@@ -31,8 +37,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
         primaryColor: const Color(0xFF013C7E),
-        colorScheme: ColorScheme.light(
-          primary: const Color(0xFF013C7E),
+        colorScheme: const ColorScheme.light(
+          primary: Color(0xFF013C7E),
         ),
         brightness: Brightness.light,
         visualDensity: VisualDensity.adaptivePlatformDensity,

@@ -1,10 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:mebel_uz/models/product_model.dart';
-import 'package:mebel_uz/screens/home/models/category_model.dart';
 
-import '../ProductDetails/product_detail_screen.dart';
 import 'controller/home_controller.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -15,6 +15,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFFAFAFA),
       appBar: AppBar(
         actions: const [
           Padding(
@@ -64,212 +65,70 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: const Center(
-        child: Text('data'),
-      ),
-      // body: Obx(() {
-      //   if (controller.isLoading.value) {
-      //     return Container(
-      //       height: double.infinity,
-      //       width: double.infinity,
-      //       color: Colors.grey,
-      //       child: Column(
-      //         mainAxisAlignment: MainAxisAlignment.center,
-      //         children: [
-      //           Container(
-      //             width: MediaQuery.sizeOf(context).width * 0.7,
-      //             decoration: BoxDecoration(
-      //               color: Colors.white,
-      //               borderRadius: BorderRadius.circular(10),
-      //             ),
-      //             padding: const EdgeInsets.symmetric(vertical: 20),
-      //             child: const Column(
-      //               children: [
-      //                 CircularProgressIndicator(),
-      //                 SizedBox(height: 10),
-      //                 Text('Loading...'),
-      //               ],
-      //             ),
-      //           ),
-      //         ],
-      //       ),
-      //     );
-      //   } else {
-      //     return SingleChildScrollView(
-      //       physics: const ClampingScrollPhysics(),
-      //       child: Column(
-      //         children: [
-      //           //text categories
-      //           const Padding(
-      //             padding: EdgeInsets.all(8.0),
-      //             child: Row(
-      //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //               children: [
-      //                 Text(
-      //                   'Категории',
-      //                   style: TextStyle(
-      //                       fontSize: 22.0, fontWeight: FontWeight.bold),
-      //                 ),
-      //                 Text(
-      //                   'Показать все',
-      //                   style: TextStyle(fontSize: 16.0, color: Colors.blue),
-      //                 ),
-      //               ],
-      //             ),
-      //           ),
-      //           SizedBox(
-      //             height: 130,
-      //             child: Obx(
-      //               () => ListView.separated(
-      //                 scrollDirection: Axis.horizontal,
-      //                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
-      //                 itemBuilder: (context, index) =>
-      //                     buildCard(controller.categoryList[index]),
-      //                 separatorBuilder: (context, _) =>
-      //                     const SizedBox(width: 10.0),
-      //                 itemCount: controller.categoryList.length,
-      //               ),
-      //             ),
-      //           ),
-      //           const Row(
-      //             children: [
-      //               Padding(
-      //                 padding: EdgeInsets.all(8.0),
-      //                 child: Text(
-      //                   'Рекомендации для вас',
-      //                   style: TextStyle(
-      //                       fontSize: 22.0, fontWeight: FontWeight.bold),
-      //                 ),
-      //               )
-      //             ],
-      //           ),
-      //           Obx(() => GridView.builder(
-      //                 gridDelegate:
-      //                     const SliverGridDelegateWithMaxCrossAxisExtent(
-      //                   maxCrossAxisExtent: 200,
-      //                   childAspectRatio: 1 / 1.2,
-      //                   crossAxisSpacing: 8,
-      //                   mainAxisSpacing: 8,
-      //                 ),
-      //                 shrinkWrap: true,
-      //                 padding: const EdgeInsets.only(left: 8, right: 8),
-      //                 physics: const NeverScrollableScrollPhysics(),
-      //                 itemCount: controller.productList.length,
-      //                 itemBuilder: (context, index) {
-      //                   return productCard(
-      //                       controller.productList[index], context);
-      //                 },
-      //               )),
-      //         ],
-      //       ),
-      //     );
-      //   }
-      // }),
-    );
-  }
-
-  Widget buildCard(CategoryModel category) => SizedBox(
-        width: 90,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              width: 90,
-              height: 90,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
-                //boxshadow
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    spreadRadius: 0,
-                    blurRadius: 2,
-                    offset: const Offset(0, 1), // changes position of shadow
-                  ),
-                ],
-              ),
-              child: Image.network(
-                category.categoryImage,
-                // color: Colors.green,
-              ),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Популярные категории',
+                  style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
-            const SizedBox(height: 4.0),
-            Text(
-              category.categoryName,
-              maxLines: 1,
-              style: const TextStyle(
-                fontSize: 16.0,
+            Expanded(
+              child: GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 200.0,
+                  childAspectRatio: 3 / 1.2,
+                ),
+                itemCount: 10,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    padding: const EdgeInsets.all(4.0),
+                    margin: const EdgeInsets.all(5.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.1),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      children: <Widget>[
+                        // Category Image
+                        Image.network(
+                          'https://cdn.lazurit.com/images/unsafe/fit-in/1000x1000/upload.lazurit.com/upload/iblock/b98/q8wdjymu8cynhb5m1d2v04o8zo57zxye/km0120_dub-bellazhdio_01.jpg',
+                          width: 50,
+                          height: 50,
+                          fit: BoxFit.contain,
+                        ),
+                        const SizedBox(width: 4.0),
+                        // Category Name
+                        const Expanded(
+                          child: Text(
+                            maxLines: 2,
+                            'Category Name adfasf asf as f as',
+                            style: TextStyle(fontSize: 14.0),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
             )
           ],
         ),
-      );
-  Widget productCard(ProductModel productModel, context) => GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  ProductDetailScreen(productModel: productModel),
-            ),
-          );
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.grey.shade200, width: 1),
-          ),
-          child: Column(
-            children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(6), topRight: Radius.circular(6)),
-                child: Image.network(
-                    height: 140,
-                    width: double.infinity,
-                    productModel.productImages != null &&
-                            productModel.productImages!.isNotEmpty
-                        ? productModel.productImages![0]
-                        : 'https://example.com/default-image.png',
-                    fit: BoxFit.cover),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0, top: 4.0, right: 8.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            productModel.productName,
-                            maxLines: 2,
-                            style: const TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                          Text(
-                            '${productModel.productPrice.toString()} so\'m',
-                            style: const TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Icon(
-                      Icons.favorite_border,
-                      size: 24.0,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+      ),
+    );
+  }
 }

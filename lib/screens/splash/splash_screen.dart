@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:mebel_uz/constants/assets.dart';
-import 'package:mebel_uz/navigation_menu.dart';
+import 'package:mebel_uz/screens/navigation_menu.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
