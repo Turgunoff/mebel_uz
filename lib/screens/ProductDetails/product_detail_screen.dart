@@ -3,12 +3,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
-import '../../models/product_model.dart';
-
 class ProductDetailScreen extends StatefulWidget {
-  final ProductModel productModel;
-
-  const ProductDetailScreen({super.key, required this.productModel});
+  const ProductDetailScreen({super.key});
 
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
@@ -68,14 +64,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         });
                       },
                       reverse: false,
-                      itemCount: widget.productModel.productImages!.length,
+                      itemCount: 10,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: Image.network(
-                              widget.productModel.productImages![index],
+                              'widget.productModel.productImages![index]',
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -88,7 +84,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List<Widget>.generate(
-                          widget.productModel.productImages!.length,
+                          10,
                           (index) => Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 4),
@@ -115,7 +111,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   Row(
                     children: [
                       RatingBarIndicator(
-                        rating: widget.productModel.productRating.toDouble(),
+                        rating: 4,
                         direction: Axis.horizontal,
                         itemCount: 5,
                         itemSize: 16,
@@ -125,22 +121,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         ),
                       ),
                       const SizedBox(width: 5),
-                      //text uneventful
-                      Text(
-                        // productModel.productRating==0 ? 'Baxolanmagan' : productModel.productRating!.toString(),
-                        widget.productModel.productRating == 0
-                            ? 'Baxolanmagan'
-                            : widget.productModel.productRating.toString(),
-                        style: const TextStyle(
-                          fontSize: 12,
-                        ),
-                      ),
                     ],
                   ),
                   const SizedBox(height: 10),
                   //text bold
                   Text(
-                    widget.productModel.productName,
+                    'widget.productModel.productName',
                     maxLines: 2,
                     style: const TextStyle(
                       fontSize: 20,
@@ -153,7 +139,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        '${widget.productModel.productPrice} so\'m',
+                        'widget.productModel.productPrice} so\'m',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -174,7 +160,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   ),
                   //text description
                   Text(
-                    widget.productModel.productDescription,
+                    'widget.productModel.productDescription',
                     style: const TextStyle(
                       fontSize: 16,
                       color: Colors.black54,

@@ -4,12 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:mebel_uz/screens/ProductDetails/product_detail_screen.dart';
 
 import 'controller/home_controller.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final controller = Get.put(HomeController());
 
   @override
@@ -17,6 +23,13 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFFAFAFA),
       appBar: AppBar(
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1),
+          child: Container(
+            color: Colors.grey.shade300,
+            height: 1,
+          ),
+        ),
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: 12.0),
@@ -82,65 +95,67 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            GridView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 200.0,
-                childAspectRatio: 3 / 1,
-              ),
-              itemCount: 8,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  padding: const EdgeInsets.all(4.0),
-                  margin: const EdgeInsets.all(4.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4.0),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
+            Obx(() => GridView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 200.0,
+                    childAspectRatio: 3 / 1,
                   ),
-                  child: Row(
-                    children: <Widget>[
-                      // Category Image
-                      CachedNetworkImage(
-                        height: 50,
-                        width: 50,
-                        imageUrl:
-                            'https://cdn.lazurit.com/images/unsafe/fit-in/1000x1000/upload.lazurit.com/upload/iblock/b98/q8wdjymu8cynhb5m1d2v04o8zo57zxye/km0120_dub-bellazhdio_01.jpg',
-                        fit: BoxFit.contain,
-                        placeholder: (context, url) =>
-                            const Center(child: CircularProgressIndicator()),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
-                      ),
-                      const SizedBox(width: 4.0),
-                      // Category Name
-                      const Expanded(
-                        child: Text(
-                          maxLines: 2,
-                          'Спальня asdsad sd as das das d asd asd sad as',
-                          style: TextStyle(
-                            fontSize: 14.0,
-                            letterSpacing: -1,
-                            height: 1,
-                            overflow: TextOverflow.ellipsis,
+                  itemCount: controller.categories.length > 6
+                      ? 6
+                      : controller.categories.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final category = controller.categories[index];
+                    return Container(
+                      padding: const EdgeInsets.all(4.0),
+                      margin: const EdgeInsets.all(4.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4.0),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.1),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: const Offset(0, 3),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
-                );
-              },
-            ),
+                      child: Row(
+                        children: <Widget>[
+                          // Category Image
+                          CachedNetworkImage(
+                            height: 40,
+                            width: 40,
+                            imageUrl: category.categoryImage,
+                            fit: BoxFit.contain,
+                            placeholder: (context, url) => const Center(
+                                child: CircularProgressIndicator()),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                          ),
+                          const SizedBox(width: 8.0),
+                          // Category Name
+                          Expanded(
+                            child: Text(
+                              maxLines: 2,
+                              category.categoryNameRu,
+                              style: const TextStyle(
+                                fontSize: 14.0,
+                                letterSpacing: -1,
+                                height: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                )),
             const SizedBox(height: 12),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -155,192 +170,201 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            SizedBox(
-              height: 320, // Balandlikni o'zingizga mos ravishda sozlang
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                scrollDirection: Axis.horizontal, // Gorizontal aylantirish
-                itemCount: 50, // Mahsulotlar soni
-                itemBuilder: (context, index) {
-                  // final product = controller.products[index];
-                  return Container(
-                    width: 170.0,
-                    margin: const EdgeInsets.only(right: 8.0),
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.shade100,
-                          spreadRadius: 3,
-                          blurRadius: 2,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Rasm
-                        Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16.0)),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                              8.0,
+            Obx(
+              () => SizedBox(
+                height: 320, // Balandlikni o'zingizga mos ravishda sozlang
+                child: ListView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  scrollDirection: Axis.horizontal, // Gorizontal aylantirish
+                  itemCount:
+                      controller.popularProducts.length, // Mahsulotlar soni
+                  itemBuilder: (context, index) {
+                    final popularProducts = controller.popularProducts[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Get.to(() => const ProductDetailScreen());
+                      },
+                      child: Container(
+                        width: 170.0,
+                        margin: const EdgeInsets.only(right: 8.0),
+                        padding: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.shade100,
+                              spreadRadius: 3,
+                              blurRadius: 2,
+                              offset: const Offset(0, 3),
                             ),
-                            child: CachedNetworkImage(
-                              height: 150,
-                              width: 150,
-                              imageUrl:
-                                  'https://cdn.lazurit.com/images/unsafe/fit-in/1000x1000/upload.lazurit.com/upload/iblock/b98/q8wdjymu8cynhb5m1d2v04o8zo57zxye/km0120_dub-bellazhdio_01.jpg',
-                              fit: BoxFit.cover,
-                              placeholder: (context, url) => const Center(
-                                  child: CircularProgressIndicator()),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
-                            ),
-                          ),
+                          ],
                         ),
-                        const SizedBox(height: 8.0),
-                        SizedBox(
-                          height: 20.0,
-                          child: Row(
-                            children: [
-                              Container(
-                                height: 20,
-                                width: 20,
-                                decoration: BoxDecoration(
-                                  color:
-                                      const Color.fromARGB(255, 142, 224, 149),
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                              ),
-                              const SizedBox(width: 4.0),
-                              Container(
-                                height: 20,
-                                width: 20,
-                                decoration: BoxDecoration(
-                                  color:
-                                      const Color.fromARGB(255, 175, 194, 209),
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 8.0),
-                        const Column(
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Mahsulot nomi
-                            Text(
-                              'Кровать с подъемным механизмом Мелисса',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16.0,
-                                height: 1.2,
-                                letterSpacing: 0,
-                              ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            // Narx
-                            // Text('${product.price.toStringAsFixed(2)} so\'m'),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              RatingBar.builder(
-                                itemBuilder: (context, index) =>
-                                    const Icon(Icons.star, color: Colors.amber),
-                                initialRating: 5,
-                                minRating: 0,
-                                direction: Axis.horizontal,
-                                allowHalfRating: true,
-                                ignoreGestures: true,
-                                itemCount: 5,
-                                itemSize: 18.0,
-                                onRatingUpdate: (rating) {},
-                              ),
-                              const SizedBox(width: 4.0),
-                              const Text(
-                                '5.0',
-                                style: TextStyle(
-                                  fontSize: 16.0,
+                            // Rasm
+                            Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16.0)),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(
+                                  8.0,
+                                ),
+                                child: CachedNetworkImage(
+                                  height: 150,
+                                  width: 150,
+                                  imageUrl: 'popularProducts.imageUrls[0]',
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) => const Center(
+                                      child: CircularProgressIndicator()),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 8.0),
-                        const Spacer(),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            const Column(
+                            ),
+                            const SizedBox(height: 8.0),
+                            SizedBox(
+                              height: 20.0,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: 20,
+                                    width: 20,
+                                    decoration: BoxDecoration(
+                                      color: const Color.fromARGB(
+                                          255, 142, 224, 149),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 4.0),
+                                  Container(
+                                    height: 20,
+                                    width: 20,
+                                    decoration: BoxDecoration(
+                                      color: const Color.fromARGB(
+                                          255, 175, 194, 209),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 8.0),
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                // Mahsulot nomi
                                 Text(
-                                  '12 000 888 so\'m',
+                                  popularProducts.productName,
                                   style: TextStyle(
-                                    color: Colors.red,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16.0,
-                                    height: 1,
-                                    letterSpacing: -1,
+                                    height: 1.2,
+                                    letterSpacing: 0,
                                   ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                                Text(
-                                  '8 000 888 so\'m',
-                                  style: TextStyle(
-                                    height: 1,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.0,
-                                    letterSpacing: -1.0,
-                                    decoration: TextDecoration.lineThrough,
-                                    decorationColor: Colors.black,
-                                    decorationStyle: TextDecorationStyle.solid,
-                                  ),
-                                ),
-                                Text(
-                                  ' ~ 1200 \$',
-                                  style: TextStyle(
-                                    height: 1,
-                                    color: Colors.black,
-                                    fontSize: 14.0,
-                                    letterSpacing: -1.0,
-                                    decorationColor: Colors.black,
-                                  ),
-                                )
+                                // Narx
+                                // Text('${product.price.toStringAsFixed(2)} so\'m'),
                               ],
                             ),
-                            const Spacer(),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 4.0, vertical: 4.0),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor,
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              child: const Icon(
-                                Iconsax.shopping_cart,
-                                color: Colors.white,
-                                size: 24.0,
+                            SizedBox(
+                              height: 20,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  RatingBar.builder(
+                                    itemBuilder: (context, index) => const Icon(
+                                        Icons.star,
+                                        color: Colors.amber),
+                                    initialRating: 5,
+                                    minRating: 0,
+                                    direction: Axis.horizontal,
+                                    allowHalfRating: true,
+                                    ignoreGestures: true,
+                                    itemCount: 5,
+                                    itemSize: 18.0,
+                                    onRatingUpdate: (rating) {},
+                                  ),
+                                  const SizedBox(width: 4.0),
+                                  const Text(
+                                    '5.0',
+                                    style: TextStyle(
+                                      fontSize: 16.0,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
+                            const SizedBox(height: 8.0),
+                            const Spacer(),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                const Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '12 000 888 so\'m',
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16.0,
+                                        height: 1,
+                                        letterSpacing: -1,
+                                      ),
+                                    ),
+                                    Text(
+                                      '8 000 888 so\'m',
+                                      style: TextStyle(
+                                        height: 1,
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16.0,
+                                        letterSpacing: -1.0,
+                                        decoration: TextDecoration.lineThrough,
+                                        decorationColor: Colors.black,
+                                        decorationStyle:
+                                            TextDecorationStyle.solid,
+                                      ),
+                                    ),
+                                    Text(
+                                      ' ~ 1200 \$',
+                                      style: TextStyle(
+                                        height: 1,
+                                        color: Colors.black,
+                                        fontSize: 14.0,
+                                        letterSpacing: -1.0,
+                                        decorationColor: Colors.black,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                const Spacer(),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 4.0, vertical: 4.0),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).primaryColor,
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  child: const Icon(
+                                    Iconsax.shopping_cart,
+                                    color: Colors.white,
+                                    size: 24.0,
+                                  ),
+                                ),
+                              ],
+                            )
                           ],
-                        )
-                      ],
-                    ),
-                  );
-                },
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
             const SizedBox(height: 12),
@@ -805,7 +829,8 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ],
               ),
-            )
+            ),
+            const SizedBox(height: 12),
           ],
         ),
       ),

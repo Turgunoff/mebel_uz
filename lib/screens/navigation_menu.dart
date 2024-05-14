@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:mebel_uz/screens/cart/cart_screen.dart';
+import 'package:mebel_uz/screens/categories/categories_screen.dart';
+import 'package:mebel_uz/screens/favorite/favorite_screen.dart';
 import 'package:mebel_uz/screens/home/home_screen.dart';
+import 'package:mebel_uz/screens/profile/profile_screen.dart';
 
 class NavigationMenu extends StatelessWidget {
   NavigationMenu({super.key});
@@ -65,11 +69,9 @@ class NavigationController extends GetxController {
 
   final screens = [
     HomeScreen(),
-    Container(child: Text('Каталог')),
-    Container(child: Text('Избранное')),
-    Container(child: Text('Корзина')),
-    Container(
-      child: Text('Профиль'),
-    ),
+    CategoriesScreen(),
+    FavoriteScreen(),
+    CartScreen(),
+    ProfileScreen(),
   ];
 }
