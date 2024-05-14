@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';
 import 'package:mebel_uz/screens/ProductDetails/product_detail_screen.dart';
 
 import 'controller/home_controller.dart';
@@ -18,6 +19,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final controller = Get.put(HomeController());
+
+  final numberFormat = NumberFormat('#,##0');
 
   @override
   Widget build(BuildContext context) {
@@ -353,7 +356,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   children: [
                                     if (hasDiscount)
                                       Text(
-                                        '${discountedPrice.toStringAsFixed(0)} so\'m',
+                                        '${numberFormat.format(discountedPrice)} so\'m'
+                                            .replaceAll(',', ' '),
                                         style: const TextStyle(
                                           color: Colors.red,
                                           fontWeight: FontWeight.bold,
@@ -363,7 +367,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                       ),
                                     Text(
-                                      '${popularProducts.productPrice?.toStringAsFixed(0)} so\'m',
+                                      '${numberFormat.format(popularProducts.productPrice)} so\'m'
+                                          .replaceAll(',', ' '),
                                       style: TextStyle(
                                         height: 1,
                                         color: hasDiscount
@@ -380,9 +385,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                             TextDecorationStyle.solid,
                                       ),
                                     ),
-                                    const Text(
-                                      ' ~ 1200 \$',
-                                      style: TextStyle(
+                                    Text(
+                                      ' ~ ${numberFormat.format(1200)} \$'
+                                          .replaceAll(',', ' '),
+                                      style: const TextStyle(
                                         height: 1,
                                         color: Colors.black,
                                         fontSize: 14.0,
