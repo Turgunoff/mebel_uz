@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -179,6 +180,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemCount:
                       controller.popularProducts.length, // Mahsulotlar soni
                   itemBuilder: (context, index) {
+                    final discountAmount =
+                        (controller.popularProducts[index].productPrice! *
+                                controller
+                                    .popularProducts[index].productDiscount!) /
+                            100;
+                    final discountedPrice =
+                        controller.popularProducts[index].productPrice! -
+                            discountAmount;
+                    final hasDiscount =
+                        controller.popularProducts[index].productDiscount! > 0;
+
                     final popularProducts = controller.popularProducts[index];
                     return GestureDetector(
                       onTap: () {
@@ -204,24 +216,56 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // Rasm
-                            Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16.0)),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(
-                                  8.0,
+                            Stack(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.circular(16.0)),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(
+                                      8.0,
+                                    ),
+                                    child: CachedNetworkImage(
+                                      height: 150,
+                                      width: 150,
+                                      imageUrl: popularProducts.imageUrls[0],
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) =>
+                                          const Center(
+                                              child:
+                                                  CircularProgressIndicator()),
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error),
+                                    ),
+                                  ),
                                 ),
-                                child: CachedNetworkImage(
-                                  height: 150,
-                                  width: 150,
-                                  imageUrl: 'popularProducts.imageUrls[0]',
-                                  fit: BoxFit.cover,
-                                  placeholder: (context, url) => const Center(
-                                      child: CircularProgressIndicator()),
-                                  errorWidget: (context, url, error) =>
-                                      const Icon(Icons.error),
-                                ),
-                              ),
+                                if (hasDiscount) // Only show discount if applicable
+                                  Positioned(
+                                    bottom: 0, // Adjust positioning as needed
+                                    left: 0, // Adjust positioning as needed
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0, vertical: 4.0),
+                                      decoration: const BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.only(
+                                          bottomLeft: Radius.circular(8.0),
+                                          topRight: Radius.circular(8.0),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        '-${popularProducts.productDiscount}%',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize:
+                                              12.0, // Adjust font size as needed
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                              ],
                             ),
                             const SizedBox(height: 8.0),
                             SizedBox(
@@ -257,7 +301,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 // Mahsulot nomi
                                 Text(
                                   popularProducts.productName,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16.0,
                                     height: 1.2,
@@ -304,34 +348,39 @@ class _HomeScreenState extends State<HomeScreen> {
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                const Column(
+                                Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      '12 000 888 so\'m',
-                                      style: TextStyle(
-                                        color: Colors.red,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16.0,
-                                        height: 1,
-                                        letterSpacing: -1,
+                                    if (hasDiscount)
+                                      Text(
+                                        '${discountedPrice.toStringAsFixed(0)} so\'m',
+                                        style: const TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.0,
+                                          height: 1,
+                                          letterSpacing: -1,
+                                        ),
                                       ),
-                                    ),
                                     Text(
-                                      '8 000 888 so\'m',
+                                      '${popularProducts.productPrice?.toStringAsFixed(0)} so\'m',
                                       style: TextStyle(
                                         height: 1,
-                                        color: Colors.grey,
+                                        color: hasDiscount
+                                            ? Colors.grey
+                                            : Colors.black,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16.0,
                                         letterSpacing: -1.0,
-                                        decoration: TextDecoration.lineThrough,
+                                        decoration: hasDiscount
+                                            ? TextDecoration.lineThrough
+                                            : TextDecoration.none,
                                         decorationColor: Colors.black,
                                         decorationStyle:
                                             TextDecorationStyle.solid,
                                       ),
                                     ),
-                                    Text(
+                                    const Text(
                                       ' ~ 1200 \$',
                                       style: TextStyle(
                                         height: 1,
