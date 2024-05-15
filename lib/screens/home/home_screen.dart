@@ -203,9 +203,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     final popularProducts = controller.popularProducts[index];
                     return GestureDetector(
                       onTap: () {
-                        Get.to(() => ProductDetailScreen(
-                              product: popularProducts,
-                            ));
+                        Get.to(
+                          () => ProductDetailScreen(
+                            product: popularProducts,
+                          ),
+                          transition: Transition.cupertino,
+                        );
                       },
                       child: Container(
                         width: 170.0,

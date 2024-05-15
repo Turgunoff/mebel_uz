@@ -84,7 +84,6 @@ class ProductDetailScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: NavigationMenu(),
     );
   }
 }
