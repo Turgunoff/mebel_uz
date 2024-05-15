@@ -99,6 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const SizedBox(height: 12),
+            //popular category
             Obx(() => GridView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   shrinkWrap: true,
@@ -137,7 +138,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             imageUrl: category.categoryImage,
                             fit: BoxFit.contain,
                             placeholder: (context, url) => const Center(
-                                child: CircularProgressIndicator()),
+                              child: CupertinoActivityIndicator(
+                                radius: 10,
+                                animating: true,
+                              ),
+                            ),
                             errorWidget: (context, url, error) =>
                                 const Icon(Icons.error),
                           ),
@@ -174,6 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const SizedBox(height: 12),
+            //popular products
             Obx(
               () => SizedBox(
                 height: 320, // Balandlikni o'zingizga mos ravishda sozlang
@@ -197,7 +203,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     final popularProducts = controller.popularProducts[index];
                     return GestureDetector(
                       onTap: () {
-                        Get.to(() => const ProductDetailScreen());
+                        Get.to(() => ProductDetailScreen(
+                              product: popularProducts,
+                            ));
                       },
                       child: Container(
                         width: 170.0,
@@ -236,8 +244,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                       fit: BoxFit.cover,
                                       placeholder: (context, url) =>
                                           const Center(
-                                              child:
-                                                  CircularProgressIndicator()),
+                                        child: CupertinoActivityIndicator(
+                                          radius: 30,
+                                          animating: true, // Control animation
+                                        ),
+                                      ),
                                       errorWidget: (context, url, error) =>
                                           const Icon(Icons.error),
                                     ),
@@ -423,6 +434,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const SizedBox(height: 12),
+            //rassrochka
             Container(
               padding: const EdgeInsets.all(16.0),
               color: Colors.white,
@@ -526,192 +538,258 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            SizedBox(
-              height: 320, // Balandlikni o'zingizga mos ravishda sozlang
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                scrollDirection: Axis.horizontal, // Gorizontal aylantirish
-                itemCount: 50, // Mahsulotlar soni
-                itemBuilder: (context, index) {
-                  // final product = controller.products[index];
-                  return Container(
-                    width: 170.0,
-                    margin: const EdgeInsets.only(right: 8.0),
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.shade100,
-                          spreadRadius: 3,
-                          blurRadius: 2,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Rasm
-                        Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16.0)),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                              8.0,
+            //The best offers
+            Obx(
+              () => SizedBox(
+                height: 320, // Balandlikni o'zingizga mos ravishda sozlang
+                child: ListView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  scrollDirection: Axis.horizontal, // Gorizontal aylantirish
+                  itemCount:
+                      controller.popularProducts.length, // Mahsulotlar soni
+                  itemBuilder: (context, index) {
+                    final discountAmount =
+                        (controller.popularProducts[index].productPrice! *
+                                controller
+                                    .popularProducts[index].productDiscount!) /
+                            100;
+                    final discountedPrice =
+                        controller.popularProducts[index].productPrice! -
+                            discountAmount;
+                    final hasDiscount =
+                        controller.popularProducts[index].productDiscount! > 0;
+
+                    final popularProducts = controller.popularProducts[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Get.to(() => ProductDetailScreen(
+                              product: popularProducts,
+                            ));
+                      },
+                      child: Container(
+                        width: 170.0,
+                        margin: const EdgeInsets.only(right: 8.0),
+                        padding: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.shade100,
+                              spreadRadius: 3,
+                              blurRadius: 2,
+                              offset: const Offset(0, 3),
                             ),
-                            child: CachedNetworkImage(
-                              height: 150,
-                              width: 150,
-                              imageUrl:
-                                  'https://cdn.lazurit.com/images/unsafe/fit-in/1000x1000/upload.lazurit.com/upload/iblock/b98/q8wdjymu8cynhb5m1d2v04o8zo57zxye/km0120_dub-bellazhdio_01.jpg',
-                              fit: BoxFit.cover,
-                              placeholder: (context, url) => const Center(
-                                  child: CircularProgressIndicator()),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
-                            ),
-                          ),
+                          ],
                         ),
-                        const SizedBox(height: 8.0),
-                        SizedBox(
-                          height: 20.0,
-                          child: Row(
-                            children: [
-                              Container(
-                                height: 20,
-                                width: 20,
-                                decoration: BoxDecoration(
-                                  color:
-                                      const Color.fromARGB(255, 142, 224, 149),
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                              ),
-                              const SizedBox(width: 4.0),
-                              Container(
-                                height: 20,
-                                width: 20,
-                                decoration: BoxDecoration(
-                                  color:
-                                      const Color.fromARGB(255, 175, 194, 209),
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 8.0),
-                        const Column(
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Mahsulot nomi
-                            Text(
-                              'Кровать с подъемным механизмом Мелисса',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16.0,
-                                height: 1.2,
-                                letterSpacing: 0,
-                              ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            // Narx
-                            // Text('${product.price.toStringAsFixed(2)} so\'m'),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              RatingBar.builder(
-                                itemBuilder: (context, index) =>
-                                    const Icon(Icons.star, color: Colors.amber),
-                                initialRating: 5,
-                                minRating: 0,
-                                direction: Axis.horizontal,
-                                allowHalfRating: true,
-                                ignoreGestures: true,
-                                itemCount: 5,
-                                itemSize: 18.0,
-                                onRatingUpdate: (rating) {},
-                              ),
-                              const SizedBox(width: 4.0),
-                              const Text(
-                                '5.0',
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 8.0),
-                        const Spacer(),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            const Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            // Rasm
+                            Stack(
                               children: [
-                                Text(
-                                  '12 000 888 so\'m',
-                                  style: TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.0,
-                                    height: 1,
-                                    letterSpacing: -1,
+                                Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.circular(16.0)),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(
+                                      8.0,
+                                    ),
+                                    child: CachedNetworkImage(
+                                      height: 150,
+                                      width: 150,
+                                      imageUrl: popularProducts.imageUrls[0],
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) =>
+                                          const Center(
+                                        child: CupertinoActivityIndicator(
+                                          radius: 30,
+                                          animating: true, // Control animation
+                                        ),
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error),
+                                    ),
                                   ),
                                 ),
-                                Text(
-                                  '8 000 888 so\'m',
-                                  style: TextStyle(
-                                    height: 1,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.0,
-                                    letterSpacing: -1.0,
-                                    decoration: TextDecoration.lineThrough,
-                                    decorationColor: Colors.black,
-                                    decorationStyle: TextDecorationStyle.solid,
+                                if (hasDiscount) // Only show discount if applicable
+                                  Positioned(
+                                    bottom: 0, // Adjust positioning as needed
+                                    left: 0, // Adjust positioning as needed
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0, vertical: 4.0),
+                                      decoration: const BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.only(
+                                          bottomLeft: Radius.circular(8.0),
+                                          topRight: Radius.circular(8.0),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        '-${popularProducts.productDiscount}%',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize:
+                                              12.0, // Adjust font size as needed
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  ' ~ 1200 \$',
-                                  style: TextStyle(
-                                    height: 1,
-                                    color: Colors.black,
-                                    fontSize: 14.0,
-                                    letterSpacing: -1.0,
-                                    decorationColor: Colors.black,
-                                  ),
-                                )
                               ],
                             ),
-                            const Spacer(),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 4.0, vertical: 4.0),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor,
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              child: const Icon(
-                                Iconsax.shopping_cart,
-                                color: Colors.white,
-                                size: 24.0,
+                            const SizedBox(height: 8.0),
+                            SizedBox(
+                              height: 20.0,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: 20,
+                                    width: 20,
+                                    decoration: BoxDecoration(
+                                      color: const Color.fromARGB(
+                                          255, 142, 224, 149),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 4.0),
+                                  Container(
+                                    height: 20,
+                                    width: 20,
+                                    decoration: BoxDecoration(
+                                      color: const Color.fromARGB(
+                                          255, 175, 194, 209),
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
+                            const SizedBox(height: 8.0),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Mahsulot nomi
+                                Text(
+                                  popularProducts.productName,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.0,
+                                    height: 1.2,
+                                    letterSpacing: 0,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                // Narx
+                                // Text('${product.price.toStringAsFixed(2)} so\'m'),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  RatingBar.builder(
+                                    itemBuilder: (context, index) => const Icon(
+                                        Icons.star,
+                                        color: Colors.amber),
+                                    initialRating: 5,
+                                    minRating: 0,
+                                    direction: Axis.horizontal,
+                                    allowHalfRating: true,
+                                    ignoreGestures: true,
+                                    itemCount: 5,
+                                    itemSize: 18.0,
+                                    onRatingUpdate: (rating) {},
+                                  ),
+                                  const SizedBox(width: 4.0),
+                                  const Text(
+                                    '5.0',
+                                    style: TextStyle(
+                                      fontSize: 16.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 8.0),
+                            const Spacer(),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    if (hasDiscount)
+                                      Text(
+                                        '${numberFormat.format(discountedPrice)} so\'m'
+                                            .replaceAll(',', ' '),
+                                        style: const TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.0,
+                                          height: 1,
+                                          letterSpacing: -1,
+                                        ),
+                                      ),
+                                    Text(
+                                      '${numberFormat.format(popularProducts.productPrice)} so\'m'
+                                          .replaceAll(',', ' '),
+                                      style: TextStyle(
+                                        height: 1,
+                                        color: hasDiscount
+                                            ? Colors.grey
+                                            : Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16.0,
+                                        letterSpacing: -1.0,
+                                        decoration: hasDiscount
+                                            ? TextDecoration.lineThrough
+                                            : TextDecoration.none,
+                                        decorationColor: Colors.black,
+                                        decorationStyle:
+                                            TextDecorationStyle.solid,
+                                      ),
+                                    ),
+                                    Text(
+                                      ' ~ ${numberFormat.format(1200)} \$'
+                                          .replaceAll(',', ' '),
+                                      style: const TextStyle(
+                                        height: 1,
+                                        color: Colors.black,
+                                        fontSize: 14.0,
+                                        letterSpacing: -1.0,
+                                        decorationColor: Colors.black,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                const Spacer(),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 4.0, vertical: 4.0),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).primaryColor,
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  child: const Icon(
+                                    Iconsax.shopping_cart,
+                                    color: Colors.white,
+                                    size: 24.0,
+                                  ),
+                                ),
+                              ],
+                            )
                           ],
-                        )
-                      ],
-                    ),
-                  );
-                },
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
             const SizedBox(height: 12),

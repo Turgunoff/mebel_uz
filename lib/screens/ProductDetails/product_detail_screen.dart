@@ -1,255 +1,90 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:mebel_uz/models/product_model.dart';
+import 'package:mebel_uz/screens/navigation_menu.dart';
 
-class ProductDetailScreen extends StatefulWidget {
-  const ProductDetailScreen({super.key});
+class ProductDetailScreen extends StatelessWidget {
+  final ProductModel product;
 
-  @override
-  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
-}
-
-class _ProductDetailScreenState extends State<ProductDetailScreen> {
-  final PageController _pageViewController = PageController(initialPage: 0);
-  int _activePage = 0;
-  @override
-  void dispose() {
-    super.dispose();
-    _pageViewController.dispose(); // dispose the PageController
-  }
+  const ProductDetailScreen({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Iconsax.arrow_left_2),
-          onPressed: () => Navigator.pop(context),
-        ),
-        actions: [
-          Row(
+        leadingWidth: 100,
+        leading: GestureDetector(
+          onTap: () {
+            Get.back();
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              IconButton(
-                icon: const Icon(Iconsax.share),
-                onPressed: () {},
+              Icon(
+                Iconsax.arrow_left_2,
+                size: 24,
+                color: Theme.of(context).primaryColor,
               ),
-              IconButton(
-                icon: const Icon(Iconsax.heart),
-                onPressed: () {},
+              Text(
+                'Назад',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ],
-          )
-        ],
-      ),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 10),
-                  SizedBox(
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height * 0.3,
-                    child: PageView.builder(
-                      pageSnapping: true,
-                      controller: _pageViewController,
-                      onPageChanged: (int index) {
-                        setState(() {
-                          _activePage = index;
-                        });
-                      },
-                      reverse: false,
-                      itemCount: 10,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.network(
-                              'widget.productModel.productImages![index]',
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  Container(
-                    color: Colors.white,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List<Widget>.generate(
-                          10,
-                          (index) => Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 4),
-                                child: InkWell(
-                                  onTap: () {
-                                    _pageViewController.animateToPage(index,
-                                        duration:
-                                            const Duration(milliseconds: 300),
-                                        curve: Curves.easeIn);
-                                  },
-                                  child: CircleAvatar(
-                                    radius: 4,
-                                    // check if a dot is connected to the current page
-                                    // if true, give it a different color
-                                    backgroundColor: _activePage == index
-                                        ? Theme.of(context).primaryColor
-                                        : Colors.grey.shade400,
-                                  ),
-                                ),
-                              )),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      RatingBarIndicator(
-                        rating: 4,
-                        direction: Axis.horizontal,
-                        itemCount: 5,
-                        itemSize: 16,
-                        itemBuilder: (context, _) => const Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
-                      ),
-                      const SizedBox(width: 5),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  //text bold
-                  Text(
-                    'widget.productModel.productName',
-                    maxLines: 2,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  //price product
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'widget.productModel.productPrice} so\'m',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  //text description
-                  const Text(
-                    'Description',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  //text description
-                  Text(
-                    'widget.productModel.productDescription',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.black54,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Container(
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    width: double.infinity,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Iconsax.car,
-                              size: 16,
-                            ),
-                            SizedBox(width: 5),
-                            Text(
-                              'Yetkazib berish',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        const Text('Yetkazib berish muddati:'),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: MediaQuery.sizeOf(context).width * 0.05),
-                          child: const Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Toshkent bo\'ylab 1 kunda,'),
-                              Text('Respublika bo\'ylab 3 kunda.'),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: InkWell(
-              onTap: () => Get.snackbar('', 'Savatchaga qo\'shildi',
-                  snackPosition: SnackPosition.TOP,
-                  backgroundColor: Colors.green,
-                  colorText: Colors.white,
-                  duration: const Duration(seconds: 2)),
-              child: Container(
-                height: 60,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                ),
-                width: double.infinity,
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Iconsax.shopping_cart,
-                      size: 24,
-                      color: Colors.white,
-                    ),
-                    SizedBox(width: 10),
-                    Text(
-                      'Savatga qo\'shish',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ],
-                ),
+        ),
+        actions: [
+          Icon(
+            Iconsax.message,
+            size: 24,
+            color: Theme.of(context).primaryColor,
+          ),
+          const SizedBox(width: 12),
+          Icon(
+            Iconsax.share,
+            size: 24,
+            color: Theme.of(context).primaryColor,
+          ),
+          const SizedBox(width: 12),
+        ],
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1),
+          child: Container(
+            color: Colors.grey.shade300,
+            height: 1,
+          ),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: MediaQuery.sizeOf(context).height * 0.5,
+              width: double.infinity,
+              child: CachedNetworkImage(
+                imageUrl: product.imageUrls[1],
+                fit: BoxFit.cover,
               ),
             ),
-          )
-        ],
+            ListView.builder(
+              itemCount: 50,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) => const ListTile(
+                title: Text('data'),
+              ),
+            )
+          ],
+        ),
       ),
+      bottomNavigationBar: NavigationMenu(),
     );
   }
 }

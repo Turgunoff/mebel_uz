@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:mebel_uz/screens/home/models/category_model.dart';
-import 'package:mebel_uz/screens/home/models/product_model.dart';
+import 'package:mebel_uz/models/product_model.dart';
 
 class HomeController extends GetxController {
   final _firestore = FirebaseFirestore.instance;
