@@ -1,16 +1,11 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:mebel_uz/constants/sized_box_extensions.dart';
 import 'package:mebel_uz/models/product_model.dart';
-import 'package:mebel_uz/screens/navigation_menu.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -152,7 +147,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             horizontal: 8.0, vertical: 4.0),
                         decoration: BoxDecoration(
                           color: Colors.red.shade900,
-                          borderRadius: BorderRadius.only(
+                          borderRadius: const BorderRadius.only(
                             topRight: Radius.circular(8.0),
                           ),
                         ),
@@ -199,7 +194,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             Text(
                               '${numberFormat.format(discountedPrice)} so\'m'
                                   .replaceAll(',', ' '),
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 26,
                                   letterSpacing: -1.0,
                                   fontWeight: FontWeight.w500,
@@ -236,7 +231,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         ],
                       ),
                       Container(
-                        padding: EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8.0),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(8),
@@ -246,7 +241,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
+                                const Text(
                                   'Описание',
                                   style: TextStyle(
                                     fontSize: 16.0,
@@ -264,7 +259,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               ],
                             ),
                             12.kH,
-                            Row(
+                            const Row(
                               children: [
                                 Expanded(
                                   child: Text(
@@ -285,42 +280,44 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       ),
                       12.kH,
                       DefaultTabController(
-                        // TabView uchun DefaultTabController kerak
                         length: 2, // Tablar soni
                         child: Column(
                           children: [
-                            TabBar(
-                              labelColor: Colors.black,
-                              unselectedLabelColor: Colors.black,
-                              indicator: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                  10,
-                                ),
-                                color: Colors.red,
+                            Container(
+                              height: 35,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: Colors.grey[300],
                               ),
-                              tabs: [
-                                Tab(
-                                  text: 'O\'lchami',
+                              child: TabBar(
+                                indicator: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
-                                Tab(text: 'Tafsilotlari'),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 200, // TabBarView balandligi
-                              child: TabBarView(
-                                children: [
-                                  // O'lchami tab content
-                                  Center(
-                                      child:
-                                          Text('O\'lchami haqida ma\'lumot')),
-
-                                  // Tafsilotlari tab content
-                                  Center(
-                                      child: Text(
-                                          'Tafsilotlari haqida ma\'lumot')),
+                                indicatorSize: TabBarIndicatorSize.tab,
+                                dividerColor: Colors.transparent,
+                                padding: const EdgeInsets.all(2),
+                                labelStyle: const TextStyle(
+                                    color: Colors.black, fontSize: 16),
+                                tabs: const [
+                                  Tab(
+                                    text: 'Размеры',
+                                  ),
+                                  Tab(
+                                    text: 'Характеристика',
+                                  ),
                                 ],
                               ),
                             ),
+                            const SizedBox(
+                              height: 200,
+                              child: TabBarView(
+                                children: [
+                                  Center(child: Text('data')),
+                                  Center(child: Text('data')),
+                                ],
+                              ),
+                            )
                           ],
                         ),
                       ),
