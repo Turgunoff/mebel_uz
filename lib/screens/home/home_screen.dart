@@ -631,7 +631,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                       ),
                                       child: Text(
-                                        '-${popularProducts.productDiscount}%',
+                                        '-${popularProducts.productDiscount?.toStringAsFixed(0)}%',
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.w500,
