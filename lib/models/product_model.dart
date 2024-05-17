@@ -28,4 +28,13 @@ class ProductModel {
       imageUrls: List<String>.from(json['imageUrls']),
     );
   }
+  Map<String, dynamic> toJson() => {
+        'productId': productId,
+        'productName': productName,
+        'productDesc': productDesc,
+        'productPrice': productPrice,
+        'productDiscount': productDiscount,
+        'productColors': productColors,
+        'imageUrls': imageUrls,
+      };
 }

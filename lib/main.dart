@@ -5,21 +5,38 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mebel_uz/firebase_options.dart';
+import 'package:mebel_uz/models/product_hive_model.dart';
 import 'package:mebel_uz/models/product_model.dart';
 import 'package:mebel_uz/screens/splash/splash_screen.dart';
 
 void main() async {
-  await Hive.initFlutter(); // Hive'ni ishga tushirish
-  await Hive.openBox<ProductModel>('favorites'); // Sevimlilar uchun box ochish
-  runApp(const MyApp());
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  await FirebaseAppCheck.instance.activate(
-    webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
-    androidProvider: AndroidProvider.debug,
-    appleProvider: AppleProvider.appAttest,
-  );
+  // Hive'ni init qilish
+  try {
+    await Hive.initFlutter();
+    Hive.registerAdapter(ProductHiveModelAdapter());
+    await Hive.openBox<ProductModel>('favorites');
+  } catch (e) {
+    print('Hiveni ishga tushirishda xatolik: $e');
+  }
+
+  WidgetsFlutterBinding.ensureInitialized(); // Flutterni ishga tushirish
+
+  // Firebase'ni init qilish
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+
+    await FirebaseAppCheck.instance.activate(
+      webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
+      androidProvider: AndroidProvider.debug,
+      appleProvider: AppleProvider.appAttest,
+    );
+  } catch (e) {
+    print('Firebase ni ishga tushirishda xatolik: $e');
+  }
+
+  // Tizim UI Overlay stilini sozlash
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
