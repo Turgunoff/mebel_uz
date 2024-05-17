@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:autoscale_tabbarview/autoscale_tabbarview.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +32,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   final numberFormat = NumberFormat('#,##0');
 
+  bool _switchValue = false;
+  bool showMoreDetails = false;
+
   @override
   Widget build(BuildContext context) {
     final hasDiscount = widget.product.productDiscount! > 0;
@@ -36,6 +42,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         (widget.product.productPrice! * widget.product.productDiscount!) / 100;
     final discountedPrice = widget.product.productPrice! - discountAmount;
     return Scaffold(
+      backgroundColor: const Color(0xFFFFFBFF),
       appBar: AppBar(
         leadingWidth: 100,
         leading: GestureDetector(
@@ -166,7 +173,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             ),
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
               child: Column(
                 children: [
                   Row(
@@ -178,7 +185,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             height: 0,
-                            fontSize: 20,
+                            fontSize: 24,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -195,7 +202,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               '${numberFormat.format(discountedPrice)} so\'m'
                                   .replaceAll(',', ' '),
                               style: const TextStyle(
-                                  fontSize: 26,
+                                  fontSize: 32,
                                   letterSpacing: -1.0,
                                   fontWeight: FontWeight.w500,
                                   color: Colors.black),
@@ -219,7 +226,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               height: 1,
                               color: hasDiscount ? Colors.grey : Colors.black,
                               fontWeight: FontWeight.bold,
-                              fontSize: hasDiscount ? 18.0 : 26.0,
+                              fontSize: hasDiscount ? 24.0 : 32.0,
                               letterSpacing: -1.0,
                               decoration: hasDiscount
                                   ? TextDecoration.lineThrough
@@ -230,8 +237,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           ),
                         ],
                       ),
+                      12.kH,
                       Container(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(12.0),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(8),
@@ -244,14 +252,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 const Text(
                                   'Описание',
                                   style: TextStyle(
-                                    fontSize: 16.0,
+                                    fontSize: 18.0,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
                                 Text(
                                   'Читать всё',
                                   style: TextStyle(
-                                    fontSize: 16.0,
+                                    fontSize: 18.0,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.blue.shade900,
                                   ),
@@ -267,8 +275,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                     maxLines: 4,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.w400,
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.normal,
                                       height: 1.2,
                                     ),
                                   ),
@@ -292,13 +300,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               child: TabBar(
                                 indicator: BoxDecoration(
                                   color: Colors.white,
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(6),
                                 ),
                                 indicatorSize: TabBarIndicatorSize.tab,
                                 dividerColor: Colors.transparent,
                                 padding: const EdgeInsets.all(2),
                                 labelStyle: const TextStyle(
-                                    color: Colors.black, fontSize: 16),
+                                    color: Colors.black, fontSize: 18),
                                 tabs: const [
                                   Tab(
                                     text: 'Размеры',
@@ -309,19 +317,175 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 ],
                               ),
                             ),
-                            const SizedBox(
-                              height: 200,
-                              child: TabBarView(
-                                children: [
-                                  Center(child: Text('data')),
-                                  Center(child: Text('data')),
-                                ],
-                              ),
+                            AutoScaleTabBarView(
+                              children: [
+                                ListView.separated(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: 3,
+                                  itemBuilder: (context, index) => ListTile(
+                                    title: const Text(
+                                      'Ширина, см',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    trailing: Text(
+                                      '220',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.grey[600],
+                                      ),
+                                    ),
+                                  ),
+                                  separatorBuilder: (context, index) => Divider(
+                                    height: 1,
+                                    color: Colors.grey.shade300,
+                                  ),
+                                ),
+                                ListView.separated(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: 7,
+                                  itemBuilder: (context, index) => ListTile(
+                                    title: const Text(
+                                      'Ширина, см',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    trailing: Text(
+                                      '220',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.grey[600],
+                                      ),
+                                    ),
+                                  ),
+                                  separatorBuilder: (context, index) => Divider(
+                                    height: 1,
+                                    color: Colors.grey.shade300,
+                                  ),
+                                ),
+                              ],
                             )
                           ],
                         ),
                       ),
                     ],
+                  ),
+                  Divider(
+                    height: 1,
+                    color: Colors.grey.shade300,
+                  ),
+                  12.kH,
+                  Container(
+                    padding: const EdgeInsets.all(12.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Column(
+                      children: [
+                        const Row(
+                          children: [
+                            Text(
+                              'Дополнительные услуги',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                        12.kH,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'Сборка товара',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.black,
+                              ),
+                            ),
+                            CupertinoSwitch(
+                              // iOS uslubidagi switch
+                              value:
+                                  _switchValue, // Switchning holati (yoqilgan/o'chirilgan)
+                              onChanged: (bool value) {
+                                setState(() {
+                                  _switchValue = value;
+                                  // Switch holati o'zgarganda bajarilishi kerak bo'lgan amallarni bu yerga qo'shing
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                        12.kH,
+                        const Row(
+                          children: [
+                            Text(
+                              'Стоимость: 250 000 so\'m',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                        12.kH,
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              showMoreDetails = !showMoreDetails;
+                            });
+                          },
+                          child: Row(
+                            children: [
+                              Text(
+                                'Подробнее об услуге',
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.blue[900],
+                                ),
+                              ),
+                              Icon(
+                                showMoreDetails
+                                    ? Icons.arrow_drop_up
+                                    : Icons.arrow_drop_down,
+                                color: Colors.blue[900],
+                              ),
+                            ],
+                          ),
+                        ),
+                        12.kH,
+                        if (showMoreDetails)
+                          const Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    color: Colors.black,
+                                    height: 1.2,
+                                  ),
+                                  'Воспользуйтесь сборкой товара на дому! Наш специалист в кратчайшие сроки произведёт сборку товара и сэкономит Ваше время и силы.',
+                                ),
+                              ),
+                            ],
+                          ),
+                        20.kH,
+                      ],
+                    ),
                   )
                 ],
               ),

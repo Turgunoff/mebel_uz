@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -46,8 +47,10 @@ class CategoriesScreen extends StatelessWidget {
                   height: 50,
                   fit: BoxFit.contain,
                   imageUrl: category.categoryImage,
-                  placeholder: (context, url) =>
-                      const CircularProgressIndicator(),
+                  placeholder: (context, url) => const SizedBox(
+                      width: 30,
+                      height: 30,
+                      child: CupertinoActivityIndicator()),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
                 title: Text(
