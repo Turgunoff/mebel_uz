@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:autoscale_tabbarview/autoscale_tabbarview.dart';
 import 'package:cached_network_image/cached_network_image.dart';

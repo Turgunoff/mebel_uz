@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mebel_uz/screens/cart/cart_screen.dart';
@@ -70,8 +69,8 @@ class NavigationController extends GetxController {
   final screens = [
     HomeScreen(),
     CategoriesScreen(),
-    FavoriteScreen(),
-    CartScreen(),
-    ProfileScreen(),
+    const FavoriteScreen(),
+    const CartScreen(),
+    const ProfileScreen(),
   ];
 }

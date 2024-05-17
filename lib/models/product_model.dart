@@ -25,7 +25,7 @@ class ProductModel {
       productPrice: (json['productPrice'] as num).toDouble(),
       productDiscount: (json['productDiscount'] as num).toDouble(),
       productColors: List<String>.from(json['productColors']) as List<String>?,
-      imageUrls: List<String>.from(json['imageUrls']) as List<String>,
+      imageUrls: List<String>.from(json['imageUrls']),
     );
   }
 }

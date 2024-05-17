@@ -3,10 +3,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mebel_uz/firebase_options.dart';
+import 'package:mebel_uz/models/product_model.dart';
 import 'package:mebel_uz/screens/splash/splash_screen.dart';
 
 void main() async {
+  await Hive.initFlutter(); // Hive'ni ishga tushirish
+  await Hive.openBox<ProductModel>('favorites'); // Sevimlilar uchun box ochish
   runApp(const MyApp());
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
