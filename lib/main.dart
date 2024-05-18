@@ -6,37 +6,27 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mebel_uz/firebase_options.dart';
 import 'package:mebel_uz/models/product_hive_model.dart';
-import 'package:mebel_uz/models/product_model.dart';
 import 'package:mebel_uz/screens/splash/splash_screen.dart';
 
 void main() async {
-  // Hive'ni init qilish
-  try {
-    await Hive.initFlutter();
-    Hive.registerAdapter(ProductHiveModelAdapter());
-    await Hive.openBox<ProductModel>('favorites');
-  } catch (e) {
-    print('Hiveni ishga tushirishda xatolik: $e');
-  }
+  await Hive.initFlutter(); // Hive'ni ishga tushirish
 
-  WidgetsFlutterBinding.ensureInitialized(); // Flutterni ishga tushirish
+  Hive.registerAdapter(
+      ProductHiveModelAdapter()); // Adapterni ro'yxatdan o'tkazish
+  await Hive.openBox<ProductHiveModel>(
+      'favorites'); // Sevimlilar uchun box ochish
 
-  // Firebase'ni init qilish
-  try {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+  WidgetsFlutterBinding.ensureInitialized();
 
-    await FirebaseAppCheck.instance.activate(
-      webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
-      androidProvider: AndroidProvider.debug,
-      appleProvider: AppleProvider.appAttest,
-    );
-  } catch (e) {
-    print('Firebase ni ishga tushirishda xatolik: $e');
-  }
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
-  // Tizim UI Overlay stilini sozlash
+  await FirebaseAppCheck.instance.activate(
+    webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
+    androidProvider: AndroidProvider.debug,
+    appleProvider: AppleProvider.appAttest,
+  );
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -45,6 +35,7 @@ void main() async {
       systemNavigationBarIconBrightness: Brightness.dark,
     ),
   );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

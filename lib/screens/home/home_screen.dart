@@ -6,7 +6,9 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:mebel_uz/constants/sized_box_extensions.dart';
+import 'package:mebel_uz/models/product_hive_model.dart';
 import 'package:mebel_uz/screens/ProductDetails/product_detail_screen.dart';
+import 'package:mebel_uz/screens/favorite/controller/controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'controller/home_controller.dart';
@@ -20,6 +22,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final controller = Get.put(HomeController());
+  final favoritesController = Get.put(FavoritesController());
 
   final numberFormat = NumberFormat('#,##0');
 
@@ -498,6 +501,32 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                           ),
+                        Positioned(
+                          top: 4,
+                          right: 4,
+                          child: Obx(() => GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: () {
+                                  favoritesController
+                                      .toggleFavorite(popularProducts);
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade400,
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  child: Icon(
+                                    favoritesController
+                                            .isFavorite(popularProducts)
+                                        ? Icons.favorite
+                                        : Icons.favorite_border,
+                                    color: Colors.yellow,
+                                    size: 24,
+                                  ),
+                                ),
+                              )),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 8.0),
@@ -844,7 +873,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Obx(() => GestureDetector(
                                 behavior: HitTestBehavior.opaque,
                                 onTap: () {
-                                  // controller.toggleFavorite(popularProducts);
+                                  favoritesController
+                                      .toggleFavorite(popularProducts);
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.all(4),
@@ -853,7 +883,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                     borderRadius: BorderRadius.circular(50),
                                   ),
                                   child: Icon(
-                                    Icons.favorite_border,
+                                    favoritesController
+                                            .isFavorite(popularProducts)
+                                        ? Icons.favorite
+                                        : Icons.favorite_border,
                                     color: Colors.yellow,
                                     size: 24,
                                   ),

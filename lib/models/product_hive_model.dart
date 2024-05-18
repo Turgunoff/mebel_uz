@@ -1,23 +1,24 @@
 import 'package:hive/hive.dart';
+import 'package:mebel_uz/models/product_model.dart';
 
 part 'product_hive_model.g.dart'; // Adapter generatsiyasi uchun
 
 @HiveType(typeId: 0) // TypeAdapter uchun noyob ID
 class ProductHiveModel extends HiveObject {
   @HiveField(0)
-  final String productId;
+  late String productId;
   @HiveField(1)
-  final String productName;
+  late String productName;
   @HiveField(2)
-  final String productDesc;
+  late String productDesc;
   @HiveField(3)
-  final double? productPrice;
+  late double? productPrice;
   @HiveField(4)
-  final double? productDiscount;
+  late double? productDiscount;
   @HiveField(5)
-  final List<String>? productColors;
+  late List<String>? productColors;
   @HiveField(6)
-  final List<String> imageUrls;
+  late List<String> imageUrls;
 
   ProductHiveModel({
     required this.productId,
@@ -28,4 +29,14 @@ class ProductHiveModel extends HiveObject {
     required this.productColors,
     required this.imageUrls,
   });
+
+  ProductHiveModel.fromProductModel(ProductModel productModel) {
+    productId = productModel.productId;
+    productName = productModel.productName;
+    productDesc = productModel.productDesc;
+    productPrice = productModel.productPrice;
+    productDiscount = productModel.productDiscount;
+    productColors = productModel.productColors;
+    imageUrls = productModel.imageUrls;
+  }
 }
