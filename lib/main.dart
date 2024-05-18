@@ -3,18 +3,19 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mebel_uz/firebase_options.dart';
 import 'package:mebel_uz/models/product_hive_model.dart';
 import 'package:mebel_uz/screens/splash/splash_screen.dart';
 
 void main() async {
+  await GetStorage.init(); // GetStorage ni ishga tushirish
   await Hive.initFlutter(); // Hive'ni ishga tushirish
 
   Hive.registerAdapter(
       ProductHiveModelAdapter()); // Adapterni ro'yxatdan o'tkazish
-  await Hive.openBox<ProductHiveModel>(
-      'favorites'); // Sevimlilar uchun box ochish
+  await Hive.openBox<String>('favorites'); // Sevimlilar uchun box ochish
 
   WidgetsFlutterBinding.ensureInitialized();
 

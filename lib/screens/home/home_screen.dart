@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:mebel_uz/constants/sized_box_extensions.dart';
-import 'package:mebel_uz/models/product_hive_model.dart';
 import 'package:mebel_uz/screens/ProductDetails/product_detail_screen.dart';
 import 'package:mebel_uz/screens/favorite/controller/controller.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -507,8 +506,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Obx(() => GestureDetector(
                                 behavior: HitTestBehavior.opaque,
                                 onTap: () {
-                                  favoritesController
-                                      .toggleFavorite(popularProducts);
+                                  favoritesController.toggleFavorite(
+                                      popularProducts.productId);
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.all(4),
@@ -517,8 +516,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     borderRadius: BorderRadius.circular(50),
                                   ),
                                   child: Icon(
-                                    favoritesController
-                                            .isFavorite(popularProducts)
+                                    favoritesController.isFavorite(
+                                            popularProducts.productId)
                                         ? Icons.favorite
                                         : Icons.favorite_border,
                                     color: Colors.yellow,
@@ -873,8 +872,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Obx(() => GestureDetector(
                                 behavior: HitTestBehavior.opaque,
                                 onTap: () {
-                                  favoritesController
-                                      .toggleFavorite(popularProducts);
+                                  favoritesController.toggleFavorite(popularProducts
+                                      .productId); // Mahsulot ID sini yuborish;
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.all(4),
@@ -883,8 +882,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     borderRadius: BorderRadius.circular(50),
                                   ),
                                   child: Icon(
-                                    favoritesController
-                                            .isFavorite(popularProducts)
+                                    favoritesController.isFavorite(
+                                            popularProducts
+                                                .productId) // ID ni tekshirish
                                         ? Icons.favorite
                                         : Icons.favorite_border,
                                     color: Colors.yellow,
