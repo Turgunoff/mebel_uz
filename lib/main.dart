@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mebel_uz/firebase_options.dart';
-import 'package:mebel_uz/models/product_hive_model.dart';
 import 'package:mebel_uz/screens/splash/splash_screen.dart';
 
 void main() async {
