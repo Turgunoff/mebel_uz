@@ -506,8 +506,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Obx(() => GestureDetector(
                                 behavior: HitTestBehavior.opaque,
                                 onTap: () {
-                                  favoritesController.toggleFavorite(
-                                      popularProducts.productId);
+                                  favoritesController
+                                      .toggleFavorite(popularProducts);
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.all(4),
@@ -788,6 +788,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 controller.popularProducts[index].productDiscount! > 0;
 
             final popularProducts = controller.popularProducts[index];
+            final productPriceInDollars =
+                controller.popularProducts[index].productPrice! /
+                    controller.usdRate; // Dollar kursiga nisbat
             return GestureDetector(
               onTap: () {
                 Get.to(
@@ -872,8 +875,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Obx(() => GestureDetector(
                                 behavior: HitTestBehavior.opaque,
                                 onTap: () {
-                                  favoritesController.toggleFavorite(popularProducts
-                                      .productId); // Mahsulot ID sini yuborish;
+                                  favoritesController
+                                      .toggleFavorite(popularProducts);
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.all(4),
@@ -1005,7 +1008,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             Text(
-                              ' ~ ${numberFormat.format(1200)} \$'
+                              ' ~ ${numberFormat.format(productPriceInDollars)} \$'
                                   .replaceAll(',', ' '),
                               style: const TextStyle(
                                 height: 1,

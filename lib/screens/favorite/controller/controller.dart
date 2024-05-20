@@ -4,7 +4,9 @@ import 'package:mebel_uz/models/product_model.dart';
 
 class FavoritesController extends GetxController {
   final box = GetStorage('favoritesBox');
-  var favorites = <ProductModel>[].obs;
+  final _favorites = <ProductModel>[].obs;
+
+  List<ProductModel> get favorites => _favorites.toList();
 
   @override
   void onInit() {
@@ -12,37 +14,30 @@ class FavoritesController extends GetxController {
     _loadFavorites();
   }
 
-  void saveProduct(ProductModel product) {
-    if (favorites.contains(product)) {
-      // Agar mahsulot allaqachon sevimlilarda bo'lsa, o'chirish
-      box.remove(product.productId.toString());
-      favorites.remove(product);
+  void toggleFavorite(ProductModel product) {
+    if (isFavorite(product.productId)) {
+      removeFavorite(product.productId);
     } else {
-      // Aks holda, mahsulotni qo'shish
-      box.write(product.productId.toString(), product.toJson());
-      favorites.add(product);
+      box.write(product.productId, product.toJson());
+      _favorites.add(product);
     }
-    update(); // UI ni yangilash uchun
-  }
-
-  void _loadFavorites() {
-    favorites.value = getFavorites();
-  }
-
-  List<ProductModel> getFavorites() {
-    return box.getValues()?.entries.map((entry) {
-          return ProductModel.fromJson(entry.value as Map<String, dynamic>);
-        }).toList() ??
-        [];
-  }
-
-  void removeFavorite(int productId) {
-    box.remove(productId.toString());
-    favorites.removeWhere((p) => p.productId == productId);
     update();
   }
 
-  bool isFavorite(int productId) {
+  void _loadFavorites() {
+    List<dynamic> favoritesData = box.read('favorites') ?? [];
+    _favorites.value = favoritesData
+        .map((productJson) => ProductModel.fromJson(productJson))
+        .toList();
+  }
+
+  void removeFavorite(String productId) {
+    box.remove(productId.toString());
+    _favorites.removeWhere((p) => p.productId == productId);
+    update();
+  }
+
+  bool isFavorite(String productId) {
     return _favorites.any((p) => p.productId == productId);
   }
 }

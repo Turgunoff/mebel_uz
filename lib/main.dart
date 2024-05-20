@@ -11,11 +11,6 @@ import 'package:mebel_uz/screens/splash/splash_screen.dart';
 
 void main() async {
   await GetStorage.init(); // GetStorage ni ishga tushirish
-  await Hive.initFlutter(); // Hive'ni ishga tushirish
-
-  Hive.registerAdapter(
-      ProductHiveModelAdapter()); // Adapterni ro'yxatdan o'tkazish
-  await Hive.openBox<String>('favorites'); // Sevimlilar uchun box ochish
 
   WidgetsFlutterBinding.ensureInitialized();
 

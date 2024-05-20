@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:mebel_uz/screens/home/models/category_model.dart';
 import 'package:mebel_uz/models/product_model.dart';
+import 'package:http/http.dart' as http;
 
 class HomeController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -13,11 +16,29 @@ class HomeController extends GetxController {
   // Loading holati
   final isLoading = true.obs;
 
+  double usdRate = 0; // USD kursi uchun o'zgaruvchi
+
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
     fetchCategories();
     fetchPopularProducts();
+    usdRate = await getUsdRate();
+  }
+
+  Future<double> getUsdRate() async {
+    final response = await http
+        .get(Uri.parse('https://cbu.uz/oz/arkhiv-kursov-valyut/json/'));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body);
+      for (var item in data) {
+        if (item['Ccy'] == 'USD') {
+          return double.parse(item['Rate']);
+        }
+      }
+    }
+    throw Exception('Failed to load USD rate');
   }
 
   // Kategoriyalarni olish
