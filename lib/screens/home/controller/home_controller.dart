@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:mebel_uz/screens/home/models/category_model.dart';
+import 'package:mebel_uz/models/category_model.dart';
 import 'package:mebel_uz/models/product_model.dart';
 import 'package:http/http.dart' as http;
 

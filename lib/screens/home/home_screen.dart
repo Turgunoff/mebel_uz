@@ -6,8 +6,10 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:mebel_uz/constants/sized_box_extensions.dart';
-import 'package:mebel_uz/screens/ProductDetails/product_detail_screen.dart';
+import 'package:mebel_uz/screens/product_details/product_detail_screen.dart';
 import 'package:mebel_uz/screens/favorite/controller/controller.dart';
+import 'package:mebel_uz/screens/product_list_screen/controller/product_list_controller.dart';
+import 'package:mebel_uz/screens/product_list_screen/product_list_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'controller/home_controller.dart';
@@ -1061,53 +1063,65 @@ class _HomeScreenState extends State<HomeScreen> {
               : controller.categories.length,
           itemBuilder: (BuildContext context, int index) {
             final category = controller.categories[index];
-            return Container(
-              padding: const EdgeInsets.all(4.0),
-              margin: const EdgeInsets.all(4.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4.0),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Row(
-                children: <Widget>[
-                  // Category Image
-                  CachedNetworkImage(
-                    height: 40,
-                    width: 40,
-                    imageUrl: category.categoryImage,
-                    fit: BoxFit.contain,
-                    placeholder: (context, url) => const Center(
-                      child: CupertinoActivityIndicator(
-                        radius: 10,
-                        animating: true,
+            final productListController = Get.put(ProductListController());
+            return GestureDetector(
+              onTap: () {
+                productListController
+                    .fetchProductsByCategory(category.categoryId.toString());
+                productListController.categoryName.value =
+                    category.categoryNameRu;
+                Get.to(
+                  () => ProductListScreen(),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.all(4.0),
+                margin: const EdgeInsets.all(4.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4.0),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.1),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: <Widget>[
+                    // Category Image
+                    CachedNetworkImage(
+                      height: 40,
+                      width: 40,
+                      imageUrl: category.categoryImage,
+                      fit: BoxFit.contain,
+                      placeholder: (context, url) => const Center(
+                        child: CupertinoActivityIndicator(
+                          radius: 10,
+                          animating: true,
+                        ),
+                      ),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
+                    const SizedBox(width: 8.0),
+                    // Category Name
+                    Expanded(
+                      child: Text(
+                        maxLines: 2,
+                        category.categoryNameRu,
+                        style: const TextStyle(
+                          fontSize: 14.0,
+                          letterSpacing: -1,
+                          height: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                  ),
-                  const SizedBox(width: 8.0),
-                  // Category Name
-                  Expanded(
-                    child: Text(
-                      maxLines: 2,
-                      category.categoryNameRu,
-                      style: const TextStyle(
-                        fontSize: 14.0,
-                        letterSpacing: -1,
-                        height: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           },

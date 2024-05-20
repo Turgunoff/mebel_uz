@@ -5,7 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
-import 'package:mebel_uz/screens/ProductDetails/product_detail_screen.dart';
+import 'package:mebel_uz/screens/product_details/product_detail_screen.dart';
 import 'package:mebel_uz/screens/favorite/controller/controller.dart';
 import 'package:mebel_uz/screens/home/controller/home_controller.dart';
 

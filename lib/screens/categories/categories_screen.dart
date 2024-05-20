@@ -4,11 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mebel_uz/screens/categories/controller/categories_controller.dart';
+import 'package:mebel_uz/screens/product_list_screen/controller/product_list_controller.dart';
+import 'package:mebel_uz/screens/product_list_screen/product_list_screen.dart';
 
 class CategoriesScreen extends StatelessWidget {
   CategoriesScreen({super.key});
 
   final controller = Get.put(CategoriesController());
+  final productListController = Get.put(ProductListController());
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +69,13 @@ class CategoriesScreen extends StatelessWidget {
                 ),
                 onTap: () {
                   // Add your navigation logic here
+                  productListController
+                      .fetchProductsByCategory(category.categoryId.toString());
+                  productListController.categoryName.value =
+                      category.categoryNameRu;
+                  Get.to(
+                    () => ProductListScreen(),
+                  );
                 },
               );
             },
