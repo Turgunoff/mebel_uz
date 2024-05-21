@@ -900,7 +900,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8.0),
+                    8.kH,
                     SizedBox(
                       height: 20.0,
                       child: Row(
@@ -925,7 +925,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 8.0),
+                    8.kH,
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -973,7 +973,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 8.0),
+                    8.kH,
                     const Spacer(),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,

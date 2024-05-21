@@ -5,6 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import 'package:mebel_uz/constants/sized_box_extensions.dart';
 import 'package:mebel_uz/screens/product_details/product_detail_screen.dart';
 import 'package:mebel_uz/screens/favorite/controller/controller.dart';
 import 'package:mebel_uz/screens/home/controller/home_controller.dart';
@@ -23,9 +24,29 @@ class FavoriteScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          centerTitle: true,
+          centerTitle: false,
           elevation: 0,
-          title: const Text('Избранное'),
+          title: Obx(() => Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  const Text(
+                    'Избранное',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  12.kW,
+                  if (favoritesController.favorites.isNotEmpty)
+                    Text(
+                      '${favoritesController.favorites.length.toString()} товар',
+                      style: TextStyle(
+                        color: Colors.grey.withOpacity(1),
+                        fontSize: 16,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                ],
+              )),
         ),
         body: Obx(
           () => favoritesController.favorites.isEmpty
