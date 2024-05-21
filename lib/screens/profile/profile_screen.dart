@@ -71,14 +71,14 @@ class ProfileScreen extends StatelessWidget {
                 Iconsax.shop,
                 color: Theme.of(context).primaryColor,
               ),
-              title: Text(
+              title: const Text(
                 'Магазины',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 18,
                 ),
               ),
-              trailing: Icon(
+              trailing: const Icon(
                 Iconsax.arrow_right_3,
                 color: Colors.grey,
               ),
@@ -89,14 +89,14 @@ class ProfileScreen extends StatelessWidget {
                 Iconsax.message,
                 color: Theme.of(context).primaryColor,
               ),
-              title: Text(
+              title: const Text(
                 'Связь с нами',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 18,
                 ),
               ),
-              trailing: Icon(
+              trailing: const Icon(
                 Iconsax.arrow_right_3,
                 color: Colors.grey,
               ),
@@ -107,14 +107,14 @@ class ProfileScreen extends StatelessWidget {
                 Iconsax.link_1,
                 color: Theme.of(context).primaryColor,
               ),
-              title: Text(
+              title: const Text(
                 'Социалные сети',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 18,
                 ),
               ),
-              trailing: Icon(
+              trailing: const Icon(
                 Iconsax.arrow_right_3,
                 color: Colors.grey,
               ),
@@ -125,14 +125,14 @@ class ProfileScreen extends StatelessWidget {
                 Iconsax.info_circle,
                 color: Theme.of(context).primaryColor,
               ),
-              title: Text(
+              title: const Text(
                 'О приложении',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 18,
                 ),
               ),
-              trailing: Icon(
+              trailing: const Icon(
                 Iconsax.arrow_right_3,
                 color: Colors.grey,
               ),
