@@ -29,6 +29,7 @@ class FavoritesController extends GetxController {
     _favorites.value = favoritesData
         .map((productJson) => ProductModel.fromJson(productJson))
         .toList();
+    update();
   }
 
   void removeFavorite(String productId) {

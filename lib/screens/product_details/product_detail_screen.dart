@@ -6,12 +6,13 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:mebel_uz/constants/sized_box_extensions.dart';
+import 'package:mebel_uz/screens/favorite/controller/controller.dart';
 import 'package:mebel_uz/screens/product_details/controller/controller.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final String productId;
-  ProductDetailScreen({super.key, required this.productId});
+  const ProductDetailScreen({super.key, required this.productId});
 
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
@@ -20,6 +21,7 @@ class ProductDetailScreen extends StatefulWidget {
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   final _controller = Get.put(ProductDetailsController());
   final PageController _pageController = PageController();
+  final favoritesController = Get.put(FavoritesController());
 
   @override
   void dispose() {
@@ -29,18 +31,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   final numberFormat = NumberFormat('#,##0');
 
-  bool _switchValue = false;
-  bool showMoreDetails = false;
-
   @override
   Widget build(BuildContext context) {
     // String ko'rinishidagi productId ni uzatamiz
     _controller.fetchProductDetails(widget.productId);
-
-    // final hasDiscount = _controller.product.value?.productDiscount > 0;
-    // final discountAmount =
-    //     (widget.product.productPrice! * widget.product.productDiscount!) / 100;
-    // final discountedPrice = widget.product.productPrice! - discountAmount;
     return Scaffold(
       backgroundColor: const Color(0xFFFFFBFF),
       appBar: AppBar(
@@ -162,6 +156,33 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                       ),
                                     ),
                                   ),
+                                ),
+                                Positioned(
+                                  top: 10,
+                                  right: 10,
+                                  child: Obx(() => GestureDetector(
+                                        behavior: HitTestBehavior.opaque,
+                                        onTap: () {
+                                          favoritesController
+                                              .toggleFavorite(product);
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.all(4),
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey.shade400,
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                          ),
+                                          child: Icon(
+                                            favoritesController.isFavorite(product
+                                                    .productId) // ID ni tekshirish
+                                                ? Icons.favorite
+                                                : Icons.favorite_border,
+                                            color: Colors.yellow,
+                                            size: 28,
+                                          ),
+                                        ),
+                                      )),
                                 ),
                                 if (hasDiscount) // Only show discount if applicable
                                   Positioned(
@@ -483,17 +504,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                               color: Colors.black,
                                             ),
                                           ),
-                                          CupertinoSwitch(
-                                            // iOS uslubidagi switch
-                                            value:
-                                                _switchValue, // Switchning holati (yoqilgan/o'chirilgan)
-                                            onChanged: (bool value) {
-                                              setState(() {
-                                                _switchValue = value;
-                                                // Switch holati o'zgarganda bajarilishi kerak bo'lgan amallarni bu yerga qo'shing
-                                              });
-                                            },
-                                          ),
+                                          Obx(() => CupertinoSwitch(
+                                                value: _controller.isSwitch
+                                                    .value, // Switchning holati (yoqilgan/o'chirilgan)
+                                                onChanged: (bool value) {
+                                                  _controller.isSwitch.value =
+                                                      value;
+                                                },
+                                              )),
                                         ],
                                       ),
                                       12.kH,
@@ -509,33 +527,35 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                         ],
                                       ),
                                       12.kH,
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            showMoreDetails = !showMoreDetails;
-                                          });
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              'Подробнее об услуге',
-                                              style: TextStyle(
-                                                fontSize: 16.0,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.blue[900],
-                                              ),
+                                      Obx(() => GestureDetector(
+                                            onTap: () {
+                                              _controller
+                                                      .showMoreDetails.value =
+                                                  !_controller
+                                                      .showMoreDetails.value;
+                                            },
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  'Подробнее об услуге',
+                                                  style: TextStyle(
+                                                    fontSize: 16.0,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.blue[900],
+                                                  ),
+                                                ),
+                                                Icon(
+                                                  _controller
+                                                          .showMoreDetails.value
+                                                      ? Icons.arrow_drop_up
+                                                      : Icons.arrow_drop_down,
+                                                  color: Colors.blue[900],
+                                                ),
+                                              ],
                                             ),
-                                            Icon(
-                                              showMoreDetails
-                                                  ? Icons.arrow_drop_up
-                                                  : Icons.arrow_drop_down,
-                                              color: Colors.blue[900],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                          )),
                                       12.kH,
-                                      if (showMoreDetails)
+                                      if (_controller.showMoreDetails.value)
                                         const Row(
                                           children: [
                                             Expanded(

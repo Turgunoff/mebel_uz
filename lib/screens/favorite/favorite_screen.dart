@@ -1,11 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:mebel_uz/constants/sized_box_extensions.dart';
+import 'package:mebel_uz/screens/categories/categories_screen.dart';
 import 'package:mebel_uz/screens/product_details/product_detail_screen.dart';
 import 'package:mebel_uz/screens/favorite/controller/controller.dart';
 import 'package:mebel_uz/screens/home/controller/home_controller.dart';
@@ -73,19 +75,22 @@ class FavoriteScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Text(
-                          'Перейти в Каталог',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                      GestureDetector(
+                        // onTap: () => Get.offNamed('categories_screen'),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Text(
+                            'Перейти в Каталог',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       )

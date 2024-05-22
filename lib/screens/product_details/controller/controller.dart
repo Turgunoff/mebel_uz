@@ -8,6 +8,9 @@ class ProductDetailsController extends GetxController {
 
   RxBool isLoading = true.obs;
 
+  RxBool isSwitch = false.obs;
+  RxBool showMoreDetails = false.obs;
+
   void fetchProductDetails(String productId) async {
     // Parametr turini String ga o'zgartiring
     isLoading.value = true; // Loading holatini true ga o'rnatamiz
