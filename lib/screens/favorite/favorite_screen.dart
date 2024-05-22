@@ -121,7 +121,7 @@ class FavoriteScreen extends StatelessWidget {
                         onTap: () {
                           Get.to(
                             () => ProductDetailScreen(
-                              product: favoriteProducts,
+                              productId: favoriteProducts.productId,
                             ),
                             transition: Transition.cupertino,
                           );

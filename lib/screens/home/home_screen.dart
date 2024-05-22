@@ -429,9 +429,13 @@ class _HomeScreenState extends State<HomeScreen> {
             final popularProducts = controller.popularProducts[index];
             return GestureDetector(
               onTap: () {
-                Get.to(() => ProductDetailScreen(
-                      product: popularProducts,
-                    ));
+                Get.to(
+                  () => ProductDetailScreen(
+                    productId:
+                        popularProducts.productId, // productId ni yuborish
+                  ),
+                  transition: Transition.cupertino,
+                );
               },
               child: Container(
                 width: 170.0,
@@ -793,11 +797,14 @@ class _HomeScreenState extends State<HomeScreen> {
             final productPriceInDollars =
                 controller.popularProducts[index].productPrice! /
                     controller.usdRate; // Dollar kursiga nisbat
+            final productPriceInDollarsDiscount =
+                discountedPrice / controller.usdRate; // Dollar kursiga nisbat
             return GestureDetector(
               onTap: () {
                 Get.to(
                   () => ProductDetailScreen(
-                    product: popularProducts,
+                    productId:
+                        popularProducts.productId, // productId ni yuborish
                   ),
                   transition: Transition.cupertino,
                 );
@@ -1009,17 +1016,30 @@ class _HomeScreenState extends State<HomeScreen> {
                                 decorationStyle: TextDecorationStyle.solid,
                               ),
                             ),
-                            Text(
-                              ' ~ ${numberFormat.format(productPriceInDollars)} \$'
-                                  .replaceAll(',', ' '),
-                              style: const TextStyle(
-                                height: 1,
-                                color: Colors.black,
-                                fontSize: 14.0,
-                                letterSpacing: -1.0,
-                                decorationColor: Colors.black,
+                            if (hasDiscount)
+                              Text(
+                                ' ~ ${numberFormat.format(productPriceInDollarsDiscount)} \$'
+                                    .replaceAll(',', ' '),
+                                style: const TextStyle(
+                                  height: 1,
+                                  color: Colors.black,
+                                  fontSize: 14.0,
+                                  letterSpacing: -1.0,
+                                  decorationColor: Colors.black,
+                                ),
                               ),
-                            )
+                            if (!hasDiscount)
+                              Text(
+                                ' ~ ${numberFormat.format(productPriceInDollars)} \$'
+                                    .replaceAll(',', ' '),
+                                style: const TextStyle(
+                                  height: 1,
+                                  color: Colors.black,
+                                  fontSize: 14.0,
+                                  letterSpacing: -1.0,
+                                  decorationColor: Colors.black,
+                                ),
+                              ),
                           ],
                         ),
                         const Spacer(),

@@ -104,7 +104,7 @@ class ProductListScreen extends StatelessWidget {
                         onTap: () {
                           Get.to(
                             () => ProductDetailScreen(
-                              product: listProducts,
+                              productId: listProducts.productId,
                             ),
                             transition: Transition.cupertino,
                           );
