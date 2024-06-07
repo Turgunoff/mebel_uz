@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:mebel_uz/core/presentation/utils/sized_box_extensions.dart';
-import 'package:mebel_uz/features/categories/categories_screen.dart';
 import 'package:mebel_uz/features/product_details/product_detail_screen.dart';
 import 'package:mebel_uz/features/favorite/controller/controller.dart';
 import 'package:mebel_uz/features/home/controller/home_controller.dart';

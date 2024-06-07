@@ -3,7 +3,7 @@ lib
 │ ├── data  
 │ │ ├── datasources  
 │ │ │ ├── local  
-│ │ │ │ └── shared_preferences_datasource.dart  
+│ │ │ │ └── shared_preferences_datasource.dart //dark mode
 │ │ │ └── remote  
 │ │ │ ├── firebase_datasource.dart  
 │ │ │ └── api_service.dart  
@@ -50,5 +50,4 @@ lib
 │ ├── profile  
 │ └── splash  
 ├── firebase_options.dart  
-└── main.dart  
-
+└── main.dart
