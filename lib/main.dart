@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mebel_uz/firebase_options.dart';
-import 'package:mebel_uz/screens/splash/splash_screen.dart';
+import 'package:mebel_uz/features/splash/splash_screen.dart';
 
 void main() async {
   await GetStorage.init(); // GetStorage ni ishga tushirish
