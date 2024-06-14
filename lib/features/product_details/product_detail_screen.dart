@@ -163,8 +163,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   child: Obx(() => GestureDetector(
                                         behavior: HitTestBehavior.opaque,
                                         onTap: () {
-                                          favoritesController
-                                              .toggleFavorite(product);
+                                          // favoritesController
+                                          //     .toggleFavorite(product);
                                         },
                                         child: Container(
                                           padding: const EdgeInsets.all(4),
@@ -174,10 +174,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                                 BorderRadius.circular(50),
                                           ),
                                           child: Icon(
-                                            favoritesController.isFavorite(product
-                                                    .productId) // ID ni tekshirish
-                                                ? Icons.favorite
-                                                : Icons.favorite_border,
+                                            // favoritesController.isFavorite(product
+                                            //         .productId) // ID ni tekshirish
+                                            //     ? Icons.favorite
+                                            Icons.favorite_border,
                                             color: Colors.yellow,
                                             size: 28,
                                           ),

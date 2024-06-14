@@ -184,8 +184,8 @@ class ProductListScreen extends StatelessWidget {
                                     child: Obx(() => GestureDetector(
                                           behavior: HitTestBehavior.opaque,
                                           onTap: () {
-                                            favoritesController
-                                                .toggleFavorite(listProducts);
+                                            // favoritesController
+                                            //     .toggleFavorite(listProducts);
                                           },
                                           child: Container(
                                             padding: const EdgeInsets.all(4),
@@ -195,11 +195,11 @@ class ProductListScreen extends StatelessWidget {
                                                   BorderRadius.circular(50),
                                             ),
                                             child: Icon(
-                                              favoritesController.isFavorite(
-                                                      listProducts
-                                                          .productId) // ID ni tekshirish
-                                                  ? Icons.favorite
-                                                  : Icons.favorite_border,
+                                              // favoritesController.isFavorite(
+                                              //         listProducts
+                                              //             .productId) // ID ni tekshirish
+                                              //     ? Icons.favorite
+                                              Icons.favorite_border,
                                               color: Colors.yellow,
                                               size: 24,
                                             ),

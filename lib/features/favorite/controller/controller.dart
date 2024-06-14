@@ -1,44 +1,76 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:mebel_uz/core/domain/entities/product_model.dart';
 
 class FavoritesController extends GetxController {
-  final box = GetStorage('favoritesBox');
-  final _favorites = <ProductModel>[].obs;
-
-  List<ProductModel> get favorites => _favorites.toList();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final favorites = <String>[].obs;
+  String? _deviceId;
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
-    _loadFavorites();
+    await _getDeviceId(); // Qurilma ID'sini olish
+    loadFavorites(); // Sevimlilarni yuklash
   }
 
-  void toggleFavorite(ProductModel product) {
-    if (isFavorite(product.productId)) {
-      removeFavorite(product.productId);
-    } else {
-      box.write(product.productId, product.toJson());
-      _favorites.add(product);
+  Future<void> _getDeviceId() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    _deviceId = androidInfo.id; // Android qurilma ID'si
+  }
+
+  Future<void> addToFavorites(String productId) async {
+    if (_deviceId != null) {
+      try {
+        final favoritesRef = _firestore.collection('favorites').doc(_deviceId);
+        final docSnapshot = await favoritesRef.get();
+        if (docSnapshot.exists) {
+          await favoritesRef.update({
+            'products': FieldValue.arrayUnion([productId]),
+          });
+        } else {
+          await favoritesRef.set({
+            'products': [productId],
+          });
+        }
+        favorites.add(productId);
+      } catch (e) {
+        handleError(e);
+      }
     }
-    update();
   }
 
-  void _loadFavorites() {
-    List<dynamic> favoritesData = box.read('favorites') ?? [];
-    _favorites.value = favoritesData
-        .map((productJson) => ProductModel.fromJson(productJson))
-        .toList();
-    update();
+  Future<void> removeFromFavorites(String productId) async {
+    if (_deviceId != null) {
+      try {
+        await _firestore.collection('favorites').doc(_deviceId).update({
+          'products': FieldValue.arrayRemove([productId]),
+        });
+        favorites.remove(productId);
+      } catch (e) {
+        handleError(e);
+      }
+    }
   }
 
-  void removeFavorite(String productId) {
-    box.remove(productId.toString());
-    _favorites.removeWhere((p) => p.productId == productId);
-    update();
+  Future<void> loadFavorites() async {
+    if (_deviceId != null) {
+      try {
+        final docSnapshot =
+            await _firestore.collection('favorites').doc(_deviceId).get();
+        if (docSnapshot.exists) {
+          final data = docSnapshot.data() as Map<String, dynamic>;
+          favorites.value = List<String>.from(data['products'] ?? []);
+        }
+      } catch (e) {
+        handleError(e);
+      }
+    }
   }
 
-  bool isFavorite(String productId) {
-    return _favorites.any((p) => p.productId == productId);
+  void handleError(error) {
+    Get.snackbar('Xatolik', error.toString());
   }
 }
