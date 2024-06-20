@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:mebel_uz/app/routes/app_pages.dart';
+import 'package:mebel_uz/app/routes/app_routes.dart';
 import 'package:mebel_uz/firebase_options.dart';
 import 'package:mebel_uz/features/splash/splash_screen.dart';
 
@@ -40,6 +42,8 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Mebel uz',
+      initialRoute: AppRoutes.SPLASH, // Boshlang'ich route nomi
+      getPages: AppPages.pages, // Barcha GetPage'lar ro'yxati
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
         primaryColor: const Color(0xFF013C7E),
@@ -59,7 +63,6 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const SplashScreen(),
     );
   }
 }
