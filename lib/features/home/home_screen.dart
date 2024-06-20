@@ -5,6 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import 'package:mebel_uz/app/routes/app_routes.dart';
 import 'package:mebel_uz/core/presentation/utils/sized_box_extensions.dart';
 import 'package:mebel_uz/features/product_details/product_detail_screen.dart';
 import 'package:mebel_uz/features/favorite/controller/controller.dart';
@@ -13,6 +14,9 @@ import 'package:mebel_uz/features/product_list_screen/product_list_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'controller/home_controller.dart';
+import 'widgets/home_appbar.dart';
+import 'widgets/home_discounts.dart';
+import 'widgets/home_section_text.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,6 +28,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final controller = Get.put(HomeController());
   final favoritesController = Get.put(FavoritesController());
+  final productListController = Get.find<ProductListController>();
 
   final numberFormat = NumberFormat('#,##0');
 
@@ -31,72 +36,105 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFAFAFA),
-      appBar: AppBar(
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1),
-          child: Container(
-            color: Colors.grey.shade300,
-            height: 1,
-          ),
-        ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 12.0),
-            child: Icon(
-              Iconsax.notification,
-              size: 25,
-              color: Colors.grey,
-            ),
-          ),
-        ],
-        title: const Padding(
-          padding: EdgeInsets.only(left: 0.0),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 50.0,
-                child: TextField(
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                    filled: true,
-                    enabledBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Colors.transparent, width: 0),
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Colors.transparent, width: 0),
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                    ),
-                    fillColor: Color(0xFFF3F2F7),
-                    prefixIcon: Icon(
-                      Iconsax.search_normal,
-                      color: Colors.grey,
-                      size: 25,
-                    ),
-                    hintText: 'Поиск товаров',
-                    hintStyle: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      appBar: const HomeAppBar(),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            sectionText('Популярные категории'),
-            popularCategories(),
-            sectionText('Хиты продаж'),
+            12.kH,
+            HomeDiscounts(controller: controller),
+            const HomeSectionText(text: 'Популярные категории'),
+            Obx(() => controller.isLoading.value
+                ? const AspectRatio(
+                    aspectRatio: 3 / 1,
+                    child: Center(
+                      child: CupertinoActivityIndicator(
+                        radius: 10.0,
+                        animating: true,
+                      ),
+                    ),
+                  )
+                : GridView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 200.0,
+                      childAspectRatio: 3 / 1,
+                    ),
+                    itemCount: controller.popularCategories.length > 6
+                        ? 6
+                        : controller.popularCategories.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final category = controller.popularCategories[index];
+                      // Get.lazyPut(() =>
+                      //     ProductListController()); // Controllerni dangasa yaratish
+
+                      return GestureDetector(
+                        onTap: () {
+                          productListController.fetchProductsByCategory(
+                              category.categoryId.toString());
+                          productListController.categoryName.value =
+                              category.categoryNameRu;
+                          Get.toNamed(AppRoutes.PRODUCT_LIST);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(4.0),
+                          margin: const EdgeInsets.all(4.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4.0),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.1),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            children: <Widget>[
+                              CachedNetworkImage(
+                                height: 40,
+                                width: 40,
+                                imageUrl: category.categoryImage,
+                                fit: BoxFit.contain,
+                                placeholder: (context, url) => const Center(
+                                  child: CupertinoActivityIndicator(
+                                    radius: 10,
+                                    animating: true,
+                                  ),
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
+                              ),
+                              const SizedBox(width: 8.0),
+                              // Category Name
+                              Expanded(
+                                child: Text(
+                                  maxLines: 2,
+                                  category.categoryNameRu,
+                                  style: const TextStyle(
+                                    fontSize: 14.0,
+                                    letterSpacing: -1,
+                                    height: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  )),
+            const HomeSectionText(text: 'Хиты продаж'),
             popularProducts(),
             12.kH,
             installmentSection(),
-            sectionText('Лучшие предложения'),
+            const HomeSectionText(text: 'Лучшие предложения'),
             bestOffers(),
             12.kH,
             offer(),
@@ -105,22 +143,6 @@ class _HomeScreenState extends State<HomeScreen> {
             12.kH,
           ],
         ),
-      ),
-    );
-  }
-
-  sectionText(String text) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            text,
-            // 'Популярные категории',
-            style: const TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
-          ),
-        ],
       ),
     );
   }
@@ -521,7 +543,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Colors.grey.shade400,
                                     borderRadius: BorderRadius.circular(50),
                                   ),
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.favorite_border,
                                     color: Colors.yellow,
                                     size: 24,
@@ -887,7 +909,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 color: Colors.grey.shade400,
                                 borderRadius: BorderRadius.circular(50),
                               ),
-                              child: Icon(
+                              child: const Icon(
                                 // favoritesController.isFavorite(
                                 //         popularProducts
                                 //             .productId) // ID ni tekshirish
@@ -1061,82 +1083,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   popularCategories() {
-    return Obx(() => GridView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          shrinkWrap: true,
-          scrollDirection: Axis.vertical,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 200.0,
-            childAspectRatio: 3 / 1,
-          ),
-          itemCount: controller.categories.length > 6
-              ? 6
-              : controller.categories.length,
-          itemBuilder: (BuildContext context, int index) {
-            final category = controller.categories[index];
-            final productListController = Get.put(ProductListController());
-            return GestureDetector(
-              onTap: () {
-                productListController
-                    .fetchProductsByCategory(category.categoryId.toString());
-                productListController.categoryName.value =
-                    category.categoryNameRu;
-                Get.to(
-                  () => ProductListScreen(),
-                );
-              },
-              child: Container(
-                padding: const EdgeInsets.all(4.0),
-                margin: const EdgeInsets.all(4.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4.0),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.1),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: <Widget>[
-                    // Category Image
-                    CachedNetworkImage(
-                      height: 40,
-                      width: 40,
-                      imageUrl: category.categoryImage,
-                      fit: BoxFit.contain,
-                      placeholder: (context, url) => const Center(
-                        child: CupertinoActivityIndicator(
-                          radius: 10,
-                          animating: true,
-                        ),
-                      ),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                    ),
-                    const SizedBox(width: 8.0),
-                    // Category Name
-                    Expanded(
-                      child: Text(
-                        maxLines: 2,
-                        category.categoryNameRu,
-                        style: const TextStyle(
-                          fontSize: 14.0,
-                          letterSpacing: -1,
-                          height: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        ));
+    return;
   }
 }

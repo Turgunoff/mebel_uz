@@ -16,7 +16,7 @@ class ProductListScreen extends StatelessWidget {
     super.key,
   });
 
-  final ProductListController _controller = Get.put(ProductListController());
+  final ProductListController _controller = Get.find<ProductListController>();
   final homeController = Get.put(HomeController());
   final favoritesController = Get.put(FavoritesController());
 

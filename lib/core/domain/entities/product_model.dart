@@ -8,6 +8,7 @@ class ProductModel {
   final List<String> imageUrls;
   final String categoryName;
   final Map<String, int>? dimensions;
+  int views;
 
   ProductModel({
     required this.productId,
@@ -19,6 +20,7 @@ class ProductModel {
     required this.imageUrls,
     required this.categoryName,
     this.dimensions,
+    this.views = 0, // Boshlang'ich qiymat: 0
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
@@ -37,6 +39,8 @@ class ProductModel {
       imageUrls: List<String>.from(json['imageUrls']),
       categoryName: json['categoryName'] as String,
       dimensions: dimensions, // O'lchamlarni o'rnatish
+      views: json['views'] as int? ??
+          0, // Firestore'dan o'qish (agar null bo'lsa, 0 qiymatini olish)
     );
   }
   Map<String, dynamic> toJson() => {
@@ -49,5 +53,6 @@ class ProductModel {
         'imageUrls': imageUrls,
         'categoryName': categoryName,
         'dimensions': dimensions, // O'lchamlarni JSON ga o'tkazish
+        'views': views,
       };
 }

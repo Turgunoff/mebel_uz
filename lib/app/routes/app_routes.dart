@@ -7,4 +7,5 @@ abstract class AppRoutes {
   static const CART = '/cart';
   static const PROFILE = '/profile';
   static const PRODUCT_DETAILS = '/product_details';
+  static const PRODUCT_LIST = '/product_list';
 }

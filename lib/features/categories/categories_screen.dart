@@ -11,7 +11,8 @@ class CategoriesScreen extends StatelessWidget {
   CategoriesScreen({super.key});
 
   final controller = Get.put(CategoriesController());
-  final productListController = Get.put(ProductListController());
+  final productListController = Get.find<ProductListController>();
+  // final productListController = Get.put(ProductListController());
 
   @override
   Widget build(BuildContext context) {

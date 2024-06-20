@@ -1,17 +1,22 @@
 import 'dart:convert';
 
+import 'package:carousel_slider/carousel_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:mebel_uz/core/domain/entities/category_model.dart';
 import 'package:mebel_uz/core/domain/entities/product_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:mebel_uz/features/home/models/discounts_model.dart';
 
 class HomeController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // Observable ro'yxatlar
-  final categories = <CategoryModel>[].obs;
+  final popularCategories = <CategoryModel>[].obs;
   final popularProducts = <ProductModel>[].obs;
+  final discounts = <DiscountsModel>[].obs;
+
+  final _carouselIndex = 0.obs;
 
   // Loading holati
   final isLoading = true.obs;
@@ -21,9 +26,34 @@ class HomeController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    fetchCategories();
+    fetchPopularCategories();
     fetchPopularProducts();
+    fetchDiscounts();
     usdRate = await getUsdRate();
+  }
+
+  int get carouselIndex =>
+      _carouselIndex.value; // Slayderning joriy indeksini olish
+
+  void onPageChanged(int index, CarouselPageChangedReason reason) {
+    // Slayder indeksi o'zgarganda chaqiriladi
+    _carouselIndex.value = index;
+  }
+
+  Future<void> fetchDiscounts() async {
+    isLoading.value = true;
+
+    try {
+      final querySnapshot = await _firestore.collection('Discounts').get();
+      discounts.value = querySnapshot.docs
+          .map((doc) => DiscountsModel.fromJson(doc.data()))
+          .toList();
+    } catch (e) {
+      // Xatolikni qayta ishlash (loglash, foydalanuvchiga xabar berish)
+      printError(info: 'Error fetching categories: $e');
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   Future<double> getUsdRate() async {
@@ -42,19 +72,22 @@ class HomeController extends GetxController {
   }
 
   // Kategoriyalarni olish
-  Future<void> fetchCategories() async {
-    isLoading.value = true;
-
+  Future<void> fetchPopularCategories() async {
+    isLoading.value = true; // Loading holatini true ga o'rnatish
     try {
-      final querySnapshot = await _firestore.collection('Categories').get();
-      categories.value = querySnapshot.docs
+      final querySnapshot = await _firestore
+          .collection('Categories')
+          .orderBy(
+              'order') // order maydoni bo'yicha o'sish tartibida tartiblash
+          .get();
+      popularCategories.value = querySnapshot.docs
           .map((doc) => CategoryModel.fromJson(doc.data()))
           .toList();
     } catch (e) {
-      // Xatolikni qayta ishlash (loglash, foydalanuvchiga xabar berish)
+      // Xatolikni qayta ishlash (snackbar yoki dialog ko'rsatish)
       printError(info: 'Error fetching categories: $e');
     } finally {
-      isLoading.value = false;
+      isLoading.value = false; // Loading holatini false ga o'rnatish
     }
   }
 
