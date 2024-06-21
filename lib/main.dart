@@ -8,6 +8,8 @@ import 'package:mebel_uz/core/presentation/routes/app_pages.dart';
 import 'package:mebel_uz/core/presentation/routes/app_routes.dart';
 import 'package:mebel_uz/firebase_options.dart';
 
+import 'app/bindings/app_binding.dart';
+
 void main() async {
   await GetStorage.init(); // GetStorage ni ishga tushirish
 
@@ -43,7 +45,7 @@ class MyApp extends StatelessWidget {
       title: 'Mebel uz',
       initialRoute: AppRoutes.SPLASH, // Boshlang'ich route nomi
       getPages: AppPages.pages, // Barcha GetPage'lar ro'yxati
-      // initialBinding: HomeBinding(),
+      initialBinding: AppControllerBinding(),
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
         primaryColor: const Color(0xFF013C7E),

@@ -25,10 +25,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // final controller = Get.put(HomeController());
   final controller = Get.find<HomeController>();
   final favoritesController = Get.find<FavoritesController>();
-  final productListController = Get.find<ProductListController>();
 
   final numberFormat = NumberFormat('#,##0');
 
@@ -68,8 +66,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         : controller.popularCategories.length,
                     itemBuilder: (BuildContext context, int index) {
                       final category = controller.popularCategories[index];
-                      // Get.lazyPut(() =>
-                      //     ProductListController()); // Controllerni dangasa yaratish
+                      final productListController =
+                          Get.find<ProductListController>();
 
                       return GestureDetector(
                         onTap: () {
