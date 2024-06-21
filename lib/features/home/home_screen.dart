@@ -5,14 +5,9 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
-import 'package:mebel_uz/core/domain/entities/product_model.dart';
-import 'package:mebel_uz/core/presentation/routes/app_routes.dart';
 import 'package:mebel_uz/core/presentation/utils/sized_box_extensions.dart';
 import 'package:mebel_uz/features/home/widgets/popular_categories.dart';
-import 'package:mebel_uz/features/product_detail/product_detail_screen.dart';
 import 'package:mebel_uz/features/favorites/controller/favorites_controller.dart';
-import 'package:mebel_uz/features/product_list_screen/controller/product_list_controller.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'controller/home_controller.dart';
