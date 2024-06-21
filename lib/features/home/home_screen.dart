@@ -46,7 +46,253 @@ class _HomeScreenState extends State<HomeScreen> {
             const HomeSectionText(text: 'Популярные категории'),
             PopularCategories(controller: controller),
             const HomeSectionText(text: 'Хиты продаж'),
-            popularProducts(),
+            Obx(() => SizedBox(
+                  height: 300, // Balandlikni o'zingizga mos ravishda sozlang
+                  child: ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    scrollDirection: Axis.horizontal, // Gorizontal aylantirish
+                    itemCount:
+                        controller.popularProducts.length, // Mahsulotlar soni
+                    itemBuilder: (context, index) {
+                      final popularProducts = controller.popularProducts[index];
+                      return GestureDetector(
+                        onTap: () {
+                          // Get.to(
+                          //   () => ProductDetailScreen(
+                          //     productId:
+                          //         popularProducts.productId, // productId ni yuborish
+                          //   ),
+                          //   transition: Transition.cupertino,
+                          // );
+                        },
+                        child: Container(
+                          width: 170.0,
+                          margin: const EdgeInsets.only(right: 8.0),
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.shade100,
+                                spreadRadius: 3,
+                                blurRadius: 2,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Rasm
+                              Stack(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(16.0)),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(
+                                        8.0,
+                                      ),
+                                      child: CachedNetworkImage(
+                                        height: 150,
+                                        width: 150,
+                                        imageUrl: popularProducts.imageUrls[0],
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) =>
+                                            const Center(
+                                          child: CupertinoActivityIndicator(
+                                            radius: 10,
+                                            animating:
+                                                true, // Control animation
+                                          ),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
+                                      ),
+                                    ),
+                                  ),
+                                  if (popularProducts.productDiscount! >
+                                      0) // Only show discount if applicable
+                                    Positioned(
+                                      bottom: 0, // Adjust positioning as needed
+                                      left: 0, // Adjust positioning as needed
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0, vertical: 4.0),
+                                        decoration: const BoxDecoration(
+                                          color: Colors.red,
+                                          borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(8.0),
+                                            topRight: Radius.circular(8.0),
+                                          ),
+                                        ),
+                                        child: Text(
+                                          '-${popularProducts.productDiscount}%',
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize:
+                                                12.0, // Adjust font size as needed
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  Positioned(
+                                    top: 4,
+                                    right: 4,
+                                    child: GestureDetector(
+                                        behavior: HitTestBehavior.opaque,
+                                        onTap: () {
+                                          // favoritesController
+                                          //     .toggleFavorite(popularProducts);
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.all(4),
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey.shade400,
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                          ),
+                                          child: const Icon(
+                                            // favoritesController.isFavorite(
+                                            //         popularProducts
+                                            //             .productId) // ID ni tekshirish
+                                            //     ? Icons.favorite
+                                            Icons.favorite_border,
+                                            color: Colors.yellow,
+                                            size: 24,
+                                          ),
+                                        )),
+                                  ),
+                                ],
+                              ),
+                              8.kH,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Mahsulot nomi
+                                  Text(
+                                    popularProducts.productName,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16.0,
+                                      height: 1.2,
+                                      letterSpacing: 0,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  // Narx
+                                  // Text('${product.price.toStringAsFixed(2)} so\'m'),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    RatingBar.builder(
+                                      itemBuilder: (context, index) =>
+                                          const Icon(Icons.star,
+                                              color: Colors.amber),
+                                      initialRating: 5,
+                                      minRating: 0,
+                                      direction: Axis.horizontal,
+                                      allowHalfRating: true,
+                                      ignoreGestures: true,
+                                      itemCount: 5,
+                                      itemSize: 18.0,
+                                      onRatingUpdate: (rating) {},
+                                    ),
+                                    const SizedBox(width: 4.0),
+                                    const Text(
+                                      '5.0',
+                                      style: TextStyle(
+                                        fontSize: 16.0,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              8.kH,
+                              const Spacer(),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      if (popularProducts.productDiscount! > 0)
+                                        Text(
+                                          '${(popularProducts.productPrice! - popularProducts.productPrice! * popularProducts.productDiscount! / 100).toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]} ')} so\'m',
+                                          style: const TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16.0,
+                                            height: 1,
+                                            letterSpacing: -1,
+                                          ),
+                                        ),
+                                      Text(
+                                        '${popularProducts.productPrice!.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]} ')} so\'m',
+                                        style: TextStyle(
+                                          height: 1,
+                                          color:
+                                              popularProducts.productDiscount! >
+                                                      0
+                                                  ? Colors.grey
+                                                  : Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.0,
+                                          letterSpacing: -1.0,
+                                          decoration:
+                                              popularProducts.productDiscount! >
+                                                      0
+                                                  ? TextDecoration.lineThrough
+                                                  : TextDecoration.none,
+                                          decorationColor: Colors.black,
+                                          decorationStyle:
+                                              TextDecorationStyle.solid,
+                                        ),
+                                      ),
+                                      Text(
+                                        '~${((popularProducts.productPrice! - popularProducts.productPrice! * popularProducts.productDiscount! / 100) / controller.usdRate).toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]} ')} \$',
+                                        style: const TextStyle(
+                                          height: 1,
+                                          fontSize: 14.0,
+                                          letterSpacing: -1.0,
+                                          decorationColor: Colors.black,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const Spacer(),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 4.0, vertical: 4.0),
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).primaryColor,
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    child: const Icon(
+                                      Iconsax.shopping_cart,
+                                      color: Colors.white,
+                                      size: 24.0,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                )),
             12.kH,
             installmentSection(),
             const HomeSectionText(text: 'Лучшие предложения'),
@@ -362,7 +608,6 @@ class _HomeScreenState extends State<HomeScreen> {
   //                   discountAmount;
   //           final hasDiscount =
   //               controller.popularProducts[index].productDiscount! > 0;
-
   //           final popularProducts = controller.popularProducts[index];
   //           return GestureDetector(
   //             onTap: () {
@@ -707,502 +952,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-  popularProducts() {
-    return Obx(() => SizedBox(
-          height: 300, // Balandlikni o'zingizga mos ravishda sozlang
-          child: ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            scrollDirection: Axis.horizontal, // Gorizontal aylantirish
-            itemCount: controller.popularProducts.length, // Mahsulotlar soni
-            itemBuilder: (context, index) {
-              final popularProducts = controller.popularProducts[index];
-              return GestureDetector(
-                onTap: () {
-                  Get.to(
-                    () => ProductDetailScreen(
-                      productId:
-                          popularProducts.productId, // productId ni yuborish
-                    ),
-                    transition: Transition.cupertino,
-                  );
-                },
-                child: Container(
-                  width: 170.0,
-                  margin: const EdgeInsets.only(right: 8.0),
-                  padding: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.shade100,
-                        spreadRadius: 3,
-                        blurRadius: 2,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Rasm
-                      Stack(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16.0)),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(
-                                8.0,
-                              ),
-                              child: CachedNetworkImage(
-                                height: 150,
-                                width: 150,
-                                imageUrl: popularProducts.imageUrls[0],
-                                fit: BoxFit.cover,
-                                placeholder: (context, url) => const Center(
-                                  child: CupertinoActivityIndicator(
-                                    radius: 10,
-                                    animating: true, // Control animation
-                                  ),
-                                ),
-                                errorWidget: (context, url, error) =>
-                                    const Icon(Icons.error),
-                              ),
-                            ),
-                          ),
-                          if (popularProducts.productDiscount! >
-                              0) // Only show discount if applicable
-                            Positioned(
-                              bottom: 0, // Adjust positioning as needed
-                              left: 0, // Adjust positioning as needed
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8.0, vertical: 4.0),
-                                decoration: const BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(8.0),
-                                    topRight: Radius.circular(8.0),
-                                  ),
-                                ),
-                                child: Text(
-                                  '-${popularProducts.productDiscount}%',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize:
-                                        12.0, // Adjust font size as needed
-                                  ),
-                                ),
-                              ),
-                            ),
-                          Positioned(
-                            top: 4,
-                            right: 4,
-                            child: GestureDetector(
-                                behavior: HitTestBehavior.opaque,
-                                onTap: () {
-                                  // favoritesController
-                                  //     .toggleFavorite(popularProducts);
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey.shade400,
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  child: const Icon(
-                                    // favoritesController.isFavorite(
-                                    //         popularProducts
-                                    //             .productId) // ID ni tekshirish
-                                    //     ? Icons.favorite
-                                    Icons.favorite_border,
-                                    color: Colors.yellow,
-                                    size: 24,
-                                  ),
-                                )),
-                          ),
-                        ],
-                      ),
-                      8.kH,
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Mahsulot nomi
-                          Text(
-                            popularProducts.productName,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.0,
-                              height: 1.2,
-                              letterSpacing: 0,
-                            ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          // Narx
-                          // Text('${product.price.toStringAsFixed(2)} so\'m'),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            RatingBar.builder(
-                              itemBuilder: (context, index) =>
-                                  const Icon(Icons.star, color: Colors.amber),
-                              initialRating: 5,
-                              minRating: 0,
-                              direction: Axis.horizontal,
-                              allowHalfRating: true,
-                              ignoreGestures: true,
-                              itemCount: 5,
-                              itemSize: 18.0,
-                              onRatingUpdate: (rating) {},
-                            ),
-                            const SizedBox(width: 4.0),
-                            const Text(
-                              '5.0',
-                              style: TextStyle(
-                                fontSize: 16.0,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      8.kH,
-                      const Spacer(),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (popularProducts.productDiscount! > 0)
-                                Text(
-                                  '${(popularProducts.productPrice! - popularProducts.productPrice! * popularProducts.productDiscount! / 100).toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]} ')} so\'m',
-                                  style: const TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.0,
-                                    height: 1,
-                                    letterSpacing: -1,
-                                  ),
-                                ),
-                              Text(
-                                '${popularProducts.productPrice!.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]} ')} so\'m',
-                                style: TextStyle(
-                                  height: 1,
-                                  color: popularProducts.productDiscount! > 0
-                                      ? Colors.grey
-                                      : Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.0,
-                                  letterSpacing: -1.0,
-                                  decoration:
-                                      popularProducts.productDiscount! > 0
-                                          ? TextDecoration.lineThrough
-                                          : TextDecoration.none,
-                                  decorationColor: Colors.black,
-                                  decorationStyle: TextDecorationStyle.solid,
-                                ),
-                              ),
-                              Text(
-                                '~${((popularProducts.productPrice! - popularProducts.productPrice! * popularProducts.productDiscount! / 100) / controller.usdRate).toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]} ')} \$',
-                                style: const TextStyle(
-                                  height: 1,
-                                  fontSize: 14.0,
-                                  letterSpacing: -1.0,
-                                  decorationColor: Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Spacer(),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 4.0, vertical: 4.0),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColor,
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            child: const Icon(
-                              Iconsax.shopping_cart,
-                              color: Colors.white,
-                              size: 24.0,
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-        ));
-  }
-
-//   Widget popularProducts() {
-//     return Obx(
-//       () => SizedBox(
-//         height: 300,
-//         child: controller.isLoading.value
-//             ? _buildProductShimmer()
-//             : ListView.builder(
-//                 scrollDirection: Axis.horizontal,
-//                 itemCount: controller.popularProducts.length,
-//                 itemBuilder: (context, index) {
-//                   final product = controller.popularProducts[index];
-//                   return _buildProductCard(product, context);
-//                 },
-//               ),
-//       ),
-//     );
-//   }
-
-// // Shimmer effekti uchun widget
-//   Widget _buildProductShimmer() {
-//     return Shimmer.fromColors(
-//       baseColor: Colors.grey[300]!,
-//       highlightColor: Colors.grey[100]!,
-//       child: ListView.builder(
-//         scrollDirection: Axis.horizontal,
-//         itemCount: 2,
-//         itemBuilder: (context, index) => Container(
-//           width: 170,
-//           margin: const EdgeInsets.only(right: 8.0, bottom: 6.0),
-//           decoration: BoxDecoration(
-//             color: Colors.grey,
-//             borderRadius: BorderRadius.circular(10.0),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-
-//   Widget _buildProductCard(ProductModel product, BuildContext context) {
-//     return GestureDetector(
-//       onTap: () {},
-//       child: Container(
-//         width: 170.0,
-//         margin: const EdgeInsets.only(right: 8.0, bottom: 6.0),
-//         padding: const EdgeInsets.all(8.0),
-//         decoration: BoxDecoration(
-//           color: Colors.white,
-//           borderRadius: BorderRadius.circular(10.0),
-//           boxShadow: [
-//             BoxShadow(
-//               color: context.isDarkMode
-//                   ? Colors.grey[800]!
-//                       .withOpacity(0.2) // Dark tema uchun soya rangi
-//                   : Colors.grey.withOpacity(0.1), // Light tema uchun soya rangi
-//               spreadRadius: 3, // Soyaning tarqalish radiusi
-//               blurRadius: 6, // Soyaning xiralashish radiusi
-//               offset: const Offset(0, 3), // Soyaning ofseti (x, y)
-//             ),
-//           ],
-//         ),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             // Rasm
-//             Stack(
-//               children: [
-//                 Container(
-//                   decoration:
-//                       BoxDecoration(borderRadius: BorderRadius.circular(16.0)),
-//                   child: ClipRRect(
-//                     borderRadius: BorderRadius.circular(
-//                       8.0,
-//                     ),
-//                     child: CachedNetworkImage(
-//                       height: 150,
-//                       width: double.infinity,
-//                       imageUrl: product.imageUrls.isNotEmpty
-//                           ? product.imageUrls[0]
-//                           : '',
-//                       // Birinchi rasmni olish,
-//                       fit: BoxFit.cover,
-//                       placeholder: (context, url) => const Center(
-//                         child: CupertinoActivityIndicator(
-//                           radius: 10,
-//                           animating: true, // Control animation
-//                         ),
-//                       ),
-//                       errorWidget: (context, url, error) =>
-//                           const Icon(Icons.error),
-//                     ),
-//                   ),
-//                 ),
-//                 if (product.productDiscount! >
-//                     0) // Only show discount if applicable
-//                   Positioned(
-//                     bottom: 0, // Adjust positioning as needed
-//                     left: 0, // Adjust positioning as needed
-//                     child: Container(
-//                       padding: const EdgeInsets.symmetric(
-//                           horizontal: 8.0, vertical: 4.0),
-//                       decoration: const BoxDecoration(
-//                         color: Colors.red,
-//                         borderRadius: BorderRadius.only(
-//                           bottomLeft: Radius.circular(8.0),
-//                           topRight: Radius.circular(8.0),
-//                         ),
-//                       ),
-//                       child: Text(
-//                         '${product.productDiscount.toString()}%',
-//                         style: const TextStyle(
-//                           color: Colors.white,
-//                           fontWeight: FontWeight.w500,
-//                           fontSize: 12.0, // Adjust font size as needed
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 Positioned(
-//                   top: 4,
-//                   right: 4,
-//                   child: GestureDetector(
-//                     behavior: HitTestBehavior.opaque,
-//                     onTap: () {
-//                       // controller.usdRate + 1;
-//                       // controller.toggleFavorite(product);
-//                     },
-//                     child: Container(
-//                       padding: const EdgeInsets.all(4),
-//                       decoration: BoxDecoration(
-//                         color: Colors.grey.shade400,
-//                         borderRadius: BorderRadius.circular(50),
-//                       ),
-//                       child: Icon(
-//                         Icons.favorite_border,
-//                         color: Colors.yellow,
-//                         size: 24,
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//             8.kH,
-//             Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 // Mahsulot nomi
-//                 Text(
-//                   '${product.productName}',
-//                   style: const TextStyle(
-//                     fontWeight: FontWeight.bold,
-//                     fontSize: 16.0,
-//                     height: 1.2,
-//                     letterSpacing: 0,
-//                   ),
-//                   maxLines: 2,
-//                   overflow: TextOverflow.ellipsis,
-//                 ),
-//                 // Narx
-//                 // Text('${product.price.toStringAsFixed(2)} so\'m'),
-//               ],
-//             ),
-//             SizedBox(
-//               height: 20,
-//               child: Row(
-//                 crossAxisAlignment: CrossAxisAlignment.center,
-//                 mainAxisAlignment: MainAxisAlignment.start,
-//                 children: [
-//                   RatingBar.builder(
-//                     itemBuilder: (context, index) =>
-//                         const Icon(Icons.star, color: Colors.amber),
-//                     initialRating: 5,
-//                     minRating: 0,
-//                     direction: Axis.horizontal,
-//                     allowHalfRating: true,
-//                     ignoreGestures: true,
-//                     itemCount: 5,
-//                     itemSize: 18.0,
-//                     onRatingUpdate: (rating) {},
-//                   ),
-//                   const SizedBox(width: 4.0),
-//                   const Text(
-//                     '5.0',
-//                     style: TextStyle(
-//                       fontSize: 16.0,
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//             8.kH,
-//             const Spacer(),
-//             Row(
-//               crossAxisAlignment: CrossAxisAlignment.end,
-//               children: [
-//                 Column(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     if (product.productDiscount! > 0)
-//                       Text(
-//                         '${(product.productPrice! - product.productPrice! * product.productDiscount! / 100).toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]} ')} so\'m',
-//                         style: const TextStyle(
-//                           color: Colors.red,
-//                           fontWeight: FontWeight.bold,
-//                           fontSize: 16.0,
-//                           height: 1,
-//                           letterSpacing: -1,
-//                         ),
-//                       ),
-//                     Text(
-//                       '${product.productPrice!.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]} ')} so\'m',
-//                       style: TextStyle(
-//                         height: 1,
-//                         color: Colors.white,
-//                         fontWeight: FontWeight.bold,
-//                         fontSize: product.productDiscount! > 0 ? 14.0 : 16.0,
-//                         // Agar chegirma bo'lsa, shrift o'lchamini kichraytiramiz
-//                         letterSpacing: -1.0,
-//                         decoration: product.productDiscount! > 0
-//                             ? TextDecoration.lineThrough
-//                             : null,
-//                         // Chegirma bo'lsa, chiziq qo'yamiz
-//                         decorationColor: Colors.red,
-//                         decorationStyle: TextDecorationStyle.solid,
-//                       ),
-//                     ),
-//                     Text(
-//                       '~${((product.productPrice! - product.productPrice! * product.productDiscount! / 100) / controller.usdRate).toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]} ')} \$',
-//                       style: const TextStyle(
-//                         height: 1,
-//                         fontSize: 14.0,
-//                         letterSpacing: -1.0,
-//                         decorationColor: Colors.black,
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//                 const Spacer(),
-//                 Container(
-//                   padding: const EdgeInsets.symmetric(
-//                       horizontal: 4.0, vertical: 4.0),
-//                   decoration: BoxDecoration(
-//                     color: Theme.of(context).primaryColor,
-//                     borderRadius: BorderRadius.circular(8.0),
-//                   ),
-//                   child: const Icon(
-//                     Iconsax.shopping_cart,
-//                     color: Colors.white,
-//                     size: 24.0,
-//                   ),
-//                 ),
-//               ],
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//   }
 }
