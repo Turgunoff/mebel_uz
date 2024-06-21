@@ -11,8 +11,8 @@ import 'package:mebel_uz/features/product_detail/product_detail_screen.dart';
 import 'package:mebel_uz/features/favorites/controller/favorites_controller.dart';
 import 'package:mebel_uz/features/home/controller/home_controller.dart';
 
-class FavoriteScreen extends StatelessWidget {
-  FavoriteScreen({super.key});
+class FavoritesScreen extends StatelessWidget {
+  FavoritesScreen({super.key});
 
   final FavoritesController favoritesController =
       Get.put(FavoritesController());
