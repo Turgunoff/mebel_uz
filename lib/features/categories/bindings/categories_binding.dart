@@ -4,6 +4,7 @@ import 'package:mebel_uz/features/categories/controller/categories_controller.da
 class CategoriesBinding implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<CategoriesController>(() => CategoriesController());
+    Get.lazyPut<CategoriesController>(() => CategoriesController(),
+        fenix: true);
   }
 }

@@ -4,6 +4,6 @@ import 'package:mebel_uz/features/profile/controller/profile_controller.dart';
 class ProfileBinding implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<ProfileController>(() => ProfileController());
+    Get.lazyPut<ProfileController>(() => ProfileController(), fenix: true);
   }
 }
