@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:mebel_uz/core/domain/entities/product_model.dart';
 
-class ProductDetailsController extends GetxController {
+class ProductDetailController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final Rx<ProductModel?> product = Rx<ProductModel?>(null);
 

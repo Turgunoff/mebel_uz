@@ -1,7 +1,7 @@
 //home bindings
 
 import 'package:get/get.dart';
-import 'package:mebel_uz/features/favorite/controller/controller.dart';
+import 'package:mebel_uz/features/favorites/controller/favorites_controller.dart';
 
 class FavoriteBinding implements Bindings {
   @override

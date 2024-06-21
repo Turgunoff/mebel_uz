@@ -6,9 +6,9 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:mebel_uz/core/presentation/utils/sized_box_extensions.dart';
-import 'package:mebel_uz/features/favorite/controller/controller.dart';
+import 'package:mebel_uz/features/favorites/controller/favorites_controller.dart';
 import 'package:mebel_uz/features/home/controller/home_controller.dart';
-import 'package:mebel_uz/features/product_details/product_detail_screen.dart';
+import 'package:mebel_uz/features/product_detail/product_detail_screen.dart';
 import 'package:mebel_uz/features/product_list_screen/controller/product_list_controller.dart';
 
 class ProductListScreen extends StatelessWidget {

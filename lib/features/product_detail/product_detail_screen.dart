@@ -6,8 +6,8 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:mebel_uz/core/presentation/utils/sized_box_extensions.dart';
-import 'package:mebel_uz/features/favorite/controller/controller.dart';
-import 'package:mebel_uz/features/product_details/controller/controller.dart';
+import 'package:mebel_uz/features/favorites/controller/favorites_controller.dart';
+import 'package:mebel_uz/features/product_detail/controller/product_detail_controller.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -19,7 +19,7 @@ class ProductDetailScreen extends StatefulWidget {
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
-  final _controller = Get.put(ProductDetailsController());
+  final _controller = Get.put(ProductDetailController());
   final PageController _pageController = PageController();
   final favoritesController = Get.put(FavoritesController());
 

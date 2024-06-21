@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mebel_uz/features/cart/cart_screen.dart';
 import 'package:mebel_uz/features/categories/categories_screen.dart';
-import 'package:mebel_uz/features/favorite/controller/controller.dart';
-import 'package:mebel_uz/features/favorite/favorite_screen.dart';
+import 'package:mebel_uz/features/favorites/controller/favorites_controller.dart';
+import 'package:mebel_uz/features/favorites/favorites_screen.dart';
 import 'package:mebel_uz/features/home/home_screen.dart';
 import 'package:mebel_uz/features/profile/profile_screen.dart';
 import 'package:badges/badges.dart' as badges; // badges paketini import qiling
