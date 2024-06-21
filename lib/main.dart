@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:mebel_uz/app/routes/app_pages.dart';
-import 'package:mebel_uz/app/routes/app_routes.dart';
+import 'package:mebel_uz/core/presentation/routes/app_pages.dart';
+import 'package:mebel_uz/core/presentation/routes/app_routes.dart';
 import 'package:mebel_uz/features/home/bindings/home_binding.dart';
 import 'package:mebel_uz/firebase_options.dart';
 

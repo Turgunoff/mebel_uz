@@ -1,21 +1,21 @@
 import 'package:get/get.dart';
 
-import '../../app/routes/app_routes.dart';
-import '../../features/cart/bindings/cart_binding.dart';
-import '../../features/cart/cart_screen.dart';
-import '../../features/categories/bindings/categories_binding.dart';
-import '../../features/categories/categories_screen.dart';
-import '../../features/favorites/favorites_screen.dart';
-import '../../features/home/home_screen.dart';
-import '../../features/product_detail/bindings/product_detail_binding.dart';
-import '../../features/product_detail/product_detail_screen.dart';
-import '../../features/splash/splash_screen.dart';
-import '../../features/profile/bindings/profile_binding.dart';
-import '../../features/profile/profile_screen.dart';
-import '../../features/favorites/bindings/favorites_binding.dart';
-import '../../features/home/bindings/home_binding.dart';
-import '../../features/product_list_screen/bindings/product_list_binding.dart';
-import '../../features/product_list_screen/product_list_screen.dart';
+import 'app_routes.dart';
+import '../../../features/cart/bindings/cart_binding.dart';
+import '../../../features/cart/cart_screen.dart';
+import '../../../features/categories/bindings/categories_binding.dart';
+import '../../../features/categories/categories_screen.dart';
+import '../../../features/favorites/favorites_screen.dart';
+import '../../../features/home/home_screen.dart';
+import '../../../features/product_detail/bindings/product_detail_binding.dart';
+import '../../../features/product_detail/product_detail_screen.dart';
+import '../../../features/splash/splash_screen.dart';
+import '../../../features/profile/bindings/profile_binding.dart';
+import '../../../features/profile/profile_screen.dart';
+import '../../../features/favorites/bindings/favorites_binding.dart';
+import '../../../features/home/bindings/home_binding.dart';
+import '../../../features/product_list_screen/bindings/product_list_binding.dart';
+import '../../../features/product_list_screen/product_list_screen.dart';
 
 class AppPages {
   static final pages = [

@@ -5,7 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
-import 'package:mebel_uz/app/routes/app_routes.dart';
+import 'package:mebel_uz/core/presentation/routes/app_routes.dart';
 import 'package:mebel_uz/core/presentation/utils/sized_box_extensions.dart';
 import 'package:mebel_uz/features/product_detail/product_detail_screen.dart';
 import 'package:mebel_uz/features/favorites/controller/favorites_controller.dart';
@@ -25,8 +25,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final controller = Get.put(HomeController());
-  final favoritesController = Get.put(FavoritesController());
+  // final controller = Get.put(HomeController());
+  final controller = Get.find<HomeController>();
+  final favoritesController = Get.find<FavoritesController>();
   final productListController = Get.find<ProductListController>();
 
   final numberFormat = NumberFormat('#,##0');

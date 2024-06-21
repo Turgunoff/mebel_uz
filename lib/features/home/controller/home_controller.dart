@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:mebel_uz/core/domain/entities/category_model.dart';
 import 'package:mebel_uz/core/domain/entities/product_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:mebel_uz/features/home/models/discounts_model.dart';
+import 'package:mebel_uz/core/domain/entities/discounts_model.dart';
 
 class HomeController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
