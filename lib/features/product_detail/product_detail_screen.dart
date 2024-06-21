@@ -19,9 +19,9 @@ class ProductDetailScreen extends StatefulWidget {
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
-  final _controller = Get.put(ProductDetailController());
+  final _controller = Get.find<ProductDetailController>();
   final PageController _pageController = PageController();
-  final favoritesController = Get.put(FavoritesController());
+  final favoritesController = Get.find<FavoritesController>();
 
   @override
   void dispose() {

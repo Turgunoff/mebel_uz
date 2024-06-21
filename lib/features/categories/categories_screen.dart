@@ -10,7 +10,7 @@ import 'package:mebel_uz/features/product_list_screen/product_list_screen.dart';
 class CategoriesScreen extends StatelessWidget {
   CategoriesScreen({super.key});
 
-  final controller = Get.put(CategoriesController());
+  final controller = Get.find<CategoriesController>();
   final productListController = Get.find<ProductListController>();
   // final productListController = Get.put(ProductListController());
 

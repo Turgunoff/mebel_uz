@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
       title: 'Mebel uz',
       initialRoute: AppRoutes.SPLASH, // Boshlang'ich route nomi
       getPages: AppPages.pages, // Barcha GetPage'lar ro'yxati
-      initialBinding: HomeBinding(),
+      // initialBinding: HomeBinding(),
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
         primaryColor: const Color(0xFF013C7E),

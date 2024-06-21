@@ -8,10 +8,9 @@ import 'package:mebel_uz/features/home/controller/home_controller.dart';
 class FavoritesScreen extends StatelessWidget {
   FavoritesScreen({super.key});
 
-  final FavoritesController favoritesController =
-      Get.put(FavoritesController());
+  final favoritesController = Get.find<FavoritesController>();
 
-  final HomeController homeController = Get.put(HomeController());
+  final homeController = Get.find<HomeController>();
 
   final numberFormat = NumberFormat("#,##0", "en_US"); // Formatlash
 

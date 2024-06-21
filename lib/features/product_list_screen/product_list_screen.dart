@@ -17,8 +17,8 @@ class ProductListScreen extends StatelessWidget {
   });
 
   final ProductListController _controller = Get.find<ProductListController>();
-  final homeController = Get.put(HomeController());
-  final favoritesController = Get.put(FavoritesController());
+  final homeController = Get.find<HomeController>();
+  final favoritesController = Get.find<FavoritesController>();
 
   final numberFormat = NumberFormat('#,##0');
 

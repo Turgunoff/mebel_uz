@@ -14,7 +14,7 @@ class NavigationMenu extends StatelessWidget {
 
   //controller
   final controller = Get.put(NavigationController());
-  final favoritesController = Get.put(FavoritesController());
+  final favoritesController = Get.find<FavoritesController>();
 
   @override
   Widget build(BuildContext context) {
