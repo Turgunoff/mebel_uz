@@ -10,7 +10,6 @@ import 'package:mebel_uz/core/presentation/utils/sized_box_extensions.dart';
 import 'package:mebel_uz/features/product_detail/product_detail_screen.dart';
 import 'package:mebel_uz/features/favorites/controller/favorites_controller.dart';
 import 'package:mebel_uz/features/product_list_screen/controller/product_list_controller.dart';
-import 'package:mebel_uz/features/product_list_screen/product_list_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'controller/home_controller.dart';
