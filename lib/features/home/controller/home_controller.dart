@@ -21,7 +21,7 @@ class HomeController extends GetxController {
   // Loading holati
   final isLoading = true.obs;
 
-  double usdRate = 0; // USD kursi uchun o'zgaruvchi
+  double usdRate = 0;
 
   @override
   void onInit() async {
@@ -32,8 +32,7 @@ class HomeController extends GetxController {
     usdRate = await getUsdRate();
   }
 
-  int get carouselIndex =>
-      _carouselIndex.value; // Slayderning joriy indeksini olish
+  int get carouselIndex => _carouselIndex.value;
 
   void onPageChanged(int index, CarouselPageChangedReason reason) {
     // Slayder indeksi o'zgarganda chaqiriladi

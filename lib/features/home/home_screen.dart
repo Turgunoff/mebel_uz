@@ -11,8 +11,11 @@ import 'package:mebel_uz/features/favorites/controller/favorites_controller.dart
 import 'package:url_launcher/url_launcher.dart';
 
 import 'controller/home_controller.dart';
+
 import 'widgets/home_appbar.dart';
+
 import 'widgets/home_discounts.dart';
+
 import 'widgets/home_section_text.dart';
 
 class HomeScreen extends StatefulWidget {

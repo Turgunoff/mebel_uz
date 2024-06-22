@@ -19,10 +19,8 @@ class ProductListScreen extends StatelessWidget {
   final ProductListController _controller = Get.find<ProductListController>();
   final homeController = Get.find<HomeController>();
   final favoritesController = Get.find<FavoritesController>();
-
   final numberFormat = NumberFormat('#,##0');
 
-// _controller.products.length
   @override
   Widget build(BuildContext context) {
     return Scaffold(

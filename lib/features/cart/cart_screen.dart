@@ -47,6 +47,7 @@ class CartScreen extends StatelessWidget {
                   color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
+                  letterSpacing: 2,
                 ),
               ),
             )
