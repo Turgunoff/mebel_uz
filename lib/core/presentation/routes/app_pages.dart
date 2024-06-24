@@ -50,7 +50,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.PRODUCT_DETAIL,
-      page: () => const ProductDetailScreen(),
+      page: () => ProductDetailScreen(),
       binding: ProductDetailBinding(),
     ),
     GetPage(

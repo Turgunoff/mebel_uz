@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mebel_uz/core/domain/entities/product_model.dart';
 
@@ -15,6 +16,19 @@ class ProductDetailController extends GetxController {
 
   RxBool isSwitch = false.obs;
   RxBool showMoreDetails = false.obs;
+  final PageController pageController = PageController();
+
+  @override
+  void onInit() {
+    super.onInit();
+    getProductDetails(Get.arguments);
+  }
+
+  @override
+  void onClose() {
+    pageController.dispose();
+    super.onClose();
+  }
 
   // Mahsulot ma'lumotlarini olish
   Future<void> getProductDetails(String productId) async {

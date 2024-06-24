@@ -2,35 +2,19 @@ import 'package:autoscale_tabbarview/autoscale_tabbarview.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:intl/intl.dart';
 import 'package:mebel_uz/core/presentation/utils/sized_box_extensions.dart';
 import 'package:mebel_uz/features/favorites/controller/favorites_controller.dart';
 import 'package:mebel_uz/features/product_detail/controller/product_detail_controller.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class ProductDetailScreen extends StatefulWidget {
-  const ProductDetailScreen({super.key});
-
-  @override
-  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
-}
-
-class _ProductDetailScreenState extends State<ProductDetailScreen> {
-  final PageController _pageController = PageController();
+class ProductDetailScreen extends StatelessWidget {
+  ProductDetailScreen({super.key});
 
   final controller = Get.find<ProductDetailController>();
+
   final favoritesController = Get.find<FavoritesController>();
-
-  @override
-  void dispose() {
-    _pageController.dispose(); // Obyektni yo'q qilish
-    super.dispose();
-  }
-
-  final numberFormat = NumberFormat('#,##0');
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +93,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         children: [
                           PageView.builder(
                             clipBehavior: Clip.none,
-                            controller: _pageController,
+                            controller: controller.pageController,
                             itemCount: product.imageUrls.length,
                             itemBuilder: (context, index) {
                               return CachedNetworkImage(
@@ -141,7 +125,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: SmoothPageIndicator(
-                                  controller: _pageController,
+                                  controller: controller.pageController,
                                   count: product.imageUrls.length,
                                   effect: WormEffect(
                                     dotHeight: 10,
@@ -243,8 +227,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   Row(
                                     children: [
                                       Text(
-                                        '${numberFormat.format(discountedPrice)} so\'m'
-                                            .replaceAll(',', ' '),
+                                        '${(product.productPrice! - product.productPrice! * product.productDiscount! / 100).toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]} ')} so\'m',
                                         style: const TextStyle(
                                             fontSize: 32,
                                             letterSpacing: -1.0,
@@ -264,8 +247,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 Row(
                                   children: [
                                     Text(
-                                      '${numberFormat.format(product.productPrice)} so\'m'
-                                          .replaceAll(',', ' '),
+                                      '${product.productPrice!.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]} ')} so\'m',
                                       style: TextStyle(
                                         height: 1,
                                         color: hasDiscount
