@@ -8,8 +8,6 @@ import 'package:mebel_uz/core/domain/entities/product_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:mebel_uz/core/domain/entities/discounts_model.dart';
 
-import '../../../core/presentation/routes/app_routes.dart';
-
 class HomeController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
