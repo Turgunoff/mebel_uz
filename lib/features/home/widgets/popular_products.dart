@@ -27,15 +27,7 @@ class PopularProducts extends StatelessWidget {
             itemBuilder: (context, index) {
               final popularProducts = controller.popularProducts[index];
               return GestureDetector(
-                onTap: () {
-                  // Get.to(
-                  //   () => ProductDetailScreen(
-                  //     productId:
-                  //         popularProducts.productId, // productId ni yuborish
-                  //   ),
-                  //   transition: Transition.cupertino,
-                  // );
-                },
+                onTap: () {},
                 child: Container(
                   width: 170.0,
                   margin: const EdgeInsets.only(right: 8.0),
@@ -256,3 +248,12 @@ class PopularProducts extends StatelessWidget {
         ));
   }
 }
+
+
+// Get.to(
+                  //   () => ProductDetailScreen(
+                  //     productId:
+                  //         popularProducts.productId, // productId ni yuborish
+                  //   ),
+                  //   transition: Transition.cupertino,
+                  // );

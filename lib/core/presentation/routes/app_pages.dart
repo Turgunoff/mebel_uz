@@ -25,7 +25,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.HOME,
-      page: () => const HomeScreen(),
+      page: () => HomeScreen(),
       binding: HomeBinding(),
     ),
     GetPage(
