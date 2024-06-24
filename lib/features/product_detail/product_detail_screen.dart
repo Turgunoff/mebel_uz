@@ -13,7 +13,6 @@ class ProductDetailScreen extends StatelessWidget {
   ProductDetailScreen({super.key});
 
   final controller = Get.find<ProductDetailController>();
-
   final favoritesController = Get.find<FavoritesController>();
 
   @override
@@ -22,54 +21,7 @@ class ProductDetailScreen extends StatelessWidget {
     controller.getProductDetails(productId);
     return Scaffold(
       backgroundColor: const Color(0xFFFFFBFF),
-      appBar: AppBar(
-        leadingWidth: 100,
-        leading: GestureDetector(
-          onTap: () {
-            Get.back();
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(
-                Iconsax.arrow_left_2,
-                size: 24,
-                color: Theme.of(context).primaryColor,
-              ),
-              Text(
-                'Назад',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Theme.of(context).primaryColor,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          Icon(
-            Iconsax.message,
-            size: 24,
-            color: Theme.of(context).primaryColor,
-          ),
-          const SizedBox(width: 12),
-          Icon(
-            Iconsax.share,
-            size: 24,
-            color: Theme.of(context).primaryColor,
-          ),
-          const SizedBox(width: 12),
-        ],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1),
-          child: Container(
-            color: Colors.grey.shade300,
-            height: 1,
-          ),
-        ),
-      ),
+      appBar: const ProductDetailAppbar(),
       body: SingleChildScrollView(
         child: Obx(
           () {
@@ -84,6 +36,7 @@ class ProductDetailScreen extends StatelessWidget {
               if (product == null) {
                 return const Center(child: Text('Product not found'));
               } else {
+                final hasDiscount = product.productDiscount! > 0;
                 return Column(
                   children: [
                     SizedBox(
@@ -192,352 +145,341 @@ class ProductDetailScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Obx(() {
-                      final hasDiscount = product.productDiscount! > 0;
-                      final discountAmount =
-                          (product.productPrice! * product.productDiscount!) /
-                              100;
-                      final discountedPrice =
-                          product.productPrice! - discountAmount;
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 16.0),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    product.productName,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      height: 0,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 16.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  product.productName,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    height: 0,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                              ],
-                            ),
-                            16.kH,
-                            Column(
-                              children: [
-                                if (hasDiscount)
-                                  Row(
-                                    children: [
-                                      Text(
-                                        '${(product.productPrice! - product.productPrice! * product.productDiscount! / 100).toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]} ')} so\'m',
-                                        style: const TextStyle(
-                                            fontSize: 32,
-                                            letterSpacing: -1.0,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black),
-                                      ),
-                                      20.kW,
-                                      Text(
-                                        '${product.productDiscount?.toStringAsFixed(0)}% скидка',
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.red.shade900),
-                                      ),
-                                    ],
-                                  ),
+                              ),
+                            ],
+                          ),
+                          16.kH,
+                          Column(
+                            children: [
+                              if (hasDiscount)
                                 Row(
                                   children: [
                                     Text(
-                                      '${product.productPrice!.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]} ')} so\'m',
+                                      '${(product.productPrice! - product.productPrice! * product.productDiscount! / 100).toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]} ')} so\'m',
+                                      style: const TextStyle(
+                                          fontSize: 32,
+                                          letterSpacing: -1.0,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black),
+                                    ),
+                                    20.kW,
+                                    Text(
+                                      '${product.productDiscount?.toStringAsFixed(0)}% скидка',
                                       style: TextStyle(
-                                        height: 1,
-                                        color: hasDiscount
-                                            ? Colors.grey
-                                            : Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: hasDiscount ? 24.0 : 32.0,
-                                        letterSpacing: -1.0,
-                                        decoration: hasDiscount
-                                            ? TextDecoration.lineThrough
-                                            : TextDecoration.none,
-                                        decorationColor: Colors.black,
-                                        decorationStyle:
-                                            TextDecorationStyle.solid,
-                                      ),
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.red.shade900),
                                     ),
                                   ],
                                 ),
-                                12.kH,
-                                Container(
-                                  padding: const EdgeInsets.all(12.0),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8),
+                              Row(
+                                children: [
+                                  Text(
+                                    '${product.productPrice!.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]} ')} so\'m',
+                                    style: TextStyle(
+                                      height: 1,
+                                      color: hasDiscount
+                                          ? Colors.grey
+                                          : Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: hasDiscount ? 24.0 : 32.0,
+                                      letterSpacing: -1.0,
+                                      decoration: hasDiscount
+                                          ? TextDecoration.lineThrough
+                                          : TextDecoration.none,
+                                      decorationColor: Colors.black,
+                                      decorationStyle:
+                                          TextDecorationStyle.solid,
+                                    ),
                                   ),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          const Text(
-                                            'Описание',
-                                            style: TextStyle(
-                                              fontSize: 18.0,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                          Text(
-                                            'Читать всё',
-                                            style: TextStyle(
-                                              fontSize: 18.0,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.blue.shade900,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      12.kH,
-                                      const Row(
-                                        children: [
-                                          Expanded(
-                                            child: Text(
-                                              'В статье демонстрируется сравнение web приложения скомпилированного в JavaScript и Wasm (который уже доступен как stable). Также рассказывается о том, что Flutter сегодня уже выходит за рамки Web и Mobile, так как LG будет использовать фреймворк для  разработки webOS. Не обошли стороной и геймдев, рассказав о некоторых новых фишках.',
-                                              maxLines: 4,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                fontSize: 16.0,
-                                                fontWeight: FontWeight.normal,
-                                                height: 1.2,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
+                                ],
+                              ),
+                              12.kH,
+                              Container(
+                                padding: const EdgeInsets.all(12.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
-                                12.kH,
-                                DefaultTabController(
-                                  length: 2, // Tablar soni
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        height: 35,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          color: Colors.grey[300],
-                                        ),
-                                        child: TabBar(
-                                          indicator: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(6),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Text(
+                                          'Описание',
+                                          style: TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.w500,
                                           ),
-                                          indicatorSize:
-                                              TabBarIndicatorSize.tab,
-                                          dividerColor: Colors.transparent,
-                                          padding: const EdgeInsets.all(2),
-                                          labelStyle: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 18),
-                                          tabs: const [
-                                            Tab(
-                                              text: 'Размеры',
-                                            ),
-                                            Tab(
-                                              text: 'Характеристика',
-                                            ),
-                                          ],
                                         ),
+                                        Text(
+                                          'Читать всё',
+                                          style: TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.blue.shade900,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    12.kH,
+                                    const Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            'В статье демонстрируется сравнение web приложения скомпилированного в JavaScript и Wasm (который уже доступен как stable). Также рассказывается о том, что Flutter сегодня уже выходит за рамки Web и Mobile, так как LG будет использовать фреймворк для  разработки webOS. Не обошли стороной и геймдев, рассказав о некоторых новых фишках.',
+                                            maxLines: 4,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.normal,
+                                              height: 1.2,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              12.kH,
+                              DefaultTabController(
+                                length: 2, // Tablar soni
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      height: 35,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: Colors.grey[300],
                                       ),
-                                      AutoScaleTabBarView(
-                                        children: [
-                                          ListView.separated(
-                                            shrinkWrap: true,
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            itemCount: controller.product
-                                                    ?.dimensions?.length ??
-                                                0,
-                                            itemBuilder: (context, index) {
-                                              final dimension =
-                                                  controller.product?.dimensions
-                                                          ?.entries
-                                                          .toList()[
-                                                      index]; // Null-safe check
-                                              return ListTile(
-                                                title: Text(
-                                                  dimension?.key ??
-                                                      '', // Null-safe check
-                                                  style: const TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w400,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                                trailing: Text(
-                                                  dimension?.value != null
-                                                      ? '${dimension?.value} см'
-                                                      : '', // Null-safe check,
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w400,
-                                                    color: Colors.grey[600],
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                            separatorBuilder:
-                                                (context, index) => Divider(
-                                              height: 1,
-                                              color: Colors.grey.shade300,
-                                            ),
+                                      child: TabBar(
+                                        indicator: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                        ),
+                                        indicatorSize: TabBarIndicatorSize.tab,
+                                        dividerColor: Colors.transparent,
+                                        padding: const EdgeInsets.all(2),
+                                        labelStyle: const TextStyle(
+                                            color: Colors.black, fontSize: 18),
+                                        tabs: const [
+                                          Tab(
+                                            text: 'Размеры',
                                           ),
-                                          ListView.separated(
-                                            shrinkWrap: true,
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            itemCount: 7,
-                                            itemBuilder: (context, index) =>
-                                                ListTile(
-                                              title: const Text(
-                                                'Ширина, см',
-                                                style: TextStyle(
+                                          Tab(
+                                            text: 'Характеристика',
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    AutoScaleTabBarView(
+                                      children: [
+                                        ListView.separated(
+                                          shrinkWrap: true,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          itemCount: controller.product
+                                                  ?.dimensions?.length ??
+                                              0,
+                                          itemBuilder: (context, index) {
+                                            final dimension =
+                                                controller.product?.dimensions
+                                                        ?.entries
+                                                        .toList()[
+                                                    index]; // Null-safe check
+                                            return ListTile(
+                                              title: Text(
+                                                dimension?.key ??
+                                                    '', // Null-safe check
+                                                style: const TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400,
                                                   color: Colors.black,
                                                 ),
                                               ),
                                               trailing: Text(
-                                                '220',
+                                                dimension?.value != null
+                                                    ? '${dimension?.value} см'
+                                                    : '', // Null-safe check,
                                                 style: TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400,
                                                   color: Colors.grey[600],
                                                 ),
                                               ),
-                                            ),
-                                            separatorBuilder:
-                                                (context, index) => Divider(
-                                              height: 1,
-                                              color: Colors.grey.shade300,
-                                            ),
+                                            );
+                                          },
+                                          separatorBuilder: (context, index) =>
+                                              Divider(
+                                            height: 1,
+                                            color: Colors.grey.shade300,
                                           ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Divider(
-                              height: 1,
-                              color: Colors.grey.shade300,
-                            ),
-                            12.kH,
-                            Container(
-                              padding: const EdgeInsets.all(12.0),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Column(
-                                children: [
-                                  const Row(
-                                    children: [
-                                      Text(
-                                        'Дополнительные услуги',
-                                        style: TextStyle(
-                                          fontSize: 18.0,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  12.kH,
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const Text(
-                                        'Сборка товара',
-                                        style: TextStyle(
-                                          fontSize: 16.0,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                      Obx(() => CupertinoSwitch(
-                                            value: controller.isSwitch
-                                                .value, // Switchning holati (yoqilgan/o'chirilgan)
-                                            onChanged: (bool value) {
-                                              controller.isSwitch.value = value;
-                                            },
-                                          )),
-                                    ],
-                                  ),
-                                  12.kH,
-                                  const Row(
-                                    children: [
-                                      Text(
-                                        'Стоимость: 250 000 so\'m',
-                                        style: TextStyle(
-                                          fontSize: 16.0,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  12.kH,
-                                  Obx(() => GestureDetector(
-                                        onTap: () {
-                                          controller.showMoreDetails.value =
-                                              !controller.showMoreDetails.value;
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              'Подробнее об услуге',
+                                        ListView.separated(
+                                          shrinkWrap: true,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          itemCount: 7,
+                                          itemBuilder: (context, index) =>
+                                              ListTile(
+                                            title: const Text(
+                                              'Ширина, см',
                                               style: TextStyle(
-                                                fontSize: 16.0,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.blue[900],
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400,
+                                                color: Colors.black,
                                               ),
                                             ),
-                                            Icon(
-                                              controller.showMoreDetails.value
-                                                  ? Icons.arrow_drop_up
-                                                  : Icons.arrow_drop_down,
-                                              color: Colors.blue[900],
+                                            trailing: Text(
+                                              '220',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400,
+                                                color: Colors.grey[600],
+                                              ),
                                             ),
-                                          ],
-                                        ),
-                                      )),
-                                  12.kH,
-                                  if (controller.showMoreDetails.value)
-                                    const Row(
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              color: Colors.black,
-                                              height: 1.2,
-                                            ),
-                                            'Воспользуйтесь сборкой товара на дому! Наш специалист в кратчайшие сроки произведёт сборку товара и сэкономит Ваше время и силы.',
+                                          ),
+                                          separatorBuilder: (context, index) =>
+                                              Divider(
+                                            height: 1,
+                                            color: Colors.grey.shade300,
                                           ),
                                         ),
                                       ],
-                                    ),
-                                  20.kH,
-                                ],
+                                    )
+                                  ],
+                                ),
                               ),
-                            )
-                          ],
-                        ),
-                      );
-                    }),
+                            ],
+                          ),
+                          Divider(
+                            height: 1,
+                            color: Colors.grey.shade300,
+                          ),
+                          12.kH,
+                          Container(
+                            padding: const EdgeInsets.all(12.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Column(
+                              children: [
+                                const Row(
+                                  children: [
+                                    Text(
+                                      'Дополнительные услуги',
+                                      style: TextStyle(
+                                        fontSize: 18.0,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                12.kH,
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                      'Сборка товара',
+                                      style: TextStyle(
+                                        fontSize: 16.0,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    CupertinoSwitch(
+                                      value: controller.isSwitch
+                                          .value, // Switchning holati (yoqilgan/o'chirilgan)
+                                      onChanged: (bool value) {
+                                        controller.isSwitch.value = value;
+                                      },
+                                    ),
+                                  ],
+                                ),
+                                12.kH,
+                                const Row(
+                                  children: [
+                                    Text(
+                                      'Стоимость: 250 000 so\'m',
+                                      style: TextStyle(
+                                        fontSize: 16.0,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                12.kH,
+                                GestureDetector(
+                                  onTap: () {
+                                    controller.showMoreDetails.value =
+                                        !controller.showMoreDetails.value;
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        'Подробнее об услуге',
+                                        style: TextStyle(
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.blue[900],
+                                        ),
+                                      ),
+                                      Icon(
+                                        controller.showMoreDetails.value
+                                            ? Icons.arrow_drop_up
+                                            : Icons.arrow_drop_down,
+                                        color: Colors.blue[900],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                12.kH,
+                                if (controller.showMoreDetails.value)
+                                  const Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                            color: Colors.black,
+                                            height: 1.2,
+                                          ),
+                                          'Воспользуйтесь сборкой товара на дому! Наш специалист в кратчайшие сроки произведёт сборку товара и сэкономит Ваше время и силы.',
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                20.kH,
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   ],
                 );
               }
@@ -563,4 +505,67 @@ class ProductDetailScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+class ProductDetailAppbar extends StatelessWidget
+    implements PreferredSizeWidget {
+  const ProductDetailAppbar({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      leadingWidth: 100,
+      leading: GestureDetector(
+        onTap: () {
+          Get.back();
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(
+              Iconsax.arrow_left_2,
+              size: 24,
+              color: Theme.of(context).primaryColor,
+            ),
+            Text(
+              'Назад',
+              style: TextStyle(
+                fontSize: 18,
+                color: Theme.of(context).primaryColor,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        Icon(
+          Iconsax.message,
+          size: 24,
+          color: Theme.of(context).primaryColor,
+        ),
+        const SizedBox(width: 12),
+        Icon(
+          Iconsax.share,
+          size: 24,
+          color: Theme.of(context).primaryColor,
+        ),
+        const SizedBox(width: 12),
+      ],
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(1),
+        child: Container(
+          color: Colors.grey.shade300,
+          height: 1,
+        ),
+      ),
+    );
+  }
+
+  @override
+  Size get preferredSize =>
+      const Size.fromHeight(kToolbarHeight); // AppBar balandligi
 }
