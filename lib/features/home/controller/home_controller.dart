@@ -39,6 +39,7 @@ class HomeController extends GetxController {
     _carouselIndex.value = index;
   }
 
+  // Carousel uchun reklamalarni olish
   Future<void> fetchDiscounts() async {
     isLoading.value = true;
 
@@ -55,6 +56,7 @@ class HomeController extends GetxController {
     }
   }
 
+  // Joriy usd kursini olish
   Future<double> getUsdRate() async {
     final response = await http
         .get(Uri.parse('https://cbu.uz/oz/arkhiv-kursov-valyut/json/'));
@@ -92,14 +94,24 @@ class HomeController extends GetxController {
 
   // Mashhur mahsulotlarni olish
   Future<void> fetchPopularProducts() async {
+    // Ommabop mahsulotlarni Firestore'dan yuklash
     try {
-      final querySnapshot = await _firestore.collection('Products').get();
-      popularProducts.value = querySnapshot.docs
+      final snapshot = await _firestore
+          .collection('Products')
+          .where('productDiscount',
+              isGreaterThan: 0) // Faqat chegirmali mahsulotlar
+          .orderBy('productDiscount',
+              descending:
+                  true) // Chegirma foizi bo'yicha kamayish tartibida saralash
+          .get();
+
+      popularProducts.value = snapshot.docs
           .map((doc) => ProductModel.fromJson(doc.data()))
           .toList();
     } catch (e) {
-      // Xatolikni qayta ishlash (loglash, foydalanuvchiga xabar berish)
-      printError(info: 'Error fetching popular products: $e');
+      print('Mahsulotlarni yuklashda xatolik: $e');
+    } finally {
+      isLoading.value = false; // Yuklash tugashi haqida xabar berish
     }
   }
 }
