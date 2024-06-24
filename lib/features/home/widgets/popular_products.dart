@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mebel_uz/core/presentation/utils/sized_box_extensions.dart';
 
+import '../../../core/presentation/routes/app_routes.dart';
 import '../controller/home_controller.dart';
 
 class PopularProducts extends StatelessWidget {
@@ -28,8 +29,10 @@ class PopularProducts extends StatelessWidget {
               final popularProducts = controller.popularProducts[index];
               return GestureDetector(
                 onTap: () {
-                  controller.navigateToProductDetails(
-                      popularProducts.productId); // O'tish metodi chaqirilmoqda
+                  Get.toNamed(AppRoutes.PRODUCT_DETAIL,
+                      arguments: popularProducts.productId);
+                  // controller.navigateToProductDetails(
+                  //     popularProducts.productId); // O'tish metodi chaqirilmoqda
                 },
                 child: Container(
                   width: 170.0,
