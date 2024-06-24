@@ -4,32 +4,43 @@ import 'package:mebel_uz/core/domain/entities/product_model.dart';
 
 class ProductDetailController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final Rx<ProductModel?> product = Rx<ProductModel?>(null);
 
-  RxBool isLoading = true.obs;
+  final isLoading = true.obs;
+
+  // Rx o'zgaruvchisini RxBool ga o'zgartiramiz va boshlang'ich qiymat false bo'ladi
+  final productExists = false.obs;
+
+  // product ni Rx<ProductModel> dan ProductModel ga o'zgartiramiz
+  ProductModel? product;
 
   RxBool isSwitch = false.obs;
   RxBool showMoreDetails = false.obs;
 
-  void fetchProductDetails(String productId) async {
-    // Parametr turini String ga o'zgartiring
-    isLoading.value = true; // Loading holatini true ga o'rnatamiz
+  // Mahsulot ma'lumotlarini olish
+  Future<void> getProductDetails(String productId) async {
+    isLoading.value = true; // Loading holatini true ga o'rnatish
     try {
-      final documentSnapshot = await _firestore
-          .collection('Products')
-          .doc(productId) // Endi String tipida ishlatamiz
-          .get();
+      final docSnapshot =
+          await _firestore.collection('Products').doc(productId).get();
 
-      if (documentSnapshot.exists) {
-        product.value = ProductModel.fromJson(
-            documentSnapshot.data() as Map<String, dynamic>);
+      if (docSnapshot.exists) {
+        product = ProductModel.fromJson(docSnapshot.data()!);
+        productExists.value =
+            true; // Mahsulot mavjud bo'lsa true qiymatini o'rnatish
       } else {
-        product.value = null;
+        // Mahsulot topilmasa, xatolikni qayta ishlash (snackbar yoki dialog ko'rsatish)
+        handleError('Mahsulot topilmadi');
       }
     } catch (e) {
-      print('Error fetching product details: $e');
+      // Xatolikni qayta ishlash
+      handleError('Xatolik yuz berdi');
     } finally {
-      isLoading.value = false;
+      isLoading.value = false; // Loading holatini false ga o'rnatish
     }
+  }
+
+  void handleError(String errorMessage) {
+    Get.snackbar('Xatolik', errorMessage);
+    // Yoki Get.defaultDialog() orqali dialog oynasi ko'rsatish
   }
 }

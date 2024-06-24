@@ -27,7 +27,10 @@ class PopularProducts extends StatelessWidget {
             itemBuilder: (context, index) {
               final popularProducts = controller.popularProducts[index];
               return GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  controller.navigateToProductDetails(
+                      popularProducts.productId); // O'tish metodi chaqirilmoqda
+                },
                 child: Container(
                   width: 170.0,
                   margin: const EdgeInsets.only(right: 8.0),
