@@ -44,8 +44,8 @@ class HomeScreen extends StatelessWidget {
             12.kH,
             asfs
             af
-            sa
-            f
+            
+        
             
             
             f
