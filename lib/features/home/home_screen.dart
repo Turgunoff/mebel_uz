@@ -42,7 +42,7 @@ class HomeScreen extends StatelessWidget {
             12.kH,
             const OfferSection(),
             12.kH,
-            a
+            
            
             fas
             const ContactUs(),
