@@ -43,7 +43,7 @@ class HomeScreen extends StatelessWidget {
             const OfferSection(),
             12.kH,
             const ContactUs(),
-            12.kH,
+            12.kH
           ],
         ),
       ),
