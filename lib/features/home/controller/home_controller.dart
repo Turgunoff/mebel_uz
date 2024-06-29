@@ -60,7 +60,6 @@ class HomeController extends GetxController {
   Future<double> getUsdRate() async {
     final response = await http
         .get(Uri.parse('https://cbu.uz/oz/arkhiv-kursov-valyut/json/'));
-
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
       for (var item in data) {
@@ -115,7 +114,7 @@ class HomeController extends GetxController {
     }
   }
 
-  // void navigateToProductDetails(String productId) {
-  //   Get.toNamed(AppRoutes.PRODUCT_DETAIL, arguments: productId);
-  // }
+// void navigateToProductDetails(String productId) {
+//   Get.toNamed(AppRoutes.PRODUCT_DETAIL, arguments: productId);
+// }
 }
