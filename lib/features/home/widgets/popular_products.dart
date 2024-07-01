@@ -5,6 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mebel_uz/core/presentation/utils/sized_box_extensions.dart';
+import 'package:mebel_uz/features/favorites/controller/favorites_controller.dart';
 
 import '../../../core/presentation/routes/app_routes.dart';
 import '../controller/home_controller.dart';
@@ -13,9 +14,11 @@ class PopularProducts extends StatelessWidget {
   const PopularProducts({
     super.key,
     required this.controller,
+    required this.favoritesController,
   });
 
   final HomeController controller;
+  final FavoritesController favoritesController;
 
   @override
   Widget build(BuildContext context) {
@@ -108,11 +111,11 @@ class PopularProducts extends StatelessWidget {
                           Positioned(
                             top: 4,
                             right: 4,
-                            child: GestureDetector(
+                            child: Obx(() => GestureDetector(
                                 behavior: HitTestBehavior.opaque,
                                 onTap: () {
-                                  // favoritesController
-                                  //     .toggleFavorite(popularProducts);
+                                  favoritesController.toggleFavorite(
+                                      popularProducts.productId);
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.all(4),
@@ -120,16 +123,15 @@ class PopularProducts extends StatelessWidget {
                                     color: Colors.grey.shade400,
                                     borderRadius: BorderRadius.circular(50),
                                   ),
-                                  child: const Icon(
-                                    // favoritesController.isFavorite(
-                                    //         popularProducts
-                                    //             .productId) // ID ni tekshirish
-                                    //     ? Icons.favorite
-                                    Icons.favorite_border,
+                                  child: Icon(
+                                    favoritesController.isFavorite(
+                                            popularProducts.productId)
+                                        ? Icons.favorite
+                                        : Icons.favorite_border,
                                     color: Colors.yellow,
                                     size: 24,
                                   ),
-                                )),
+                                ))),
                           ),
                         ],
                       ),

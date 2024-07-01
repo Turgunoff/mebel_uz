@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mebel_uz/core/presentation/routes/app_pages.dart';
 import 'package:mebel_uz/core/presentation/routes/app_routes.dart';
 import 'package:mebel_uz/firebase_options.dart';
@@ -24,6 +25,15 @@ void main() async {
     androidProvider: AndroidProvider.debug,
     appleProvider: AppleProvider.appAttest,
   );
+
+  // Hive'ni ishga tushirish
+  await Hive.initFlutter();
+  // Box adapterini ro'yxatga olish (agar kerak bo'lsa)
+  // Hive.registerAdapter(ProductModelAdapter()); // Agar ProductModel'ni saqlamoqchi bo'lsangiz
+
+  // Sevimlilar uchun box ochish
+  await Hive.openBox<String>('favorites');
+
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,

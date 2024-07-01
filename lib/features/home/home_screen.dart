@@ -35,7 +35,10 @@ class HomeScreen extends StatelessWidget {
             const HomeSectionText(text: 'Популярные категории'),
             PopularCategories(controller: controller),
             const HomeSectionText(text: 'Хиты продаж'),
-            PopularProducts(controller: controller),
+            PopularProducts(
+              controller: controller,
+              favoritesController: favoritesController,
+            ),
             12.kH,
             const InstallmentSection(),
             const HomeSectionText(text: 'Лучшие предложения'),
@@ -43,7 +46,7 @@ class HomeScreen extends StatelessWidget {
             const OfferSection(),
             12.kH,
             const ContactUs(),
-            12.kH
+            12.kH,
           ],
         ),
       ),

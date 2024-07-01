@@ -1,75 +1,50 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class FavoritesController extends GetxController {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final favorites = <String>[].obs;
-  String? _deviceId;
+  final _favoritesBox = Hive.box<String>('favorites');
+
+  final favorites = <String>[].obs; // Sevimli mahsulotlarning ID'lari
 
   @override
-  void onInit() async {
+  void onInit() {
     super.onInit();
-    await _getDeviceId(); // Qurilma ID'sini olish
-    loadFavorites(); // Sevimlilarni yuklash
+    loadFavorites();
   }
 
-  Future<void> _getDeviceId() async {
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    _deviceId = androidInfo.id; // Android qurilma ID'si
+  @override
+  void onClose() {
+    Hive.close(); // Ilovani yopganda Hive'ni yoping
+    super.onClose();
   }
 
   Future<void> addToFavorites(String productId) async {
-    if (_deviceId != null) {
-      try {
-        final favoritesRef = _firestore.collection('favorites').doc(_deviceId);
-        final docSnapshot = await favoritesRef.get();
-        if (docSnapshot.exists) {
-          await favoritesRef.update({
-            'products': FieldValue.arrayUnion([productId]),
-          });
-        } else {
-          await favoritesRef.set({
-            'products': [productId],
-          });
-        }
-        favorites.add(productId);
-      } catch (e) {
-        handleError(e);
-      }
-    }
+    favorites.add(productId);
+    await _favoritesBox.add(productId);
   }
 
   Future<void> removeFromFavorites(String productId) async {
-    if (_deviceId != null) {
-      try {
-        await _firestore.collection('favorites').doc(_deviceId).update({
-          'products': FieldValue.arrayRemove([productId]),
-        });
-        favorites.remove(productId);
-      } catch (e) {
-        handleError(e);
-      }
+    final index = favorites.indexOf(productId);
+    if (index != -1) {
+      favorites.removeAt(index);
+      await _favoritesBox.deleteAt(index); // Boxdan o'chirish
     }
   }
 
-  Future<void> loadFavorites() async {
-    if (_deviceId != null) {
-      try {
-        final docSnapshot =
-            await _firestore.collection('favorites').doc(_deviceId).get();
-        if (docSnapshot.exists) {
-          final data = docSnapshot.data() as Map<String, dynamic>;
-          favorites.value = List<String>.from(data['products'] ?? []);
-        }
-      } catch (e) {
-        handleError(e);
-      }
-    }
+  void loadFavorites() {
+    favorites.value = _favoritesBox.values.toList().cast<String>();
   }
 
-  void handleError(error) {
-    Get.snackbar('Xatolik', error.toString());
+  // isFavorite()
+  bool isFavorite(String productId) {
+    return favorites.contains(productId);
+  }
+
+  Future<void> toggleFavorite(productId) async {
+    if (isFavorite(productId)) {
+      await removeFromFavorites(productId);
+    } else {
+      await addToFavorites(productId);
+    }
   }
 }
