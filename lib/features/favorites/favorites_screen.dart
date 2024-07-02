@@ -1,5 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:mebel_uz/core/presentation/utils/sized_box_extensions.dart';
 import 'package:mebel_uz/features/favorites/controller/favorites_controller.dart';
@@ -9,10 +12,6 @@ class FavoritesScreen extends StatelessWidget {
   FavoritesScreen({super.key});
 
   final favoritesController = Get.find<FavoritesController>();
-
-  final homeController = Get.find<HomeController>();
-
-  final numberFormat = NumberFormat("#,##0", "en_US"); // Formatlash
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +41,118 @@ class FavoritesScreen extends StatelessWidget {
               ],
             )),
       ),
-      //       body: Obx(
+      body: Obx(
+        () {
+          if (favoritesController.isLoading.value) {
+            // Loading holatini tekshirish
+            return const Center(
+                child: CupertinoActivityIndicator(radius: 10, animating: true));
+          } else {
+            if (favoritesController.favorites.isEmpty) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'В Избранном пусто',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      textAlign: TextAlign.center,
+                      'Добавьте товары, которые вам интересны!',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey.withOpacity(1),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    GestureDetector(
+                      // onTap: () => Get.offNamed('categories_screen'),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Text(
+                          'Перейти в Каталог',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              );
+            } else {
+              return ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                scrollDirection: Axis.vertical, // Gorizontal aylantirish
+                itemCount: favoritesController
+                    .favoriteProducts.length, // Mahsulotlar soni
+                itemBuilder: (context, index) {
+                  final product = favoritesController.favoriteProducts[index];
+                  return Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: Theme.of(context).primaryColor.withOpacity(0.1),
+                    ),
+                    child: Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: CachedNetworkImage(
+                            height: 150,
+                            width: 150,
+                            imageUrl: product.imageUrls[0],
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => const Center(
+                              child: CupertinoActivityIndicator(
+                                radius: 10,
+                                animating: true, // Control animation
+                              ),
+                            ),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                          ),
+                        ),
+                        Column(
+                          children: [
+                            Text('dasdasd'),
+                            Text('dasdasd'),
+                            Text('dasdasd'),
+                          ],
+                        ),Column(
+                          children: [
+                            Text('dasdasd'),
+                            Text('dasdasd'),
+                            Text('dasdasd'),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            }
+          }
+        },
+      ),
+    );
+  }
+}
+//       body: Obx(
       //         () => favoritesController.favorites.isEmpty
       //             ? Center(
       //                 child: Column(
@@ -97,23 +207,22 @@ class FavoritesScreen extends StatelessWidget {
       //                   itemCount: favoritesController
       //                       .favorites.length, // Mahsulotlar soni
       //                   itemBuilder: (context, index) {
-      //                     final discountAmount =
-      //                         (favoritesController.favorites[index].productPrice! *
-      //                                 favoritesController
-      //                                     .favorites[index].productDiscount!) /
-      //                             100;
-      //                     final discountedPrice =
-      //                         favoritesController.favorites[index].productPrice! -
-      //                             discountAmount;
-      //                     final hasDiscount = favoritesController
-      //                             .favorites[index].productDiscount! >
-      //                         0;
-
+      //                     // final discountAmount =
+      //                     //     (favoritesController.favorites[index].productPrice! *
+      //                     //             favoritesController
+      //                     //                 .favorites[index].!) /
+      //                     //         100;
+      //                     // final discountedPrice =
+      //                     //     favoritesController.favorites[index].productPrice! -
+      //                     //         discountAmount;
+      //                     // final hasDiscount = favoritesController
+      //                     //         .favorites[index].productDiscount! >
+      //                     //     0;
       //                     final favoriteProducts =
       //                         favoritesController.favorites[index];
-      //                     final productPriceInDollars =
-      //                         favoritesController.favorites[index].productPrice! /
-      //                             homeController.usdRate; // Dollar kursiga nisbat
+      //                     // final productPriceInDollars =
+      //                     //     favoritesController.favorites[index].productPrice! /
+      //                     //         homeController.usdRate; // Dollar kursiga nisbat
       //                     return GestureDetector(
       //                       onTap: () {
       //                         Get.to(
@@ -382,6 +491,4 @@ class FavoritesScreen extends StatelessWidget {
       //               ),
       //       ));
       // }
-    );
-  }
-}
+    

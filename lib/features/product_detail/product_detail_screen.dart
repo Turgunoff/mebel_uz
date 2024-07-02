@@ -94,28 +94,28 @@ class ProductDetailScreen extends StatelessWidget {
                           Positioned(
                             top: 10,
                             right: 10,
-                            child: GestureDetector(
-                              behavior: HitTestBehavior.opaque,
-                              onTap: () {
-                                // favoritesController
-                                //     .toggleFavorite(product);
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade400,
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
-                                child: const Icon(
-                                  // favoritesController.isFavorite(product
-                                  //         .productId) // ID ni tekshirish
-                                  //     ? Icons.favorite
-                                  Icons.favorite_border,
-                                  color: Colors.yellow,
-                                  size: 28,
-                                ),
-                              ),
-                            ),
+                            child: Obx(() => GestureDetector(
+                                  behavior: HitTestBehavior.opaque,
+                                  onTap: () {
+                                    favoritesController
+                                        .toggleFavorite(productId);
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey.shade400,
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    child: Icon(
+                                      favoritesController
+                                              .isFavorite(product.productId)
+                                          ? Icons.favorite
+                                          : Icons.favorite_border,
+                                      color: Colors.yellow,
+                                      size: 28,
+                                    ),
+                                  ),
+                                )),
                           ),
                           if (product.productDiscount! > 0 &&
                               product.productDiscount != null)
