@@ -3,7 +3,7 @@ lib
 │ ├── data  
 │ │ ├── datasources  
 │ │ │ ├── local  
-│ │ │ │ └── shared_preferences_datasource.dart //dark mode
+│ │ │ │ └── shared_preferences_datasource.dart
 │ │ │ └── remote  
 │ │ │ ├── firebase_datasource.dart  
 │ │ │ └── api_service.dart  

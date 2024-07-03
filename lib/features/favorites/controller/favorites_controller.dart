@@ -18,10 +18,10 @@ class FavoritesController extends GetxController {
     super.onInit();
     loadFavorites();
     fetchFavoriteProducts();
-    everAll(
-        [favorites],
+    ever(
+        favorites,
         (_) =>
-            fetchFavoriteProducts()); // favorites o'zgarganda fetchFavoriteProducts chaqiriladi
+            fetchFavoriteProducts()); // favorites o'zgarganda fetchFavoriteProducts() ni chaqirish
   }
 
   @override
@@ -55,15 +55,18 @@ class FavoritesController extends GetxController {
   }
 
   Future<void> removeFromFavorites(String productId) async {
-    favorites.remove(productId); // Avval favorites listdan o'chiring
+    favorites.remove(productId);
 
-    // Hive'dagi barcha qiymatlarni tekshiring va productId ga mos kelganini o'chiring
-    for (int i = 0; i < _favoritesBox.length; i++) {
+    // Hive'dagi barcha qiymatlarni tekshiring va productId ga mos kelganini o'chiring (teskari tartibda)
+    for (int i = _favoritesBox.length - 1; i >= 0; i--) {
       if (_favoritesBox.getAt(i) == productId) {
         await _favoritesBox.deleteAt(i);
         break; // Topilganidan keyin to'xtating
       }
     }
+
+    await fetchFavoriteProducts(); // Ma'lumotlar yuklanguncha kuting
+    isLoading.value = false; // Loading holatini false ga o'rnating
   }
 
   void loadFavorites() {
