@@ -59,10 +59,9 @@ class FavoritesScreen extends StatelessWidget {
                     const Text(
                       'В Избранном пусто',
                       style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
                     ),
                     const SizedBox(height: 20),
                     Text(
