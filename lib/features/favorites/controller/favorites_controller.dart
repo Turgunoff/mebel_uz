@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mebel_uz/core/domain/entities/product_model.dart';
+import 'package:mebel_uz/core/presentation/utils/app_constants.dart';
 
 class FavoritesController extends GetxController {
   final _favoritesBox = Hive.box<String>('favorites');
@@ -36,7 +37,7 @@ class FavoritesController extends GetxController {
     try {
       final favoriteProductIds = _favoritesBox.values.toList().cast<String>();
       final querySnapshot = await _firestore
-          .collection('Products')
+          .collection(AppConstants.productsCollection)
           .where(FieldPath.documentId, whereIn: favoriteProductIds)
           .get();
 
