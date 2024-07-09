@@ -9,6 +9,7 @@ import 'package:mebel_uz/features/favorites/controller/favorites_controller.dart
 import 'package:mebel_uz/features/home/controller/home_controller.dart';
 
 import '../../core/presentation/routes/app_routes.dart';
+import 'widgets/favorites_appbar.dart';
 
 class FavoritesScreen extends StatelessWidget {
   FavoritesScreen({super.key});
@@ -19,31 +20,7 @@ class FavoritesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        elevation: 0,
-        title: Obx(() => Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                const Text(
-                  'Избранное',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                12.kW,
-                if (favoritesController.favorites.isNotEmpty)
-                  Text(
-                    '${favoritesController.favorites.length.toString()} товар',
-                    style: TextStyle(
-                      color: Colors.grey.withOpacity(1),
-                      fontSize: 16,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-              ],
-            )),
-      ),
+      appBar: FavoritesAppbar(favoritesController: favoritesController),
       body: Obx(
         () {
           if (favoritesController.isLoading.value) {
@@ -116,7 +93,7 @@ class FavoritesScreen extends StatelessWidget {
                 itemCount: favoritesController.favoriteProducts.length,
                 // physics: BouncingScrollPhysics(),
                 shrinkWrap: true,
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                padding: const EdgeInsets.all(16.0),
                 itemBuilder: (context, index) {
                   final product = favoritesController.favoriteProducts[index];
                   return GestureDetector(

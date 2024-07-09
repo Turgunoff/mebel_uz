@@ -10,6 +10,7 @@ import '../../core/presentation/routes/app_routes.dart';
 import '../favorites/controller/favorites_controller.dart';
 import '../home/controller/home_controller.dart';
 import 'controller/product_list_controller.dart';
+import 'widgets/product_list_appbar.dart';
 
 class ProductListScreen extends StatelessWidget {
   ProductListScreen({
@@ -23,34 +24,7 @@ class ProductListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
-          icon: Icon(
-            Iconsax.arrow_left_2,
-            size: 24,
-            color: Theme.of(context).primaryColor,
-          ),
-        ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1),
-          child: Container(
-            color: Colors.grey.shade300,
-            height: 1,
-          ),
-        ),
-        title: Obx(() => Text(
-              _controller.categoryName.value,
-              style: const TextStyle(
-                fontSize: 20,
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
-              ),
-            )),
-        centerTitle: true,
-      ),
+      appBar: ProductListAppbar(controller: _controller),
       body: Obx(
         () => _controller.isLoading.value
             ? const Center(
