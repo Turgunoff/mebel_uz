@@ -99,13 +99,17 @@ class FavoritesScreen extends StatelessWidget {
             } else {
               return GridView.builder(
                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 320,
-                  childAspectRatio: 0.6,
-                  // crossAxisCount: 2, // 2 ta ustun
-                  mainAxisSpacing:
-                      10.0, // Ustunlar orasidagi bo'shliq (vertikal)
-                  crossAxisSpacing:
-                      5.0, // Elementlar orasidagi bo'shliq (gorizontal)
+                  maxCrossAxisExtent: 200.0,
+                  childAspectRatio: 3 / 5,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  // maxCrossAxisExtent: 320,
+                  // childAspectRatio: 0.6,
+                  // // crossAxisCount: 2, // 2 ta ustun
+                  // mainAxisSpacing:
+                  //     10.0, // Ustunlar orasidagi bo'shliq (vertikal)
+                  // crossAxisSpacing:
+                  //     5.0, // Elementlar orasidagi bo'shliq (gorizontal)
                   // childAspectRatio:
                   // 2 / 3, // Elementlarning kenglik/balandlik nisbati
                 ),
@@ -121,25 +125,20 @@ class FavoritesScreen extends StatelessWidget {
                           arguments: product.productId);
                     },
                     child: Container(
-                      width: 170.0,
-                      margin: const EdgeInsets.only(right: 8.0),
                       padding: const EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(
-                          10.0,
-                        ),
+                        borderRadius: BorderRadius.circular(10),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.shade100,
-                            spreadRadius: 3,
-                            blurRadius: 2,
-                            offset: const Offset(0, 3),
+                            color: Colors.grey.shade300,
+                            blurRadius: 5,
+                            offset: const Offset(0, 2),
                           ),
                         ],
                       ),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        // crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // Rasm
                           Stack(

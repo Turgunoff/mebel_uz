@@ -4,21 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:intl/intl.dart';
 import 'package:mebel_uz/core/presentation/utils/sized_box_extensions.dart';
-import 'package:mebel_uz/features/favorites/controller/favorites_controller.dart';
-import 'package:mebel_uz/features/home/controller/home_controller.dart';
-import 'package:mebel_uz/features/product_list_screen/controller/product_list_controller.dart';
+
+import '../../core/presentation/routes/app_routes.dart';
+import '../favorites/controller/favorites_controller.dart';
+import '../home/controller/home_controller.dart';
+import 'controller/product_list_controller.dart';
 
 class ProductListScreen extends StatelessWidget {
   ProductListScreen({
     super.key,
   });
 
-  final ProductListController _controller = Get.find<ProductListController>();
+  final _controller = Get.find<ProductListController>();
   final homeController = Get.find<HomeController>();
   final favoritesController = Get.find<FavoritesController>();
-  final numberFormat = NumberFormat('#,##0');
 
   @override
   Widget build(BuildContext context) {
@@ -55,13 +55,14 @@ class ProductListScreen extends StatelessWidget {
         () => _controller.isLoading.value
             ? const Center(
                 child: CupertinoActivityIndicator(
-                  radius: 20,
+                  radius: 10,
+                  animating: true,
                 ),
               )
             : _controller.products.isEmpty
                 ? Center(
                     child: Text(
-                      'No products found.',
+                      'Товары не найдены.',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   )
@@ -77,28 +78,17 @@ class ProductListScreen extends StatelessWidget {
                     gridDelegate:
                         const SliverGridDelegateWithMaxCrossAxisExtent(
                       maxCrossAxisExtent: 200.0,
-                      childAspectRatio: 3 / 5.6,
+                      childAspectRatio: 3 / 5,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10,
                     ),
                     itemCount: _controller.products.length,
                     itemBuilder: (context, index) {
-                      final discountAmount = (_controller
-                                  .products[index].productPrice! *
-                              _controller.products[index].productDiscount!) /
-                          100;
-                      final discountedPrice =
-                          _controller.products[index].productPrice! -
-                              discountAmount;
-                      final hasDiscount =
-                          _controller.products[index].productDiscount! > 0;
-
                       final listProducts = _controller.products[index];
-                      final productPriceInDollars =
-                          _controller.products[index].productPrice! /
-                              homeController.usdRate; // Dollar kursiga nisbat
                       return GestureDetector(
                         onTap: () {
+                          Get.toNamed(AppRoutes.productDetail,
+                              arguments: listProducts.productId);
                           // Get.to(
                           //   () => ProductDetailScreen(
                           //     productId: listProducts.productId,
@@ -132,7 +122,7 @@ class ProductListScreen extends StatelessWidget {
                                         8.0,
                                       ),
                                       child: CachedNetworkImage(
-                                        height: 160,
+                                        height: 150,
                                         width: double.infinity,
                                         imageUrl: _controller
                                             .products[index].imageUrls[0],
@@ -140,7 +130,7 @@ class ProductListScreen extends StatelessWidget {
                                         placeholder: (context, url) =>
                                             const Center(
                                           child: CupertinoActivityIndicator(
-                                            radius: 30,
+                                            radius: 10,
                                             animating:
                                                 true, // Control animation
                                           ),
@@ -150,7 +140,8 @@ class ProductListScreen extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  if (hasDiscount) // Only show discount if applicable
+                                  if (listProducts.productDiscount! >
+                                      0) // Only show discount if applicable
                                     Positioned(
                                       bottom: 0, // Adjust positioning as needed
                                       left: 0, // Adjust positioning as needed
@@ -181,6 +172,8 @@ class ProductListScreen extends StatelessWidget {
                                     child: Obx(() => GestureDetector(
                                           behavior: HitTestBehavior.opaque,
                                           onTap: () {
+                                            favoritesController.toggleFavorite(
+                                                listProducts.productId);
                                             // favoritesController
                                             //     .toggleFavorite(listProducts);
                                           },
@@ -191,12 +184,15 @@ class ProductListScreen extends StatelessWidget {
                                               borderRadius:
                                                   BorderRadius.circular(50),
                                             ),
-                                            child: const Icon(
+                                            child: Icon(
+                                              favoritesController.isFavorite(
+                                                      listProducts.productId)
+                                                  ? Icons.favorite
+                                                  : Icons.favorite_border,
                                               // favoritesController.isFavorite(
                                               //         listProducts
                                               //             .productId) // ID ni tekshirish
                                               //     ? Icons.favorite
-                                              Icons.favorite_border,
                                               color: Colors.yellow,
                                               size: 24,
                                             ),
@@ -204,35 +200,6 @@ class ProductListScreen extends StatelessWidget {
                                         )),
                                   ),
                                 ],
-                              ),
-                              8.kH,
-                              SizedBox(
-                                height: 20.0,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: 20,
-                                      width: 20,
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromARGB(
-                                            255, 142, 224, 149),
-                                        borderRadius:
-                                            BorderRadius.circular(4.0),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 4.0),
-                                    Container(
-                                      height: 20,
-                                      width: 20,
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromARGB(
-                                            255, 175, 194, 209),
-                                        borderRadius:
-                                            BorderRadius.circular(4.0),
-                                      ),
-                                    ),
-                                  ],
-                                ),
                               ),
                               8.kH,
                               Column(
@@ -292,9 +259,9 @@ class ProductListScreen extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      if (hasDiscount)
+                                      if (listProducts.productDiscount! > 0)
                                         Text(
-                                          '${numberFormat.format(discountedPrice)} so\'m'
+                                          '${(listProducts.productPrice! - listProducts.productPrice! * listProducts.productDiscount! / 100).toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]} ')} so\'m'
                                               .replaceAll(',', ' '),
                                           style: const TextStyle(
                                             color: Colors.red,
@@ -305,26 +272,28 @@ class ProductListScreen extends StatelessWidget {
                                           ),
                                         ),
                                       Text(
-                                        '${numberFormat.format(listProducts.productPrice)} so\'m'
+                                        '${listProducts.productPrice!.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]} ')} so\'m'
                                             .replaceAll(',', ' '),
                                         style: TextStyle(
                                           height: 1,
-                                          color: hasDiscount
-                                              ? Colors.grey
-                                              : Colors.black,
+                                          color:
+                                              listProducts.productDiscount! > 0
+                                                  ? Colors.grey
+                                                  : Colors.black,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16.0,
                                           letterSpacing: -1.0,
-                                          decoration: hasDiscount
-                                              ? TextDecoration.lineThrough
-                                              : TextDecoration.none,
+                                          decoration:
+                                              listProducts.productDiscount! > 0
+                                                  ? TextDecoration.lineThrough
+                                                  : TextDecoration.none,
                                           decorationColor: Colors.black,
                                           decorationStyle:
                                               TextDecorationStyle.solid,
                                         ),
                                       ),
                                       Text(
-                                        ' ~ ${numberFormat.format(productPriceInDollars)} \$'
+                                        '~${((listProducts.productPrice! - listProducts.productPrice! * listProducts.productDiscount! / 100) / homeController.usdRate).toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]} ')} \$'
                                             .replaceAll(',', ' '),
                                         style: const TextStyle(
                                           height: 1,
