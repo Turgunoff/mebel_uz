@@ -20,41 +20,41 @@ import '../../../features/product_list_screen/product_list_screen.dart';
 class AppPages {
   static final pages = [
     GetPage(
-      name: AppRoutes.SPLASH,
+      name: AppRoutes.splash,
       page: () => const SplashScreen(),
     ),
     GetPage(
-      name: AppRoutes.HOME,
+      name: AppRoutes.home,
       page: () => HomeScreen(),
       binding: HomeBinding(),
     ),
     GetPage(
-      name: AppRoutes.FAVORITES,
+      name: AppRoutes.favorites,
       page: () => FavoritesScreen(),
       binding: FavoritesBinding(),
     ),
     GetPage(
-      name: AppRoutes.PRODUCT_LIST,
+      name: AppRoutes.productList,
       page: () => ProductListScreen(),
       binding: ProductListBinding(),
     ),
     GetPage(
-      name: AppRoutes.CART,
+      name: AppRoutes.cart,
       page: () => const CartScreen(),
       binding: CartBinding(),
     ),
     GetPage(
-      name: AppRoutes.CATEGORIES,
+      name: AppRoutes.categories,
       page: () => CategoriesScreen(),
       binding: CategoriesBinding(),
     ),
     GetPage(
-      name: AppRoutes.PRODUCT_DETAIL,
+      name: AppRoutes.productDetail,
       page: () => ProductDetailScreen(),
       binding: ProductDetailBinding(),
     ),
     GetPage(
-      name: AppRoutes.PROFILE,
+      name: AppRoutes.profile,
       page: () => const ProfileScreen(),
       binding: ProfileBinding(),
     ),

@@ -45,6 +45,8 @@ class FavoritesController extends GetxController {
           .map((doc) => ProductModel.fromJson(doc.data()))
           .toList();
     } catch (e) {
+      // ignore: avoid_print
+      print(e);
     } finally {
       isLoading(false); // Loading holatini false ga o'rnatish
     }

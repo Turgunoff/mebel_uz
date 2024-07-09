@@ -66,6 +66,7 @@ class ContactUs extends StatelessWidget {
                       } else {
                         throw 'Could not launch $launchUri';
                       }
+                      // ignore: use_build_context_synchronously
                       Navigator.pop(context);
                     },
                   ),
@@ -93,6 +94,7 @@ class ContactUs extends StatelessWidget {
                       } else {
                         throw 'Could not launch $launchUri';
                       }
+                      // ignore: use_build_context_synchronously
                       Navigator.pop(context);
                     },
                   ),

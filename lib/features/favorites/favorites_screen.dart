@@ -112,12 +112,12 @@ class FavoritesScreen extends StatelessWidget {
                 itemCount: favoritesController.favoriteProducts.length,
                 // physics: BouncingScrollPhysics(),
                 shrinkWrap: true,
-                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 itemBuilder: (context, index) {
                   final product = favoritesController.favoriteProducts[index];
                   return GestureDetector(
                     onTap: () {
-                      Get.toNamed(AppRoutes.PRODUCT_DETAIL,
+                      Get.toNamed(AppRoutes.productDetail,
                           arguments: product.productId);
                     },
                     child: Container(

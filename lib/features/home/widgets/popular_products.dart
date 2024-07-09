@@ -32,7 +32,7 @@ class PopularProducts extends StatelessWidget {
               final popularProducts = controller.popularProducts[index];
               return GestureDetector(
                 onTap: () {
-                  Get.toNamed(AppRoutes.PRODUCT_DETAIL,
+                  Get.toNamed(AppRoutes.productDetail,
                       arguments: popularProducts.productId);
                   // controller.navigateToProductDetails(
                   //     popularProducts.productId); // O'tish metodi chaqirilmoqda

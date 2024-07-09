@@ -108,6 +108,7 @@ class HomeController extends GetxController {
           .map((doc) => ProductModel.fromJson(doc.data()))
           .toList();
     } catch (e) {
+      // ignore: avoid_print
       print('Mahsulotlarni yuklashda xatolik: $e');
     } finally {
       isLoading.value = false; // Yuklash tugashi haqida xabar berish

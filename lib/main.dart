@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Mebel uz',
-      initialRoute: AppRoutes.SPLASH, // Boshlang'ich route nomi
+      initialRoute: AppRoutes.splash, // Boshlang'ich route nomi
       getPages: AppPages.pages, // Barcha GetPage'lar ro'yxati
       initialBinding: AppControllerBinding(),
       theme: ThemeData(

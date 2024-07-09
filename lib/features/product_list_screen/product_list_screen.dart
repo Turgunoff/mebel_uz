@@ -191,7 +191,7 @@ class ProductListScreen extends StatelessWidget {
                                               borderRadius:
                                                   BorderRadius.circular(50),
                                             ),
-                                            child: Icon(
+                                            child: const Icon(
                                               // favoritesController.isFavorite(
                                               //         listProducts
                                               //             .productId) // ID ni tekshirish

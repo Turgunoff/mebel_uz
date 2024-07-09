@@ -52,7 +52,7 @@ class PopularCategories extends StatelessWidget {
                       .fetchProductsByCategory(category.categoryId.toString());
                   productListController.categoryName.value =
                       category.categoryNameRu;
-                  Get.toNamed(AppRoutes.PRODUCT_LIST);
+                  Get.toNamed(AppRoutes.productList);
                 },
                 child: Container(
                   padding: const EdgeInsets.all(4.0),
