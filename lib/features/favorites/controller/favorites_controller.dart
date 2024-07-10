@@ -11,7 +11,6 @@ class FavoritesController extends GetxController {
   final favorites = <String>[].obs; // Sevimli mahsulotlarning ID'lari
   final favoriteProducts = <ProductModel>[].obs; // Sevimli mahsulotlar ro'yxati
 
-  // Loading holati
   final isLoading = true.obs;
 
   @override
@@ -27,7 +26,7 @@ class FavoritesController extends GetxController {
 
   @override
   void onClose() {
-    Hive.close(); // Ilovani yopganda Hive'ni yoping
+    Hive.close();
     super.onClose();
   }
 
