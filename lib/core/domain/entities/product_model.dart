@@ -20,7 +20,7 @@ class ProductModel {
     required this.imageUrls,
     required this.categoryName,
     this.dimensions,
-    this.views = 0, // Boshlang'ich qiymat: 0
+    this.views = 0,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
