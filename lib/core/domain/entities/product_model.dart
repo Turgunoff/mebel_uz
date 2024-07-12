@@ -26,8 +26,7 @@ class ProductModel {
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     Map<String, int>? dimensions;
     if (json['dimensions'] != null) {
-      dimensions = Map<String, int>.from(
-          json['dimensions']); // Null tekshirish qo'shildi
+      dimensions = Map<String, int>.from(json['dimensions']);
     }
     return ProductModel(
       productId: json['productId'] as String,
