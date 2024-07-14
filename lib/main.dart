@@ -12,7 +12,7 @@ import 'package:mebel_uz/firebase_options.dart';
 import 'app/bindings/app_binding.dart';
 
 void main() async {
-  await GetStorage.init(); // GetStorage ni ishga tushirish
+  await GetStorage.init();
 
   WidgetsFlutterBinding.ensureInitialized();
 
