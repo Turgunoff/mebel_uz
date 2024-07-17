@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -25,6 +28,9 @@ void main() async {
     androidProvider: AndroidProvider.debug,
     appleProvider: AppleProvider.appAttest,
   );
+
+  final messaging = FirebaseMessaging.instance;
+  messaging.getToken().then((token) => log(token ?? 'No token found'));
 
   // Hive'ni ishga tushirish
   await Hive.initFlutter();
