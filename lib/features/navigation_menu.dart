@@ -30,10 +30,10 @@ class NavigationMenu extends StatelessWidget {
           indicatorColor: Theme.of(context).primaryColor,
           animationDuration: const Duration(milliseconds: 300),
           destinations: [
-            const NavigationDestination(
-              selectedIcon: Icon(Iconsax.home, color: Colors.white),
-              icon: Icon(Iconsax.home),
-              label: 'Главная',
+            NavigationDestination(
+              selectedIcon: const Icon(Iconsax.home, color: Colors.white),
+              icon: const Icon(Iconsax.home),
+              label: 'home'.tr,
             ),
             NavigationDestination(
               selectedIcon: Obx(
@@ -61,22 +61,24 @@ class NavigationMenu extends StatelessWidget {
                       .heart), // Tanlanmagan ikonka uchun rangni o'zgartiring
                 ),
               ),
-              label: 'Избранное',
+              label: 'favorites'.tr,
             ),
-            const NavigationDestination(
-              selectedIcon: Icon(Iconsax.category, color: Colors.white),
-              icon: Icon(Iconsax.category),
-              label: 'Каталог',
+            NavigationDestination(
+              selectedIcon: const Icon(Iconsax.category, color: Colors.white),
+              icon: const Icon(Iconsax.category),
+              label: 'catalog'.tr,
             ),
-            const NavigationDestination(
-              selectedIcon: Icon(Iconsax.shopping_cart, color: Colors.white),
-              icon: Icon(Iconsax.shopping_cart),
-              label: 'Корзина',
+            NavigationDestination(
+              selectedIcon:
+                  const Icon(Iconsax.shopping_cart, color: Colors.white),
+              icon: const Icon(Iconsax.shopping_cart),
+              label: 'cart'.tr,
             ),
-            const NavigationDestination(
-              selectedIcon: Icon(Iconsax.profile_circle, color: Colors.white),
-              icon: Icon(Iconsax.profile_circle),
-              label: 'Профиль',
+            NavigationDestination(
+              selectedIcon:
+                  const Icon(Iconsax.profile_circle, color: Colors.white),
+              icon: const Icon(Iconsax.profile_circle),
+              label: 'profile'.tr,
             ),
           ],
         ),

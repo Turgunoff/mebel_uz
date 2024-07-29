@@ -13,6 +13,7 @@ import 'package:mebel_uz/core/presentation/routes/app_routes.dart';
 import 'package:mebel_uz/firebase_options.dart';
 
 import 'app/bindings/app_binding.dart';
+import 'core/presentation/localization/app_localization.dart';
 
 void main() async {
   await GetStorage.init();
@@ -62,6 +63,9 @@ class MyApp extends StatelessWidget {
       initialRoute: AppRoutes.splash, // Boshlang'ich route nomi
       getPages: AppPages.pages, // Barcha GetPage'lar ro'yxati
       initialBinding: AppControllerBinding(),
+      translations: AppLocalization(),
+      locale: Get.deviceLocale, //for setting localization strings
+      fallbackLocale: const Locale('uz', 'UZ'),
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
         primaryColor: const Color(0xFF013C7E),
