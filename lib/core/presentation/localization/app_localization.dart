@@ -1,8 +1,3 @@
-//
-// @Author: "Eldor Turgunov"
-// @Date: 08.03.2024
-//
-
 import 'package:get/get.dart';
 
 import 'ru_ru/ru.dart';
